@@ -1,6 +1,10 @@
 const React     = require('react');
 const $         = require('jquery');
 const moment    = require('moment');
+const _         = require('underscore');
+
+// React Components
+let TimerRow    = require('../components/TimerRow');
 
 class App extends React.Component {
     constructor() {
@@ -21,6 +25,13 @@ class App extends React.Component {
     }
 
     render() {
+
+        // Set Timer Rows
+        let timerRows = _.map(this.state.timers, (timer) => {
+            return <TimerRow
+                key={timer.id}/>
+        });
+
         return (
             <div className="main-wrapper">
 
@@ -55,7 +66,14 @@ class App extends React.Component {
                     </div>
                 </div>
 
-                <div className="container">Container1
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xs-12">
+                            <ul className="list-group">
+                                {timerRows}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <footer className="container footer">
@@ -99,7 +117,7 @@ class App extends React.Component {
         timers[id] = timer;
 
         // Update State
-        this.setState({timers});
+        this.setState({timers: timers});
     }
 
     clearForm() {
