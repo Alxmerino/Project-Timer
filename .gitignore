@@ -23,3 +23,5 @@ jspm_packages
 # public/css/main.*
 # public/js/*.*
 .DS_Store
+/dist/js
+dist/css/app.*
