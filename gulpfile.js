@@ -32,7 +32,8 @@ function compile(watch) {
 
     if (watch) {
         bundler.on('update', function() {
-            console.log('-> bundling...');
+            var date = new Date()
+            console.log('-> bundling... ' + date.toJSON());
             rebundle();
         });
     }
