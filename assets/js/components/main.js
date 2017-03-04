@@ -95,9 +95,6 @@ class App extends React.Component {
     }
 
     _addTimer() {
-        // Lets clear the form to allow for a new entry
-        this.clearForm();
-
         // Set the timestamp as the timer's ID
         let id = moment().format('x');
 
@@ -118,6 +115,9 @@ class App extends React.Component {
 
         // Update State
         this.setState({timers: timers});
+
+        // Lets clear the form to allow for a new entry
+        this.clearForm();
     }
 
     clearForm() {
