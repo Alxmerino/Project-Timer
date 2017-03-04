@@ -19,7 +19,7 @@ class TimerRow extends React.Component {
                 </a>
                 <div className="timer-title">{timer.title}</div>
                 <div className="timer-stats">
-                    <span className="timer-current">0:00:00</span> / <span className="timer-planned">0:00:00</span>
+                    <span className="timer-current">0:00:00</span> / <span className="timer-planned">{timer.planned}</span>
                     <button type="button" className={`timer-${timerStatus} btn btn-info btn-xs`}><span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span></button>
                 </div>
             </li>
