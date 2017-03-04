@@ -1,0 +1,47 @@
+/**
+ * Flatty Bootstrap Theme
+ */
+@import '/assets/scss/bootswatch/flatty/bootswatch.min.css';
+
+/**
+ * Bootstrap Overrides
+ */
+.container {
+    max-width: 730px;
+}
+
+/**
+ * Custom Styles
+ */
+.timer {
+
+    &-stats {
+        float: right;
+    }
+
+    &-close {
+        color: #e74c3c;
+        margin-right: 10px;
+
+        &:hover {
+            color: #2c3e50;
+
+            .active & {
+                color: #ffffff;
+            }
+        }
+    }
+
+    &-play,
+    &-pause {
+        margin-left: 10px;
+    }
+
+    &-title {
+        display: inline-block;
+    }
+}
+
+.daily-stats {
+    text-align: right;
+}
