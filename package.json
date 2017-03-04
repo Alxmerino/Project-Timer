@@ -17,13 +17,21 @@
   },
   "homepage": "https://github.com/Alxmerino/Project-Timer#readme",
   "dependencies": {
+    "babelify": "^7.3.0",
     "browserify": "^14.1.0",
     "gulp": "^3.9.1",
     "gulp-generic-build": "git+ssh://git@github.com/Alxmerino/Gulp-Generic-Build.git",
+    "gulp-uglify": "^2.0.1",
     "jquery": "^3.1.1",
     "moment": "^2.17.1",
     "moment-timer": "^1.1.5",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "devDependencies": {
+    "gulp-connect": "^5.0.0"
   }
 }
