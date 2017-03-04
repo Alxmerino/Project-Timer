@@ -1,5 +1,6 @@
 const React     = require('react');
 const $         = require('jquery');
+const moment    = require('moment');
 
 class App extends React.Component {
     constructor() {
@@ -69,18 +70,36 @@ class App extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let $form = $(e.target);
 
         if (this.validTimerForm()) {
-            this._addTimer($form);
+            this._addTimer();
         }
     }
 
-    _addTimer($form) {
+    _addTimer() {
         // Lets clear the form to allow for a new entry
         this.clearForm();
 
-        console.log('Add a timer woot!');
+        // Set the timestamp as the timer's ID
+        let id = moment().format('x');
+
+        // Get all timers
+        let timers = this.state.timers;
+
+        let timer = {
+            id,
+            title: this.timerForm.title.value,
+            startTime: moment().format(),
+            isPaused: false,
+            // description = 'TODO';
+            // planned = this.getPlannedTime(); // TODO
+        }
+
+        // Add timer to timers object
+        timers[id] = timer;
+
+        // Update State
+        this.setState({timers});
     }
 
     clearForm() {
