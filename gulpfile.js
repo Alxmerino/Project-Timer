@@ -47,12 +47,17 @@ function watch() {
 /**
  * @task Local web server
  */
-gulp.task('serve', function() {
+gulp.task('connect', function() {
     connect.server();
 });
 
 gulp.task('build', function() { return compile(); });
 gulp.task('watch', function() { return watch(); });
+
+/**
+ * Local dev env
+ */
+gulp.task('dev', ['connect', 'watch']);
 
 gulp.task('default', ['build'], function() {
     // @TODO: Look up why build process is not exiting
