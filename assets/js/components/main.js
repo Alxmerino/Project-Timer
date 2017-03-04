@@ -29,6 +29,7 @@ class App extends React.Component {
         // Set Timer Rows
         let timerRows = _.map(this.state.timers, (timer) => {
             return <TimerRow
+                timer={timer}
                 key={timer.id}/>
         });
 
