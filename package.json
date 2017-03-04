@@ -22,6 +22,7 @@
     "gulp-generic-build": "git+ssh://git@github.com/Alxmerino/Gulp-Generic-Build.git",
     "jquery": "^3.1.1",
     "moment": "^2.17.1",
+    "moment-timer": "^1.1.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   }
