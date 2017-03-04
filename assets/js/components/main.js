@@ -22,6 +22,7 @@ class App extends React.Component {
 
         // Bind methods
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.removeTimer = this.removeTimer.bind(this);
     }
 
     render() {
@@ -30,6 +31,7 @@ class App extends React.Component {
         let timerRows = _.map(this.state.timers, (timer) => {
             return <TimerRow
                 timer={timer}
+                removeTimer={this.removeTimer}
                 key={timer.id}/>
         });
 
@@ -91,11 +93,11 @@ class App extends React.Component {
         e.preventDefault();
 
         if (this.validTimerForm()) {
-            this._addTimer();
+            this.addTimer();
         }
     }
 
-    _addTimer() {
+    addTimer() {
         // Set the timestamp as the timer's ID
         let id = moment().format('x');
 
@@ -119,6 +121,16 @@ class App extends React.Component {
 
         // Lets clear the form to allow for a new entry
         this.clearForm();
+    }
+
+    removeTimer(id) {
+        let {timers} = this.state;
+
+        // Delete timer
+        delete timers[id];
+
+        // Update State
+        this.setState({timers: timers});
     }
 
     clearForm() {
