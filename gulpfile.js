@@ -5,7 +5,7 @@ let gulp        = require('gulp');
 let gulpTasks   = require('gulp-generic-build')(gulp, configFile);
 let paths       = require(configFile);
 let sourcemaps  = require("gulp-sourcemaps");
-
+let connect     = require('gulp-connect');
 
 // New ES6 project with Babel, Browserify & Gulp
 // https://gist.github.com/danharper/3ca2273125f500429945
@@ -43,6 +43,13 @@ function compile(watch) {
 function watch() {
     return compile(true);
 };
+
+/**
+ * @task Local web server
+ */
+gulp.task('serve', function() {
+    connect.server();
+});
 
 gulp.task('build', function() { return compile(); });
 gulp.task('watch', function() { return watch(); });
