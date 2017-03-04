@@ -109,8 +109,8 @@ class App extends React.Component {
             title: this.timerForm.title.value,
             startTime: moment().format(),
             isPaused: false,
-            // description = 'TODO';
-            // planned = this.getPlannedTime(); // TODO
+            planned: this.getPlannedTime(),
+            // description = 'TODO',
         }
 
         // Add timer to timers object
@@ -131,6 +131,42 @@ class App extends React.Component {
 
         // Update State
         this.setState({timers: timers});
+    }
+
+    getPlannedTime() {
+        if (this.timerForm.time.value === "") {
+            // No time planned, set to 0:00:00 and start counting up
+            return '0:00:00';
+        } else {
+            // Get planned time string
+            let plannedStr = this.timerForm.time.value.split(' ');
+            let totalMinutes = 0;
+
+            _.each(plannedStr, (str) => {
+                totalMinutes += this.parseTimeStr(str);
+            });
+
+            // add turation format https://github.com/jsmreese/moment-duration-format
+            console.log('total', totalMinutes)
+        }
+    }
+
+    /**
+     * @desc Parse the time string to check if it's an hour value. If
+     *       so, multiply by 60 to get the total number in minutes
+     * @param  {String} str
+     * @return {Number}
+     */
+    parseTimeStr(str) {
+        str = str.toLowerCase();
+
+        if (str.indexOf('h') > -1) {
+            str = parseFloat(str);
+
+            return (str * 60);
+        }
+
+        return parseFloat(str);
     }
 
     clearForm() {
