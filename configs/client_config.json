@@ -8,8 +8,8 @@
         "node": "./node_modules"
     },
     "dest": {
-        "css": "./dest/css",
-        "js": "./dest/js",
-        "img": "./dest/images"
+        "css": "./dist/css",
+        "js": "./dist/js",
+        "img": "./dist/images"
     }
 }
