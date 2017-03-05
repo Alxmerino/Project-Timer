@@ -56,6 +56,15 @@ class TimerRow extends React.Component {
         );
     }
 
+    /**
+     *
+     * @desc Removes a timer from the state when clicking on the
+     *       close button
+     *
+     * @param  {Object} e
+     * @return {void}
+     *
+     */
     handleCloseClick(e) {
         e.preventDefault();
 
@@ -65,12 +74,24 @@ class TimerRow extends React.Component {
         this.props.removeTimer(id);
     }
 
+    /**
+     *
+     * @desc Create a new timer
+     * @return {void}
+     *
+     */
     buildTimer() {
         let {rowTimer}  = this.props;
 
         this.timer = new Timer(this.updateTimerTime.bind(this));
     }
 
+    /**
+     *
+     * @desc Update html element with current timer duration
+     * @return {void}
+     *
+     */
     updateTimerTime() {
         this.debug.log('Total duration:', this.totalDuration);
 
@@ -85,6 +106,12 @@ class TimerRow extends React.Component {
         );
     }
 
+    /**
+     *
+     * @desc Toggle the timer's play/stop state
+     * @return {void}
+     *
+     */
     toggleTimer() {
         this.debug.log('Timer is running:', this.timer.started)
         let {rowTimer} = this.props;
@@ -98,6 +125,12 @@ class TimerRow extends React.Component {
         }
     }
 
+    /**
+     * @desc Format duration time string
+     * @param  {Number} time
+     * @param  {string} format
+     * @return {String}
+     */
     formatTime(time, format) {
         format = (typeof(format) !== 'undefined') ? format : 'minutes';
 
