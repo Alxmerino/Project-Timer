@@ -22,9 +22,7 @@ class TimerRow extends React.Component {
         // Build timer whent he component has mounted
         this.debug.log('Build timer');
 
-        let {rowTimer, buildTimer} = this.props;
-
-        buildTimer(rowTimer, this.timerEl);
+        this.buildTimer()
     }
 
     render() {
@@ -65,17 +63,26 @@ class TimerRow extends React.Component {
         this.props.removeTimer(id);
     }
 
+    buildTimer() {
+        let {rowTimer}  = this.props;
+        let timerEl     = this.timerEl;
+
+        this.timer = new Timer(() => {
+            this.debug.log('Timer runnning');
+        });
+    }
+
     toggleTimer() {
-        let {timer} = this.props;
+        this.debug.log('Timer is running:', this.timer.isStopped())
+        let {rowTimer} = this.props;
 
-        var thisTimer = BuildTimer(null, timer.planned)
-        console.log('THIS', thisTimer)
-
-        setTimeout(function() {
-            console.log('STOP');
-            thisTimer.stop();
-        }, 5000);
-        // this.props.toggleTimer(id);
+        if (!this.timer.isStopped()) {
+            this.debug.log('Start timer', rowTimer.id);
+            this.timer.start();
+        } else {
+            this.debug.log('Stop timer', rowTimer.id);
+            this.timer.stop();
+        }
     }
 
     formatTime(time) {

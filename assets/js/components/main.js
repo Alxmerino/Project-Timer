@@ -28,7 +28,6 @@ class App extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.removeTimer = this.removeTimer.bind(this);
         this.toggleTimer = this.toggleTimer.bind(this);
-        this.buildTimer = this.buildTimer.bind(this);
     }
 
     render() {
@@ -145,15 +144,6 @@ class App extends React.Component {
         let timer = this.state.timers[id];
 
         console.log('TOGGLE', timer);
-    }
-
-    buildTimer(timerObj, Timer) {
-        let newTimer = this.state.timers[timerObj.id];
-        newTimer.timer = Timer(() => {
-            this.debug.log('Callback', (new Date().getTime()))
-        });
-
-        // newTimer.timer.start();
     }
 
     getPlannedTime() {
