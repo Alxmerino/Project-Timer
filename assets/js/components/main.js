@@ -195,7 +195,10 @@ class App extends React.Component {
      * @return {Boolean}
      */
     validTimerForm() {
-        return true;
+        if (this.debug.debug) {
+            return true;
+        }
+
         if (this.timerForm.title.value !== "") {
             $(this.timerForm.title).parent().removeClass('has-error');
 
