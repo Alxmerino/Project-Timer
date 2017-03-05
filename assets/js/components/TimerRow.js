@@ -73,10 +73,10 @@ class TimerRow extends React.Component {
     }
 
     toggleTimer() {
-        this.debug.log('Timer is running:', this.timer.isStopped())
+        this.debug.log('Timer is running:', this.timer.started)
         let {rowTimer} = this.props;
 
-        if (!this.timer.isStopped()) {
+        if (!this.timer.started) {
             this.debug.log('Start timer', rowTimer.id);
             this.timer.start();
         } else {
