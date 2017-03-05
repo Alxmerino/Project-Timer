@@ -1,7 +1,8 @@
-const React     = require('react');
-const $         = require('jquery');
-const moment    = require('moment');
-const _         = require('underscore');
+const React                     = require('react');
+const $                         = require('jquery');
+const moment                    = require('moment');
+const momentDurationFormat      = require('moment-duration-format');
+const _                         = require('underscore');
 
 // React Components
 let TimerRow    = require('../components/TimerRow');
@@ -136,7 +137,7 @@ class App extends React.Component {
     getPlannedTime() {
         if (this.timerForm.time.value === "") {
             // No time planned, set to 0:00:00 and start counting up
-            return '0:00:00';
+            return '0:00';
         } else {
             // Get planned time string
             let plannedStr = this.timerForm.time.value.split(' ');
@@ -146,8 +147,7 @@ class App extends React.Component {
                 totalMinutes += this.parseTimeStr(str);
             });
 
-            // add turation format https://github.com/jsmreese/moment-duration-format
-            console.log('total', totalMinutes)
+            return moment.duration(totalMinutes, 'minutes').format('h:mm', { trim: false });
         }
     }
 
