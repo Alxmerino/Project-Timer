@@ -81,7 +81,7 @@ class TimerRow extends React.Component {
         let secondsDuration = (this.totalDuration/1000);
 
         $(timerEl).html(
-            this.formatTime(secondsDuration, 'seconds');
+            this.formatTime(secondsDuration, 'seconds')
         );
     }
 
