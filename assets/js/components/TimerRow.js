@@ -24,7 +24,7 @@ class TimerRow extends React.Component {
 
         let {rowTimer, buildTimer} = this.props;
 
-        buildTimer(rowTimer);
+        buildTimer(rowTimer, this.timerEl);
     }
 
     render() {
@@ -43,7 +43,7 @@ class TimerRow extends React.Component {
                 </a>
                 <div className="timer-title">{rowTimer.title}</div>
                 <div className="timer-stats">
-                    <span className="timer-current" ref={(el) => this.timerText = el}>0:00</span> / <span className="timer-planned">{this.formatTime(rowTimer.planned)}</span>
+                    <span className="timer-current" ref={(el) => this.timerEl = el}>0:00</span> / <span className="timer-planned">{this.formatTime(rowTimer.planned)}</span>
                     <button
                         type="button"
                         className={`timer-${timerStatus} btn btn-info btn-xs`}
