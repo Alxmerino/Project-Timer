@@ -10,6 +10,8 @@ class TimerRow extends React.Component {
     constructor() {
         super();
 
+        this.totalDuration = 0;
+
         // Debugger
         this.debug = new Logger('TimerRow');
 
@@ -65,11 +67,22 @@ class TimerRow extends React.Component {
 
     buildTimer() {
         let {rowTimer}  = this.props;
-        let timerEl     = this.timerEl;
 
-        this.timer = new Timer(() => {
-            this.debug.log('Timer runnning');
-        });
+        this.timer = new Timer(this.updateTimerTime.bind(this));
+    }
+
+    updateTimerTime() {
+        this.debug.log('Total duration:', this.totalDuration);
+
+        let timerEl     = this.timerEl;
+        this.totalDuration += this.timer.getDuration();
+
+        // Total duration is in milliseconds, divide by 1000 to get second amount
+        let secondsDuration = (this.totalDuration/1000);
+
+        $(timerEl).html(
+            this.formatTime(secondsDuration, 'seconds');
+        );
     }
 
     toggleTimer() {
@@ -85,8 +98,10 @@ class TimerRow extends React.Component {
         }
     }
 
-    formatTime(time) {
-        return moment.duration(time, 'minutes').format('h:mm', { trim: false });
+    formatTime(time, format) {
+        format = (typeof(format) !== 'undefined') ? format : 'minutes';
+
+        return moment.duration(time, format).format('h:mm:ss', { trim: false });
     }
 }
 
