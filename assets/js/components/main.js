@@ -27,7 +27,6 @@ class App extends React.Component {
         // Bind methods
         this.handleSubmit = this.handleSubmit.bind(this);
         this.removeTimer = this.removeTimer.bind(this);
-        this.toggleTimer = this.toggleTimer.bind(this);
     }
 
     render() {
