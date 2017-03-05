@@ -1,8 +1,8 @@
-const React                     = require('react');
-const $                         = require('jquery');
-const moment                    = require('moment');
-const momentDurationFormat      = require('moment-duration-format');
-const _                         = require('underscore');
+const React     = require('react');
+const $         = require('jquery');
+const moment    = require('moment');
+const _         = require('underscore');
+const Logger    = require('../components/Logger');
 
 // React Components
 let TimerRow    = require('../components/TimerRow');
@@ -10,6 +10,9 @@ let TimerRow    = require('../components/TimerRow');
 class App extends React.Component {
     constructor() {
         super();
+
+        // Debugger
+        this.debug = new Logger('Main');
 
         this.state = {
             timers: {}
@@ -24,6 +27,8 @@ class App extends React.Component {
         // Bind methods
         this.handleSubmit = this.handleSubmit.bind(this);
         this.removeTimer = this.removeTimer.bind(this);
+        this.toggleTimer = this.toggleTimer.bind(this);
+        this.buildTimer = this.buildTimer.bind(this);
     }
 
     render() {
@@ -31,8 +36,10 @@ class App extends React.Component {
         // Set Timer Rows
         let timerRows = _.map(this.state.timers, (timer) => {
             return <TimerRow
-                timer={timer}
+                rowTimer={timer}
                 removeTimer={this.removeTimer}
+                toggleTimer={this.toggleTimer}
+                buildTimer={this.buildTimer}
                 key={timer.id}/>
         });
 
@@ -134,6 +141,21 @@ class App extends React.Component {
         this.setState({timers: timers});
     }
 
+    toggleTimer(id) {
+        let timer = this.state.timers[id];
+
+        console.log('TOGGLE', timer);
+    }
+
+    buildTimer(timerObj, Timer) {
+        let newTimer = this.state.timers[timerObj.id];
+        newTimer.timer = Timer(() => {
+            this.debug.log('Callback', (new Date().getTime()))
+        });
+
+        // newTimer.timer.start();
+    }
+
     getPlannedTime() {
         if (this.timerForm.time.value === "") {
             // No time planned, set to 0:00:00 and start counting up
@@ -147,7 +169,8 @@ class App extends React.Component {
                 totalMinutes += this.parseTimeStr(str);
             });
 
-            return moment.duration(totalMinutes, 'minutes').format('h:mm', { trim: false });
+            return totalMinutes;
+            // return moment.duration(totalMinutes, 'minutes').format('h:mm', { trim: false });
         }
     }
 
@@ -182,6 +205,7 @@ class App extends React.Component {
      * @return {Boolean}
      */
     validTimerForm() {
+        return true;
         if (this.timerForm.title.value !== "") {
             $(this.timerForm.title).parent().removeClass('has-error');
 
