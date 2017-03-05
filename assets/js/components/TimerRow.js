@@ -98,12 +98,30 @@ class TimerRow extends React.Component {
         let timerEl     = this.timerEl;
         this.totalDuration += this.timer.getDuration();
 
-        // Total duration is in milliseconds, divide by 1000 to get second amount
-        let secondsDuration = (this.totalDuration/1000);
+        // Get total duration in seconds
+        let secondsDuration = this.getFormattedDuration();
 
         $(timerEl).html(
             this.formatTime(secondsDuration, 'seconds')
         );
+    }
+
+    /**
+     * @desc Get total timer duration in specified format
+     * @param  {String} format
+     * @return {Number}
+     */
+    getFormattedDuration(format) {
+        switch(format) {
+            case 'minutes':
+                return ((this.totalDuration/1000) / 60);
+                break;
+
+            case 'seconds':
+            default:
+                return (this.totalDuration/1000);
+                break;
+        }
     }
 
     /**
