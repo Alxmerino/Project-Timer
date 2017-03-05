@@ -96,6 +96,11 @@ class App extends React.Component {
         );
     }
 
+    /**
+     * @desc Handle form submission and start adding timer process
+     * @param  {Object} e
+     * @return {void}
+     */
     handleSubmit(e) {
         e.preventDefault();
 
@@ -104,13 +109,19 @@ class App extends React.Component {
         }
     }
 
+    /**
+     *
+     * @desc Create a timer and add it to the state
+     *
+     */
     addTimer() {
         // Set the timestamp as the timer's ID
         let id = moment().format('x');
 
         // Get all timers
-        let timers = this.state.timers;
+        let {timers} = this.state;
 
+        // Set new timer object
         let timer = {
             id,
             title: this.timerForm.title.value,
@@ -130,6 +141,13 @@ class App extends React.Component {
         this.clearForm();
     }
 
+    /**
+     *
+     * @desc Remove a timer from the state
+     * @param  {string} id
+     * @return {void}
+     *
+     */
     removeTimer(id) {
         let {timers} = this.state;
 
@@ -140,12 +158,12 @@ class App extends React.Component {
         this.setState({timers: timers});
     }
 
-    toggleTimer(id) {
-        let timer = this.state.timers[id];
-
-        console.log('TOGGLE', timer);
-    }
-
+    /**
+     *
+     * @desc Get planned time in minutes from the form
+     * @return {Number}
+     *
+     */
     getPlannedTime() {
         if (this.timerForm.time.value === "") {
             // No time planned, set to 0:00:00 and start counting up
@@ -160,15 +178,17 @@ class App extends React.Component {
             });
 
             return totalMinutes;
-            // return moment.duration(totalMinutes, 'minutes').format('h:mm', { trim: false });
         }
     }
 
     /**
+     *
      * @desc Parse the time string to check if it's an hour value. If
      *       so, multiply by 60 to get the total number in minutes
+     *
      * @param  {String} str
      * @return {Number}
+     *
      */
     parseTimeStr(str) {
         str = str.toLowerCase();
@@ -182,17 +202,26 @@ class App extends React.Component {
         return parseFloat(str);
     }
 
+    /**
+
+     * @desc Clear form inputs to allow for a new entry
+     * @return {void}
+     *
+     */
     clearForm() {
         this.timerForm.title.value = '';
         this.timerForm.time.value = '';
     }
 
     /**
+     *
      * @desc Determines if we can add a timer or not, returns valid
      *       if at least the title is not empty, time can be left
      *       empty in which case a counter should be started
      *       instead of a timer.
+     *
      * @return {Boolean}
+     *
      */
     validTimerForm() {
         if (this.debug.debug) {
