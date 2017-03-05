@@ -36,7 +36,6 @@ class App extends React.Component {
             return <TimerRow
                 rowTimer={timer}
                 removeTimer={this.removeTimer}
-                toggleTimer={this.toggleTimer}
                 buildTimer={this.buildTimer}
                 key={timer.id}/>
         });
@@ -125,7 +124,7 @@ class App extends React.Component {
             id,
             title: this.timerForm.title.value,
             startTime: moment().format(),
-            isPaused: false,
+            started: false,
             planned: this.getPlannedTime(),
             // description = 'TODO',
         }

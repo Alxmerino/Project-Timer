@@ -29,7 +29,7 @@ class TimerRow extends React.Component {
 
     render() {
         let {rowTimer} = this.props;
-        let timerStatus = (rowTimer.isPaused) ? 'pause' : 'play';
+        let timerStatus = (rowTimer.started) ? 'pause' : 'play';
 
         return (
             <li className="list-group-item">
