@@ -12,6 +12,10 @@ class TimerRow extends React.Component {
 
         this.totalDuration = 0;
 
+        this.state = {
+            timerStatus: false
+        };
+
         // Debugger
         this.debug = new Logger('TimerRow');
 
@@ -28,11 +32,14 @@ class TimerRow extends React.Component {
     }
 
     render() {
-        let {rowTimer} = this.props;
-        let timerStatus = (rowTimer.started) ? 'pause' : 'play';
+        let {rowTimer}  = this.props;
+        let timerStatus = (this.state.timerStatus) ? 'pause' : 'play';
+        let activeRow   = (this.state.timerStatus) ? 'active' : 'inactive';
+
+        this.debug.log('Render timer', rowTimer.id);
 
         return (
-            <li className="list-group-item">
+            <li className={`list-group-item ${activeRow}`}>
                 <a
                     href="#"
                     className="timer-close"
@@ -104,6 +111,13 @@ class TimerRow extends React.Component {
         $(timerEl).html(
             this.formatTime(secondsDuration, 'seconds')
         );
+
+        // Update state
+        let {rowTimer} = this.props;
+        rowTimer.started = this.timer.started;
+        rowTimer.duration = secondsDuration;
+
+        this.props.updateTimerState(rowTimer);
     }
 
     /**
@@ -141,6 +155,9 @@ class TimerRow extends React.Component {
             this.debug.log('Stop timer', rowTimer.id);
             this.timer.stop();
         }
+
+        // Update this timer state
+        this.setState({timerStatus: !this.state.timerStatus});
     }
 
     /**
