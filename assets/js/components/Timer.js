@@ -16,9 +16,6 @@ const timer    = require('moment-timer');
 // });
 
 function BuildTimer(callback) {
-    // Convert minutes to seconds
-    // duration = duration * 60;
-
     return moment.duration(1, "seconds").timer({
         loop: true,
         start: false
