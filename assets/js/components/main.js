@@ -27,6 +27,7 @@ class App extends React.Component {
         // Bind methods
         this.handleSubmit = this.handleSubmit.bind(this);
         this.removeTimer = this.removeTimer.bind(this);
+        this.updateTimerState = this.updateTimerState.bind(this);
     }
 
     render() {
@@ -37,6 +38,7 @@ class App extends React.Component {
                 rowTimer={timer}
                 removeTimer={this.removeTimer}
                 buildTimer={this.buildTimer}
+                updateTimerState={this.updateTimerState}
                 key={timer.id}/>
         });
 
@@ -154,6 +156,19 @@ class App extends React.Component {
 
         // Update State
         this.setState({timers: timers});
+    }
+
+    /**
+     *
+     * @desc Update timers state when the timer is running
+     * @param  {Object} rowTimer
+     * @return {void}
+     *
+     */
+    updateTimerState(rowTimer) {
+        this.debug.log('Update timer', rowTimer);
+
+        this.setState(rowTimer);
     }
 
     /**
