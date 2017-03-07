@@ -77,8 +77,8 @@ class TimerRow extends React.Component {
 
         let id = $(e.currentTarget).data('id');
 
-        // Remove timer
-        this.props.removeTimer(id);
+        // Destroy current timer
+        this.destroyTimer(id);
     }
 
     /**
@@ -118,6 +118,20 @@ class TimerRow extends React.Component {
         rowTimer.duration = secondsDuration;
 
         this.props.updateTimerState(rowTimer);
+    }
+
+    /**
+     *
+     * @desc Stop the timer and remove it from the state
+     * @param  {Number} id
+     * @return {void}
+     *
+     */
+    destroyTimer(id) {
+        this.timer.stop();
+
+        // Remove timer from state
+        this.props.removeTimer(id);
     }
 
     /**
