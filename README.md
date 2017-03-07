@@ -16,3 +16,4 @@ A small timer app that can add timers for multiple projects.
 - [x] Destroy moment timer instance when removing row
 - [ ] Get active timer 
 - [ ] Pause active timer when starting a new timer
+- [ ] Add lint?
