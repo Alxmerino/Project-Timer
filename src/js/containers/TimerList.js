@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'underscore';
 
 import { destroyTimer } from '../actions'
-// import TimerItem from './TimerItem'
+// import TimerItem from '../components/TimerItem'
 
 let TimerList = ({ state }) => {
     return (
