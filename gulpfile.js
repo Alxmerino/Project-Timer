@@ -17,7 +17,7 @@ let watchify = require('watchify');
 let babel = require('babelify');
 
 function compile(watch) {
-    let bundler = watchify(browserify(paths.source.js + '/app.js', { debug: true }).transform(babel));
+    let bundler = watchify(browserify(paths.source.js + '/index.js', { debug: true }).transform(babel));
 
     function rebundle() {
         bundler.bundle()
