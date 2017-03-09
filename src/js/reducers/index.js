@@ -1,6 +1,7 @@
 export default function reducer(state={
-        // default state
+        timers: {}
     }, action) {
+
     switch(action.type) {
         case "ACTION_TYPE": {
             return Object.assign({}, state, {
