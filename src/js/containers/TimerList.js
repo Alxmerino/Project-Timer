@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'underscore';
 
 import { destroyTimer } from '../actions'
-// import TimerItem from '../components/TimerItem'
+import TimerItem from '../components/TimerItem'
 
-let TimerList = ({ state }) => {
+let TimerList = ({ timers, onClose }) => {
     return (
         <ul className="list-group">
+            {_.map(timers, timer =>
+                <TimerItem
+                    key={timer.id}
+                />
+            )}
         </ul>
     )
+}
+
+/**
+ *
+ * @desc Set component prop types
+ * @type {Object}
+ *
+ */
+TimerList.propTypes = {
+    onClose: PropTypes.func.isRequired
 }
 
 /**
@@ -22,7 +37,9 @@ let TimerList = ({ state }) => {
  *
  */
 const mapStateToProps = (state) => {
-    return {state}
+    return {
+        timers: state
+    }
 }
 
 /**
