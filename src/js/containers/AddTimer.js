@@ -74,7 +74,7 @@ let AddTimer = ({ dispatch }) => {
             let plannedStr = formInputs.time.value.split(' ');
             let totalMinutes = 0;
 
-            _.each(plannedStr, (str) => {
+            plannedStr.forEach((str) => {
                 totalMinutes += parseTimeStr(str);
             });
 
