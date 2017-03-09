@@ -1,5 +1,6 @@
 import React, { Component} from 'react'
 import AddTimer from '../containers/AddTimer'
+import TimerList from '../containers/TimerList'
 
 let App = () => {
     return (
@@ -19,8 +20,7 @@ let App = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-xs-12">
-                        <ul className="list-group">
-                        </ul>
+                        <TimerList />
                     </div>
                 </div>
             </div>
