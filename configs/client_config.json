@@ -1,10 +1,10 @@
 {
     "global": "{} This could potentialy be useful",
     "source": {
-        "scss": "./assets/scss",
-        "js": "./assets/js",
-        "vendor": "./assets/vendor",
-        "img": "./assets/images",
+        "scss": "./src/scss",
+        "js": "./src/js",
+        "vendor": "./src/vendor",
+        "img": "./src/images",
         "node": "./node_modules"
     },
     "dest": {
