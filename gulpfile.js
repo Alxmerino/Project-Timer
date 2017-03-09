@@ -2,10 +2,13 @@
 
 let configFile  = __dirname + '/configs/client_config.json';
 let gulp        = require('gulp');
+let gulpif      = require('gulp-if');
+let gutil       = require('gulp-util');
 let gulpTasks   = require('gulp-generic-build')(gulp, configFile);
 let paths       = require(configFile);
 let sourcemaps  = require("gulp-sourcemaps");
 let connect     = require('gulp-connect');
+const env       = gutil.env._[0];
 
 // New ES6 project with Babel, Browserify & Gulp
 // https://gist.github.com/danharper/3ca2273125f500429945
@@ -25,7 +28,7 @@ function compile(watch) {
         .pipe(source('app.min.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(uglify())
+        .pipe(gulpif(env !== 'dev', uglify()))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(paths.dest.js));
     }
