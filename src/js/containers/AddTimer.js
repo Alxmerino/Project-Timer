@@ -109,7 +109,7 @@ let AddTimer = ({ dispatch }) => {
      * @return {void}
      *
      */
-    clearForm() {
+    let clearForm = () => {
         formInputs.title.value = '';
         formInputs.time.value = '';
     }
