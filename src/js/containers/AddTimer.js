@@ -31,6 +31,9 @@ let AddTimer = ({ dispatch }) => {
 
             // // Dispatch action
             dispatch(addTimer({timer}));
+
+            // Lets clear the form to allow for a new entry
+            clearForm();
         }
     }
 
@@ -98,6 +101,17 @@ let AddTimer = ({ dispatch }) => {
         }
 
         return parseFloat(str);
+    }
+
+    /**
+     *
+     * @desc Clear form inputs to allow for a new entry
+     * @return {void}
+     *
+     */
+    clearForm() {
+        formInputs.title.value = '';
+        formInputs.time.value = '';
     }
 
     return (
