@@ -1,10 +1,9 @@
-export default function reducer(state={
-        timers: {}
-    }, action) {
+export default function reducer(state={}, action) {
 
     switch(action.type) {
         case "TIMER_ADD": {
-            return Object.assign({}, state, action.payload);
+            let newTimer = action.payload.timer;
+            return Object.assign({}, state, {[newTimer.id]: newTimer});
         }
     }
 
