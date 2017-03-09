@@ -1,17 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import $ from 'jquery'
+import moment from 'moment'
+
 import {addTimer} from '../actions'
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
 
+    /**
+     *
+     * @desc Handle form submission and start adding timer process
+     * @param  {Object} e
+     * @return {void}
+     *
+     */
     let handleSubmit = (e) => {
         e.preventDefault();
 
         // if (validTimerForm())
-        console.log('VALID', validTimerForm())
-        dispatch(addTimer({timer: 'foo'}));
+        if (validTimerForm()) {
+            // Create new timer object
+            let timer = {
+                id: moment().format('x'),
+                title: formInputs.title.value,
+                startTime: moment().format(),
+                started: false,
+                plannedTime: getPlannedTime()
+            }
+
+            // // Dispatch action
+            dispatch(addTimer({timer}));
+        }
     }
 
     /**
@@ -34,6 +54,50 @@ let AddTimer = ({ dispatch }) => {
 
             return false;
         }
+    }
+
+    /**
+     *
+     * @desc Get planned time in minutes from the form
+     * @return {Number}
+     *
+     */
+    let getPlannedTime = () => {
+        if (formInputs.time.value === "") {
+            // No time planned, set to 0:00:00 and start counting up
+            return '0:00';
+        } else {
+            // Get planned time string
+            let plannedStr = formInputs.time.value.split(' ');
+            let totalMinutes = 0;
+
+            _.each(plannedStr, (str) => {
+                totalMinutes += parseTimeStr(str);
+            });
+
+            return totalMinutes;
+        }
+    }
+
+    /**
+     *
+     * @desc Parse the time string to check if it's an hour value. If
+     *       so, multiply by 60 to get the total number in minutes
+     *
+     * @param  {String} str
+     * @return {Number}
+     *
+     */
+    let parseTimeStr = (str) => {
+        str = str.toLowerCase();
+
+        if (str.indexOf('h') > -1) {
+            str = parseFloat(str);
+
+            return (str * 60);
+        }
+
+        return parseFloat(str);
     }
 
     return (
