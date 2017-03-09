@@ -10,6 +10,8 @@ let TimerList = ({ timers, onClose }) => {
         <ul className="list-group">
             {_.map(timers, timer =>
                 <TimerItem
+                    {...timer}
+                    onClose={() => onClose(timer.id)}
                     key={timer.id}
                 />
             )}
