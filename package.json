@@ -23,6 +23,7 @@
     "browserify": "^14.1.0",
     "gulp": "^3.9.1",
     "gulp-generic-build": "git+ssh://git@github.com/Alxmerino/Gulp-Generic-Build.git",
+    "gulp-if": "^2.0.2",
     "gulp-uglify": "^2.0.1",
     "jquery": "^3.1.1",
     "moment": "^2.17.1",
