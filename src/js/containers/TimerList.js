@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
  * @type {Object}
  */
 const mapDispatchToProps = {
-    onClose: removeTimer
+    onClose: destroyTimer
 }
 
 TimerList = connect(
