@@ -14,7 +14,7 @@ A small timer app that can add timers for multiple projects.
 
 ## MVP Roadmap
 - [ ] Save time on local storage
-    - [ ] Ability to add multiple timers/projects
+    - [x] Ability to add/remove multiple timers/projects
     - [ ] Build timer func
     - [x] Plan hours
     - [ ] Display planned time, running time
