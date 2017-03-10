@@ -2,16 +2,18 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'underscore';
 
-import { destroyTimer } from '../actions'
+import { destroyTimer, toggleTimer } from '../actions'
 import TimerItem from '../components/TimerItem'
+import { formatTime } from '../helpers'
 
-let TimerList = ({ timers, onClose }) => {
+let TimerList = ({ timers, onClose, onToggle }) => {
     return (
         <ul className="list-group">
             {_.map(timers, timer =>
                 <TimerItem
                     {...timer}
                     onClose={() => onClose(timer.id)}
+                    onToggle={() => onToggle(timer.id)}
                     key={timer.id}
                 />
             )}
@@ -39,8 +41,14 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
+    let timers = _.map(state, (timer) => {
+        timer.plannedTime = formatTime(timer.plannedTime);
+
+        return timer;
+    });
+
     return {
-        timers: state
+        timers
     }
 }
 
@@ -51,7 +59,8 @@ const mapStateToProps = (state) => {
  * @type {Object}
  */
 const mapDispatchToProps = {
-    onClose: destroyTimer
+    onClose: destroyTimer,
+    onToggle: toggleTimer,
 }
 
 TimerList = connect(
