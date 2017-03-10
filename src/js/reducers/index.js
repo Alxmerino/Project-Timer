@@ -2,12 +2,21 @@ import Logger from '../components/Logger'
 import _ from 'underscore';
 let Debug = new Logger('Reducer');
 
-export default function reducer(state={}, action) {
+export default function reducer(state={
+    timers: {},
+    timeTracker: undefined
+}, action) {
 
     switch(action.type) {
         case 'TIMER_ADD': {
-            let newTimer = action.payload.timer;
-            return Object.assign({}, state, {[newTimer.id]: newTimer});
+            let newTimer = action.payload.timer.timer;
+
+            return Object.assign({},
+                    state,
+                    {
+                        timers: {[newTimer.id]: newTimer}
+                    }
+                );
         }
 
         case 'TIMER_DESTROY': {
