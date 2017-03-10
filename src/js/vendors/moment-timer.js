@@ -126,17 +126,14 @@ Timer.prototype.isStopped = function () {
     return this.stopped;
 }
 
-// define internal moment reference
-var moment;
+// if (typeof require === "function") {
+//     try { moment = require('moment'); }
+//     catch (e) {}
+// }
 
-if (typeof require === "function") {
-    try { moment = require('moment'); }
-    catch (e) {}
-}
-
-if (!moment && this.moment) {
-    moment = this.moment;
-}
+// if (!moment && this.moment) {
+//     moment = this.moment;
+// }
 
 if (!moment) {
     throw "Moment Timer cannot find Moment.js";
