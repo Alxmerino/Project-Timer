@@ -11,3 +11,10 @@ export const destroyTimer = (id) => {
         payload: id
     }
 }
+
+export const toggleTimer = (id) => {
+    return {
+        type: 'TIMER_TOGGLE',
+        payload: id
+    }
+}
