@@ -7,57 +7,59 @@
  */
 
 const DEFAULT_NAME = 'Logger';
-const _            = require('underscore');
 
-function Logger(name) {
-    this.name = (typeof(name) !== 'undefined') ? name : DEFAULT_NAME;
+class Logger {
 
-    this.debug = (window.location.href.indexOf('localhost') > -1) ||
-                 (window.location.href.indexOf('debug=true') > -1)
+    constructor(name) {
+        this.name = (typeof(name) !== 'undefined') ? name : DEFAULT_NAME;
+        this.debugMode = (window.location.href.indexOf('localhost') > -1) ||
+                     (window.location.href.indexOf('debug=true') > -1)
 
-    this.log('Initialized');
+        this.log('Initialized');
+    }
+
 }
 
-Logger.prototype = _.extend(Logger.prototype, {
+Logger.prototype = Object.assign(Logger.prototype, {
     log() {
-        if (!this.debug) {
+        if (!this.debugMode) {
             return;
         }
 
         var args = Array.prototype.slice.call(arguments);
-        args.unshift('['+ this.name +']');
+        args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.log.apply(console, args);
     },
 
     debug() {
-        if (!this.debug) {
+        if (!this.debugMode) {
             return;
         }
 
         var args = Array.prototype.slice.call(arguments);
-        args.unshift('['+ this.name +']');
+        args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.debug.apply(console, args);
     },
 
     warn() {
-        if (!this.debug) {
+        if (!this.debugMode) {
             return;
         }
 
         var args = Array.prototype.slice.call(arguments);
-        args.unshift('['+ this.name +']');
+        args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.warn.apply(console, args);
     },
 
     error() {
-        if (!this.debug) {
+        if (!this.debugMode) {
             return;
         }
 
         var args = Array.prototype.slice.call(arguments);
-        args.unshift('['+ this.name +']');
+        args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.error.apply(console, args);
     }
 });
 
-module.exports = Logger;
+export default Logger;
