@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-const TimerItem = ({onClose, onToggle, started, title, plannedTime}) => {
+const TimerItem = ({onClose, onToggle, started, title, displayDuration, plannedTime}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
 
@@ -15,7 +15,7 @@ const TimerItem = ({onClose, onToggle, started, title, plannedTime}) => {
             </a>
             <div className="timer-title">{title}</div>
             <div className="timer-stats">
-                <span className="timer-current">01:23:34</span> / <span className="timer-planned">{plannedTime}</span>
+                <span className="timer-current">{displayDuration}</span> / <span className="timer-planned">{plannedTime}</span>
                 <button
                     type="button"
                     onClick={onToggle}
