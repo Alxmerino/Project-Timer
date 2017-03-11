@@ -1,7 +1,7 @@
-export const addTimer = (timer) => {
+export const addTimer = (timer, timeTracker) => {
     return {
         type: 'TIMER_ADD',
-        payload: timer
+        payload: {timer, timeTracker}
     }
 }
 
