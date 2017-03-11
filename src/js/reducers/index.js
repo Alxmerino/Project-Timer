@@ -33,13 +33,12 @@ export default function reducer(state={
             let newState = _.assign({}, state);
 
             // Pause running timer and toggle matching timer by ID
-            newState.timers = _.mapObject(newState.timers, (timer) => {
+            newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.started = !timer.started;
                 } else {
                     timer.started = false;
                 }
-
 
                 // Start/Stop timer
                 if (timer.started) {
@@ -52,6 +51,12 @@ export default function reducer(state={
             });
 
             return _.assign({}, state, newState);
+        }
+
+        case 'TIMER_UPDATE': {
+            console.log('Update', action.payload)
+
+            return state;
         }
     }
 
