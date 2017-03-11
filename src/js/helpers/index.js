@@ -12,3 +12,25 @@ export const formatTime = (time, format) => {
 
     return moment.duration(time, format).format('h:mm:ss', { trim: false });
 }
+
+/**
+ * @desc Get total timer duration in specified format
+ * @param  {String} format
+ * @return {Number}
+ */
+export const getTimeIn = (duration, format) => {
+    if (!duration) {
+        return 0;
+    }
+
+    switch(format) {
+        case 'minutes':
+            return ((duration/1000) / 60);
+            break;
+
+        case 'seconds':
+        default:
+            return (duration/1000);
+            break;
+    }
+}
