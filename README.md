@@ -15,9 +15,9 @@ A small timer app that can add timers for multiple projects.
 ## MVP Roadmap
 - [ ] Save time on local storage
     - [x] Ability to add/remove multiple timers/projects
-    - [ ] Build timer func
+    - [x] Build timer func
     - [x] Plan hours
-    - [ ] Display planned time, running time
+    - [x] Display planned time, running time
     - [ ] Integrate localStorage
 - [ ] Save time on server (Directus)
 - [ ] Hook up with JIRA
