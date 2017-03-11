@@ -3,27 +3,28 @@ import _ from 'underscore';
 let Debug = new Logger('Reducer');
 
 export default function reducer(state={
-    timers: {},
+    timers: [],
     timeTracker: undefined
 }, action) {
 
     switch(action.type) {
         case 'TIMER_ADD': {
             let newTimer = action.payload.timer.timer;
+            let id = newTimer.id;
+            let newState = Object.assign({}, state);
 
-            return Object.assign({},
-                    state,
-                    {
-                        timers: {[newTimer.id]: newTimer}
-                    }
-                );
+            newState.timers.push(newTimer);
+
+            return newState;
         }
 
         case 'TIMER_DESTROY': {
             let id = action.payload
             let newState = Object.assign({}, state);
 
-            delete newState[id];
+            newState.timers = _.reject(newState.timers, (timer) => {
+                return timer.id === id;
+            });
 
             return newState;
         }
