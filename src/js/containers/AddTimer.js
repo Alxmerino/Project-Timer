@@ -4,7 +4,7 @@ import $ from 'jquery'
 import moment from 'moment'
 
 import TimeTracker from '../containers/TimeTracker'
-import {addTimer} from '../actions'
+import { addTimer, updateTimer} from '../actions'
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
@@ -19,18 +19,17 @@ let AddTimer = ({ dispatch }) => {
     let handleSubmit = (e) => {
         e.preventDefault();
 
-        // if (validTimerForm())
         if (validTimerForm()) {
+            let id = moment().format('x');
+
             // Create new timer object
             let timer = {
-                id: moment().format('x'),
+                id,
                 title: formInputs.title.value,
                 startTime: moment().format(),
                 started: false,
                 plannedTime: getPlannedTime(),
-                timeTracker: new TimeTracker(function() {
-                    console.log('TRACKING');
-                })
+                timeTracker: new TimeTracker(() => dispatch(updateTimer(id)))
             }
 
             // Dispatch action
