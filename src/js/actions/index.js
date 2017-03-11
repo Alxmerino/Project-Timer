@@ -18,3 +18,10 @@ export const toggleTimer = (id) => {
         payload: id
     }
 }
+
+export const updateTimer = (id) => {
+    return {
+        type: 'TIMER_UPDATE',
+        payload: id
+    }
+}
