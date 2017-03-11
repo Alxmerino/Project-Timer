@@ -22,9 +22,22 @@ export default function reducer(state={
             let id = action.payload
             let newState = _.assign({}, state);
 
+            // Remove timer from timers array
             newState.timers = _.reject(newState.timers, (timer) => {
-                return timer.id === id;
+                if (timer.id === id) {
+
+                    // Stop if running
+                    if (timer.started) {
+                        timer.timeTracker.stop();
+                    }
+
+                    return timer;
+                }
             });
+
+            // Remove from localStorage
+            // TODO find way to add prefix
+            Storage.remove(['projectTimer:'+id]);
 
             return newState;
         }
