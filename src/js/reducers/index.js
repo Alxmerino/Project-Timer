@@ -9,9 +9,9 @@ export default function reducer(state={
 
     switch(action.type) {
         case 'TIMER_ADD': {
-            let newTimer = action.payload.timer.timer;
+            let newTimer = action.payload;
             let id = newTimer.id;
-            let newState = Object.assign({}, state);
+            let newState = _.assign({}, state);
 
             newState.timers.push(newTimer);
 
@@ -20,7 +20,7 @@ export default function reducer(state={
 
         case 'TIMER_DESTROY': {
             let id = action.payload
-            let newState = Object.assign({}, state);
+            let newState = _.assign({}, state);
 
             newState.timers = _.reject(newState.timers, (timer) => {
                 return timer.id === id;
@@ -31,15 +31,16 @@ export default function reducer(state={
 
         case 'TIMER_TOGGLE': {
             let id = action.payload;
+            let newState = _.assign({}, state);
 
             // Pause running timer and toggle matching timer by ID
-            let newState = _.mapObject(state, (timer) => {
+            newState.timers = _.mapObject(newState.timers, (timer) => {
                 timer.started = (timer.id === id) ? !timer.started : false;
 
                 return timer;
             });
 
-            return Object.assign({}, state, newState);
+            return _.assign({}, state, newState);
         }
     }
 
