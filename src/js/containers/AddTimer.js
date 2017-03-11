@@ -29,8 +29,8 @@ let AddTimer = ({ dispatch }) => {
                 plannedTime: getPlannedTime()
             }
 
-            // // Dispatch action
-            dispatch(addTimer({timer}));
+            // Dispatch action
+            dispatch(addTimer(timer));
 
             // Lets clear the form to allow for a new entry
             clearForm();
