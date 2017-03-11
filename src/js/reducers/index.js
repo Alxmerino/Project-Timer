@@ -54,9 +54,21 @@ export default function reducer(state={
         }
 
         case 'TIMER_UPDATE': {
-            console.log('Update', action.payload)
+            let newState = _.assign({}, state);
 
-            return state;
+            // Update the total duration of the running timer
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === action.payload) {
+
+                    // Add a millisecon on every update
+                    // @TODO find better way to do this
+                    timer.duration += 1000;
+                }
+
+                return timer;
+            });
+
+            return newState;
         }
     }
 
