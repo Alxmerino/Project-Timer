@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import $ from 'jquery'
 import moment from 'moment'
 
+import TimeTracker from '../containers/TimeTracker'
 import {addTimer} from '../actions'
 
 let AddTimer = ({ dispatch }) => {
@@ -26,7 +27,10 @@ let AddTimer = ({ dispatch }) => {
                 title: formInputs.title.value,
                 startTime: moment().format(),
                 started: false,
-                plannedTime: getPlannedTime()
+                plannedTime: getPlannedTime(),
+                timeTracker: new TimeTracker(function() {
+                    console.log('TRACKING');
+                })
             }
 
             // Dispatch action
