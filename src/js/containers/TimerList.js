@@ -5,8 +5,11 @@ import _ from 'underscore';
 import { destroyTimer, toggleTimer } from '../actions'
 import TimerItem from '../components/TimerItem'
 import { formatTime } from '../helpers'
+import Logger from '../components/Logger'
+let Debug = new Logger('TimerList');
 
 let TimerList = ({ timers, onClose, onToggle }) => {
+
     return (
         <ul className="list-group">
             {_.map(timers, timer =>
@@ -41,7 +44,7 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state, (timer) => {
+    let timers = _.map(state.timers, (timer) => {
         timer.plannedTime = formatTime(timer.plannedTime);
 
         return timer;
