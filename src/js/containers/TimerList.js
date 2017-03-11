@@ -4,7 +4,7 @@ import _ from 'underscore';
 
 import { destroyTimer, toggleTimer } from '../actions'
 import TimerItem from '../components/TimerItem'
-import { formatTime } from '../helpers'
+import { formatTime, getTimeIn } from '../helpers'
 import Logger from '../components/Logger'
 let Debug = new Logger('TimerList');
 
@@ -45,7 +45,9 @@ TimerList.propTypes = {
  */
 const mapStateToProps = (state) => {
     let timers = _.map(state.timers, (timer) => {
+        let duration = getTimeIn(timer.duration, 'seconds');
         timer.plannedTime = formatTime(timer.plannedTime);
+        timer.displayDuration = formatTime(duration, 'seconds');
 
         return timer;
     });
