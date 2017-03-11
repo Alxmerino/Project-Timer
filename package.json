@@ -39,7 +39,8 @@
     "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0"
+    "watchify": "^3.9.0",
+    "xStore": "^2.0.3"
   },
   "devDependencies": {
     "gulp-connect": "^5.0.0"
