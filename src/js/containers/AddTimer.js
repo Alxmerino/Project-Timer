@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import TimeTracker from '../containers/TimeTracker'
 import { addTimer, updateTimer} from '../actions'
+import Storage from '../helpers/Storage'
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
@@ -30,8 +31,13 @@ let AddTimer = ({ dispatch }) => {
                 started: false,
                 duration: 0,
                 plannedTime: getPlannedTime(),
-                timeTracker: new TimeTracker(() => dispatch(updateTimer(id)))
             }
+
+            // Save item to local storage
+            Storage.set(id, timer);
+
+            // Add timeTracker
+            timer.timeTracker = new TimeTracker(() => dispatch(updateTimer(id)))
 
             // Dispatch action
             dispatch(addTimer(timer));
