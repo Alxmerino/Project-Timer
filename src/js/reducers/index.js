@@ -3,8 +3,7 @@ import _ from 'underscore';
 let Debug = new Logger('Reducer');
 
 export default function reducer(state={
-    timers: [],
-    timeTracker: undefined
+    timers: []
 }, action) {
 
     switch(action.type) {
@@ -35,7 +34,19 @@ export default function reducer(state={
 
             // Pause running timer and toggle matching timer by ID
             newState.timers = _.mapObject(newState.timers, (timer) => {
-                timer.started = (timer.id === id) ? !timer.started : false;
+                if (timer.id === id) {
+                    timer.started = !timer.started;
+                } else {
+                    timer.started = false;
+                }
+
+
+                // Start/Stop timer
+                if (timer.started) {
+                    timer.timeTracker.start();
+                } else {
+                    timer.timeTracker.stop();
+                }
 
                 return timer;
             });
