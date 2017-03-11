@@ -28,6 +28,7 @@ let AddTimer = ({ dispatch }) => {
                 title: formInputs.title.value,
                 startTime: moment().format(),
                 started: false,
+                duration: 0,
                 plannedTime: getPlannedTime(),
                 timeTracker: new TimeTracker(() => dispatch(updateTimer(id)))
             }
