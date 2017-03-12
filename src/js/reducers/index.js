@@ -13,6 +13,9 @@ export default function reducer(state={
             let id = newTimer.id;
             let newState = _.assign({}, state);
 
+            // Add local storage entry
+            Storage.set(id, newTimer);
+
             newState.timers.push(newTimer);
 
             return newState;

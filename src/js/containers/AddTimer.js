@@ -31,13 +31,8 @@ let AddTimer = ({ dispatch }) => {
                 started: false,
                 duration: 0,
                 plannedTime: getPlannedTime(),
+                timeTracker: new TimeTracker(() => dispatch(updateTimer(id))),
             }
-
-            // Save item to local storage
-            Storage.set(id, timer);
-
-            // Add timeTracker
-            timer.timeTracker = new TimeTracker(() => dispatch(updateTimer(id)))
 
             // Dispatch action
             dispatch(addTimer(timer));
