@@ -126,15 +126,6 @@ Timer.prototype.isStopped = function () {
     return this.stopped;
 }
 
-// if (typeof require === "function") {
-//     try { moment = require('moment'); }
-//     catch (e) {}
-// }
-
-// if (!moment && this.moment) {
-//     moment = this.moment;
-// }
-
 if (!moment) {
     throw "Moment Timer cannot find Moment.js";
 }
