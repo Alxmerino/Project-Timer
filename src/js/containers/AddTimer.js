@@ -1,11 +1,11 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import $ from 'jquery'
+import React                    from 'react'
+import { connect }              from 'react-redux'
+import $                        from 'jquery'
 import moment from 'moment'
 
-import TimeTracker from '../containers/TimeTracker'
+import TimeTracker              from '../containers/TimeTracker'
 import { addTimer, updateTimer} from '../actions'
-import Storage from '../helpers/Storage'
+import Storage                  from '../helpers/Storage'
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
