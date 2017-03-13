@@ -1,3 +1,4 @@
+import _ from 'underscore'
 import moment from 'moment'
 import '../vendors/moment-timer'
 
@@ -5,12 +6,17 @@ import { updateTimer } from '../actions'
 import Logger from '../components/Logger'
 let Debug = new Logger('TimeTracker');
 
-let TimeTracker = (callback) => {
+let TimeTracker = (callback, options) => {
+    options = (typeof options !== 'undefined') ? options : {};
 
-    return moment.duration(1, 'seconds').timer({
+    let defaultOpts = {
         loop: true,
         start: false
-    }, callback);
+    }
+
+    options = _.assign({}, defaultOpts, options);
+
+    return moment.duration(1, 'seconds').timer(options, callback);
 
 }
 
