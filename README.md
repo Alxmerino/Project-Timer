@@ -2,15 +2,15 @@
 
 A small timer app that can add timers for multiple projects.
 
-## Overview
-- [ ] Ability to add multiple timers/projects
-- [ ] Set how long to work(timer)
-    - [x] Plan hours
-    - [ ] see total planned vs tracked hours
-    - [ ] See remaining hours
-- [ ] When Starting/restarting a timer, pause existing timers
-- [x] Display planned time, running time
-- [ ] Integrate Per-day project hours (calendar?)
+## Getting started
+This project uses is made with ReactJS, Redux, Browserify and uses gulp as a build tool.
+
+Run the `connect` gulp task to run a local server or the `dev` task to watch for changes and a local server. The app should be running on http://localhost:8080
+
+```
+gulp connect // Local server
+gulp dev // watch + local server
+```
 
 ## MVP Roadmap
 - [x] Save time on local storage
@@ -22,9 +22,12 @@ A small timer app that can add timers for multiple projects.
 - [ ] Save time on server (Directus)
 - [ ] Hook up with JIRA
 
+## Known bugs
+- Timer will stop running if computer goes to sleep
+- Timer will occasionally go off-sync of and the actuall time will be off. 
+    - Planned fix: Update to use start/stop timestamps and get the time between to get a more accurate duration. Also do this on the `TIMER_UPDATE` action
+
 ## Todo
-- [ ] Destroy moment timer instance when removing row
-- [ ] Get active timer 
-- [ ] Pause active timer when starting a new timer
 - [ ] Add lint?
+- [ ] Integrate Per-day project hours (calendar?)
 - [ ] test!!!
