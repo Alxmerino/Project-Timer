@@ -1,9 +1,11 @@
-import _ from 'underscore'
-import moment from 'moment'
-import '../vendors/moment-timer'
+import _                from 'underscore'
+import moment           from 'moment'
+import                       '../vendors/moment-timer'
 
-import { updateTimer } from '../actions'
-import Logger from '../components/Logger'
+import Logger           from '../components/Logger'
+import { updateTimer }  from '../actions'
+import store            from '../store'
+
 let Debug = new Logger('TimeTracker');
 
 let TimeTracker = (callback, options) => {
