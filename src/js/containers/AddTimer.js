@@ -20,13 +20,13 @@ let AddTimer = ({ dispatch }) => {
         e.preventDefault();
 
         if (validTimerForm()) {
-            let id = moment().format('x');
+            let id = moment.now();
 
             // Create new timer object
             let timer = {
                 id,
                 title: formInputs.title.value,
-                createdTime: moment().format(),
+                createdTime: id,
                 started: false,
                 duration: 0,
                 plannedTime: getPlannedTime(),
