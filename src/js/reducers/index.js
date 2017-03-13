@@ -75,15 +75,19 @@ export default function reducer(state={
         }
 
         case 'TIMER_UPDATE': {
+            let id = action.payload;
             let newState = _.assign({}, state);
 
             // Update the total duration of the running timer
             newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === action.payload) {
+                if (timer.id === id) {
 
                     // Add a millisecon on every update
                     // @TODO find better way to do this
                     timer.duration += 1000;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
