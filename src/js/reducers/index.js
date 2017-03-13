@@ -1,6 +1,7 @@
-import _ from 'underscore';
-import Storage from '../helpers/Storage'
-import Logger from '../components/Logger'
+import _        from 'underscore';
+import Storage  from '../helpers/Storage'
+import Logger   from '../components/Logger'
+
 let Debug = new Logger('Reducer');
 
 export default function reducer(state={
