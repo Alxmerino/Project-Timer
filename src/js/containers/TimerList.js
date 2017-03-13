@@ -1,11 +1,15 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import _ from 'underscore';
+import React, { PropTypes }         from 'react'
+import { connect }                  from 'react-redux'
+import _                            from 'underscore';
 
-import { destroyTimer, toggleTimer } from '../actions'
-import TimerItem from '../components/TimerItem'
-import { formatTime, getTimeIn } from '../helpers'
-import Logger from '../components/Logger'
+import TimerItem                    from '../components/TimerItem'
+import Logger                       from '../components/Logger'
+import { formatTime, getTimeIn }    from '../helpers'
+import {
+    destroyTimer,
+    toggleTimer,
+    updateTimer }                   from '../actions'
+
 let Debug = new Logger('TimerList');
 
 let TimerList = ({ timers, onClose, onToggle }) => {
