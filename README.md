@@ -13,12 +13,12 @@ A small timer app that can add timers for multiple projects.
 - [ ] Integrate Per-day project hours (calendar?)
 
 ## MVP Roadmap
-- [ ] Save time on local storage
+- [x] Save time on local storage
     - [x] Ability to add/remove multiple timers/projects
     - [x] Build timer func
     - [x] Plan hours
     - [x] Display planned time, running time
-    - [ ] Integrate localStorage
+    - [x] Integrate localStorage
 - [ ] Save time on server (Directus)
 - [ ] Hook up with JIRA
 
