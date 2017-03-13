@@ -26,7 +26,7 @@ let AddTimer = ({ dispatch }) => {
             let timer = {
                 id,
                 title: formInputs.title.value,
-                startTime: moment().format(),
+                createdTime: moment().format(),
                 started: false,
                 duration: 0,
                 plannedTime: getPlannedTime(),
