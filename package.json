@@ -25,7 +25,6 @@
     "gulp-generic-build": "git+ssh://git@github.com/Alxmerino/Gulp-Generic-Build.git",
     "gulp-if": "^2.0.2",
     "gulp-uglify": "^2.0.1",
-    "jquery": "^3.1.1",
     "moment": "^2.17.1",
     "moment-duration-format": "^1.3.0",
     "moment-timer": "^1.1.5",

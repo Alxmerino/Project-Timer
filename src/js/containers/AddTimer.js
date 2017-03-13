@@ -1,11 +1,10 @@
 import React                    from 'react'
 import { connect }              from 'react-redux'
-import $                        from 'jquery'
-import moment from 'moment'
+import moment                   from 'moment'
 
 import TimeTracker              from '../containers/TimeTracker'
-import { addTimer, updateTimer} from '../actions'
 import Storage                  from '../helpers/Storage'
+import { addTimer, updateTimer} from '../actions'
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
@@ -54,11 +53,11 @@ let AddTimer = ({ dispatch }) => {
      */
     let validTimerForm = () => {
         if (formInputs.title.value !== "") {
-            $(formInputs.title).parent().removeClass('has-error');
+            formInputs.title.parentElement.classList.remove('has-error');
 
             return true;
         } else {
-            $(formInputs.title).parent().addClass('has-error');
+            formInputs.title.parentElement.classList.add('has-error');
 
             return false;
         }
