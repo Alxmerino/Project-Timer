@@ -19,7 +19,7 @@ gulp dev // watch + local server
     - [x] Plan hours
     - [x] Display planned time, running time
     - [x] Integrate localStorage
-- [ ] Save time on server (Directus)
+- [ ] Save time on server (Directus?, Firebase?, etc)
 - [ ] Hook up with JIRA
 
 ## Known bugs
