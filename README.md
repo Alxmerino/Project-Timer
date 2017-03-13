@@ -29,5 +29,6 @@ gulp dev // watch + local server
 
 ## Todo
 - [ ] Add lint?
+- [ ] Ability to edit/reset timer
 - [ ] Integrate Per-day project hours (calendar?)
 - [ ] test!!!
