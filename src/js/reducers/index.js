@@ -77,6 +77,49 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
+        case 'TIMER_START': {
+            let id = action.payload;
+            let newState = _.assign({}, state);
+
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.started = true;
+                    timer.startTime = moment.now();
+
+                    // Start time tracker
+                    timer.timeTracker.start();
+
+                    // Update local storage
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return _.assign({}, state, newState);
+        }
+
+        case 'TIMER_STOP': {
+            let id = action.payload;
+            let newState = _.assign({}, state);
+
+            newState.timers = _.map(newState.timers, (timer) => {
+                timer.started = false;
+
+                if (timer.id === id) {
+                    // Stop time tracker
+                    timer.timeTracker.stop();
+
+                    // Update local storage
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return _.assign({}, state, newState);
+        }
+
         case 'TIMER_UPDATE': {
             let id = action.payload;
             let newState = _.assign({}, state);
