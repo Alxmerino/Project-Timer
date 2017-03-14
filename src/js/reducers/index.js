@@ -1,4 +1,5 @@
-import _        from 'underscore';
+import _        from 'underscore'
+import moment   from 'moment'
 import Storage  from '../helpers/Storage'
 import Logger   from '../components/Logger'
 
@@ -63,8 +64,10 @@ export default function reducer(state={
 
                 // Start/Stop timer
                 if (timer.started) {
+                    timer.startTime = moment.now();
                     timer.timeTracker.start();
                 } else {
+                    timer.endTime = moment.now();
                     timer.timeTracker.stop();
                 }
 
@@ -81,10 +84,14 @@ export default function reducer(state={
             // Update the total duration of the running timer
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
+                    let currentTime = moment();
+                    let timeDiff = currentTime.diff(timer.startTime);
 
-                    // Add a millisecon on every update
-                    // @TODO find better way to do this
-                    timer.duration += 1000;
+                    // Set endTime
+                    timer.endTime = moment.now();
+
+                    // Set duration as milliseconds count from the startTime
+                    timer.duration = moment.duration(timeDiff).asMilliseconds();
 
                     // Update local storage entry
                     Storage.set(id, timer);

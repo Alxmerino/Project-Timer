@@ -23,9 +23,7 @@ gulp dev // watch + local server
 - [ ] Hook up with JIRA
 
 ## Known bugs
-- Timer will stop running if computer goes to sleep
-- Timer will occasionally go off-sync of and the actuall time will be off. 
-    - Planned fix: Update to use start/stop timestamps and get the time between to get a more accurate duration. Also do this on the `TIMER_UPDATE` action
+- Timer resets when paused.
 
 ## Todo
 - [ ] Add lint?
