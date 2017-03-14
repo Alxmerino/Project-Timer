@@ -6,13 +6,14 @@ import TimerItem                    from '../components/TimerItem'
 import Logger                       from '../components/Logger'
 import { formatTime, getTimeIn }    from '../helpers'
 import {
-    destroyTimer,
-    toggleTimer,
-    updateTimer }                   from '../actions'
+    stopTimer,
+    startTimer,
+    updateTimer,
+    destroyTimer }                  from '../actions'
 
 let Debug = new Logger('TimerList');
 
-let TimerList = ({ timers, onClose, onToggle }) => {
+let TimerList = ({ timers, onClose, onStart, onStop }) => {
 
     return (
         <ul className="list-group">
@@ -20,7 +21,8 @@ let TimerList = ({ timers, onClose, onToggle }) => {
                 <TimerItem
                     {...timer}
                     onClose={() => onClose(timer.id)}
-                    onToggle={() => onToggle(timer.id)}
+                    onStart={() => onStart(timer.id)}
+                    onStop={() => onStop(timer.id)}
                     key={timer.id}
                 />
             )}
@@ -69,7 +71,8 @@ const mapStateToProps = (state) => {
  */
 const mapDispatchToProps = {
     onClose: destroyTimer,
-    onToggle: toggleTimer,
+    onStart: startTimer,
+    onStop: stopTimer,
 }
 
 TimerList = connect(

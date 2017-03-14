@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react'
 
-const TimerItem = ({onClose, onToggle, started, title, displayDuration, plannedTime}) => {
+const TimerItem = ({onClose, onStart, onStop, started, title, displayDuration, plannedTime}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
+    let clickAction = (started) ? onStop : onStart;
 
     return (
         <li className={`list-group-item ${active}`}>
@@ -18,7 +19,7 @@ const TimerItem = ({onClose, onToggle, started, title, displayDuration, plannedT
                 <span className="timer-current">{displayDuration}</span> / <span className="timer-planned">{plannedTime}</span>
                 <button
                     type="button"
-                    onClick={onToggle}
+                    onClick={clickAction}
                     className={`timer-${timerStatus} btn btn-info btn-xs`}
                 >
                     <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
