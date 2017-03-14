@@ -12,6 +12,20 @@ export const destroyTimer = (id) => {
     }
 }
 
+export const startTimer = (id) => {
+    return {
+        type: 'TIMER_START',
+        payload: id
+    }
+}
+
+export const stopTimer = (id) => {
+    return {
+        type: 'TIMER_STOP',
+        payload: id
+    }
+}
+
 export const toggleTimer = (id) => {
     return {
         type: 'TIMER_TOGGLE',
