@@ -8,14 +8,15 @@ import Storage                          from './helpers/Storage';
 import Logger                           from './components/Logger';
 import reducer                          from './reducers';
 
+/* eslint-disable no-unused-vars */
 const Debug = new Logger('Store');
+/* eslint-enable no-unused-vars */
 
 // Default state
 const preloadedState = {};
 
 const persistState = (() => {
     let timers = Storage.all();
-    Debug.log('Persisted', timers);
 
     preloadedState.timers = _.toArray(timers);
 });

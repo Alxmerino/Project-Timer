@@ -3,12 +3,13 @@ import moment   from 'moment';
 import Storage  from '../helpers/Storage';
 import Logger   from '../components/Logger';
 
+/* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
+/* eslint-enable no-unused-vars */
 
 export default function reducer(state={
     timers: []
 }, action) {
-    Debug.log('Reducer called');
 
     switch(action.type) {
         case 'TIMER_ADD': {

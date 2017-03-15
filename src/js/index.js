@@ -10,7 +10,9 @@ import PersistStore     from './helpers/PersistStore';
 import store            from './store';
 
 const app = document.getElementById('app');
+/* eslint-disable no-unused-vars */
 const Debug = new Logger('App');
+/* eslint-enable no-unused-vars */
 new PersistStore();
 
 // Distpatch initial app load

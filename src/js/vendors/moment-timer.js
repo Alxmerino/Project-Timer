@@ -127,23 +127,23 @@ Timer.prototype.isStopped = function () {
 };
 
 if (!moment) {
-    throw "Moment Timer cannot find Moment.js";
+    throw 'Moment Timer cannot find Moment.js';
 }
 
 moment.duration.fn.timer = function (attributes, callback) {
-    if (typeof attributes === "function") {
+    if (typeof attributes === 'function') {
         callback = attributes;
         attributes = {
             wait: 0,
             loop: false,
             start: true
         };
-    } else if (typeof attributes === "object" && typeof callback === "function") {
+    } else if (typeof attributes === 'object' && typeof callback === 'function') {
         if (attributes.start == null) {
             attributes.start = true;
         }
     } else {
-        throw new Error("First argument must be of type function or object.");
+        throw new Error('First argument must be of type function or object.');
     }
 
     return new Timer(this.asMilliseconds(), attributes, callback);

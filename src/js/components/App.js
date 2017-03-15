@@ -1,4 +1,4 @@
-import React, { Component}  from 'react';
+import React  from 'react';
 import AddTimer             from '../containers/AddTimer';
 import TimerList            from '../containers/TimerList';
 

@@ -1,4 +1,4 @@
-import React                    from 'react';
+import React, { PropTypes }     from 'react';
 import { connect }              from 'react-redux';
 import moment                   from 'moment';
 
@@ -140,6 +140,16 @@ let AddTimer = ({ dispatch }) => {
             </div>
         </form>
     );
+};
+
+/**
+ *
+ * @desc Set component prop types
+ * @type {Object}
+ *
+ */
+AddTimer.propTypes = {
+    dispatch: PropTypes.func
 };
 
 AddTimer = connect()(AddTimer);

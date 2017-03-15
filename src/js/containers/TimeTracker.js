@@ -3,10 +3,11 @@ import moment   from 'moment';
 import Logger   from '../components/Logger';
 import          '../vendors/moment-timer';
 
+/* eslint-disable no-unused-vars */
 let Debug = new Logger('TimeTracker');
+/* eslint-enable no-unused-vars */
 
 let TimeTracker = (callback, options) => {
-    Debug.log('Init new TimeTracker');
     options = (typeof options !== 'undefined') ? options : {};
 
     let defaultOpts = {

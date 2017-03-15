@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 /**
  *  Debugger
  *  @author Rene Merino
  *  @desc   Utility component to help debugging app, only works when
  *          query string `debug` is present in the url or is a
  *          local environment
+ *
  */
 
 const DEFAULT_NAME = 'Logger';
