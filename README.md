@@ -22,9 +22,6 @@ gulp dev // watch + local server
 - [ ] Save time on server (Directus?, Firebase?, etc)
 - [ ] Hook up with JIRA
 
-## Known bugs
-- Timer resets when paused.
-
 ## Todo
 - [ ] Add lint?
 - [ ] Ability to edit/reset timer
