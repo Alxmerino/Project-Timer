@@ -1,17 +1,18 @@
-import React, { PropTypes }         from 'react'
-import { connect }                  from 'react-redux'
+import React, { PropTypes }         from 'react';
+import { connect }                  from 'react-redux';
 import _                            from 'underscore';
 
-import TimerItem                    from '../components/TimerItem'
-import Logger                       from '../components/Logger'
-import { formatTime, getTimeIn }    from '../helpers'
+import TimerItem                    from '../components/TimerItem';
+import Logger                       from '../components/Logger';
+import { formatTime, getTimeIn }    from '../helpers';
 import {
     stopTimer,
     startTimer,
-    updateTimer,
-    destroyTimer }                  from '../actions'
+    destroyTimer }                  from '../actions';
 
+/* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
+/* eslint-enable no-unused-vars */
 
 let TimerList = ({ timers, onClose, onStart, onStop }) => {
 
@@ -27,8 +28,8 @@ let TimerList = ({ timers, onClose, onStart, onStop }) => {
                 />
             )}
         </ul>
-    )
-}
+    );
+};
 
 /**
  *
@@ -37,8 +38,11 @@ let TimerList = ({ timers, onClose, onStart, onStop }) => {
  *
  */
 TimerList.propTypes = {
-    onClose: PropTypes.func.isRequired
-}
+    timers: PropTypes.array,
+    onClose: PropTypes.func.isRequired,
+    onStart: PropTypes.func.isRequired,
+    onStop: PropTypes.func.isRequired
+};
 
 /**
  *
@@ -60,8 +64,8 @@ const mapStateToProps = (state) => {
 
     return {
         timers
-    }
-}
+    };
+};
 
 /**
  * @desc Maps the dispatcher onto properties to pass onto the
@@ -73,7 +77,7 @@ const mapDispatchToProps = {
     onClose: destroyTimer,
     onStart: startTimer,
     onStop: stopTimer,
-}
+};
 
 TimerList = connect(
     mapStateToProps,

@@ -4,6 +4,8 @@
   "description": "A small timer app that can add timers for multiple projects.",
   "main": "app.js",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint ./src",
+    "precommit": "npm run lint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -44,6 +46,12 @@
     "xStore": "^2.0.3"
   },
   "devDependencies": {
-    "gulp-connect": "^5.0.0"
+    "eslint": "^3.17.1",
+    "eslint-config-standard": "^7.0.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^6.10.0",
+    "eslint-plugin-standard": "^2.1.1",
+    "gulp-connect": "^5.0.0",
+    "husky": "^0.13.2"
   }
 }

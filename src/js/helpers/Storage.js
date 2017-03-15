@@ -1,4 +1,4 @@
-import xStore from 'xStore'
+import xStore from 'xStore';
 
 let Storage = (function() {
     let store = new xStore('projectTimer:', localStorage);
@@ -6,4 +6,4 @@ let Storage = (function() {
     return store;
 })();
 
-export default Storage
+export default Storage;

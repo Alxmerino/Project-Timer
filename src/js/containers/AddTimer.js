@@ -1,10 +1,9 @@
-import React                    from 'react'
-import { connect }              from 'react-redux'
-import moment                   from 'moment'
+import React, { PropTypes }     from 'react';
+import { connect }              from 'react-redux';
+import moment                   from 'moment';
 
-import TimeTracker              from '../containers/TimeTracker'
-import Storage                  from '../helpers/Storage'
-import { addTimer, updateTimer} from '../actions'
+import TimeTracker              from '../containers/TimeTracker';
+import { addTimer, updateTimer} from '../actions';
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
@@ -31,7 +30,7 @@ let AddTimer = ({ dispatch }) => {
                 duration: 0,
                 plannedTime: getPlannedTime(),
                 timeTracker: new TimeTracker(() => dispatch(updateTimer(id))),
-            }
+            };
 
             // Dispatch action
             dispatch(addTimer(timer));
@@ -39,7 +38,7 @@ let AddTimer = ({ dispatch }) => {
             // Lets clear the form to allow for a new entry
             clearForm();
         }
-    }
+    };
 
     /**
      *
@@ -52,7 +51,7 @@ let AddTimer = ({ dispatch }) => {
      *
      */
     let validTimerForm = () => {
-        if (formInputs.title.value !== "") {
+        if (formInputs.title.value !== '') {
             formInputs.title.parentElement.classList.remove('has-error');
 
             return true;
@@ -61,7 +60,7 @@ let AddTimer = ({ dispatch }) => {
 
             return false;
         }
-    }
+    };
 
     /**
      *
@@ -70,7 +69,7 @@ let AddTimer = ({ dispatch }) => {
      *
      */
     let getPlannedTime = () => {
-        if (formInputs.time.value === "") {
+        if (formInputs.time.value === '') {
             // No time planned, set to 0:00:00 and start counting up
             return '0:00';
         } else {
@@ -84,7 +83,7 @@ let AddTimer = ({ dispatch }) => {
 
             return totalMinutes;
         }
-    }
+    };
 
     /**
      *
@@ -105,7 +104,7 @@ let AddTimer = ({ dispatch }) => {
         }
 
         return parseFloat(str);
-    }
+    };
 
     /**
      *
@@ -116,7 +115,7 @@ let AddTimer = ({ dispatch }) => {
     let clearForm = () => {
         formInputs.title.value = '';
         formInputs.time.value = '';
-    }
+    };
 
     return (
         <form className="row" onSubmit={handleSubmit}>
@@ -140,10 +139,19 @@ let AddTimer = ({ dispatch }) => {
                 <button type="submit" className="btn btn-success">Add Timer</button>
             </div>
         </form>
-    )
+    );
+};
 
-}
+/**
+ *
+ * @desc Set component prop types
+ * @type {Object}
+ *
+ */
+AddTimer.propTypes = {
+    dispatch: PropTypes.func
+};
 
-AddTimer = connect()(AddTimer)
+AddTimer = connect()(AddTimer);
 
 export default AddTimer;

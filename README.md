@@ -23,7 +23,7 @@ gulp dev // watch + local server
 - [ ] Hook up with JIRA
 
 ## Todo
-- [ ] Add lint?
+- [x] Add lint
 - [ ] Ability to edit/reset timer
 - [ ] Integrate Per-day project hours (calendar?)
 - [ ] test!!!

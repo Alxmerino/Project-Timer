@@ -1,9 +1,11 @@
-import _        from 'underscore'
-import moment   from 'moment'
-import Storage  from '../helpers/Storage'
-import Logger   from '../components/Logger'
+import _        from 'underscore';
+import moment   from 'moment';
+import Storage  from '../helpers/Storage';
+import Logger   from '../components/Logger';
 
+/* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
+/* eslint-enable no-unused-vars */
 
 export default function reducer(state={
     timers: []
@@ -24,7 +26,7 @@ export default function reducer(state={
         }
 
         case 'TIMER_DESTROY': {
-            let id = action.payload
+            let id = action.payload;
             let newState = _.assign({}, state);
 
             // Remove timer from timers array
@@ -127,7 +129,6 @@ export default function reducer(state={
         case 'TIMER_UPDATE': {
             let id = action.payload;
             let newState = _.assign({}, state);
-            let durationCycle;
 
             // Update the total duration of the running timer
             newState.timers = _.map(newState.timers, (timer) => {
@@ -135,7 +136,7 @@ export default function reducer(state={
                     // Set duration as milliseconds count from the startTime
                     let currentTime = moment();
                     let timeDiff = currentTime.diff(timer.startTime);
-                        timeDiff = moment.duration(timeDiff).asMilliseconds();
+                    timeDiff = moment.duration(timeDiff).asMilliseconds();
 
                     // Check to see if we have run this previously and combine the total duration
                     timer.duration = (timer.durationCycle) ?

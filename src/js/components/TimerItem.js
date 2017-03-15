@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 
 const TimerItem = ({onClose, onStart, onStop, started, title, displayDuration, plannedTime}) => {
     let active = (started) ? 'active' : 'inactive';
@@ -26,14 +26,23 @@ const TimerItem = ({onClose, onStart, onStop, started, title, displayDuration, p
                 </button>
             </div>
         </li>
-    )
-}
+    );
+};
 
+/**
+ *
+ * @desc Set component prop types
+ * @type {Object}
+ *
+ */
 TimerItem.propTypes = {
-    // onClose: PropTypes.func.isRequired,
-    // onToggle: PropTypes.func.isRequired,
-    // status: PropTypes.bool.isRequired,
-    // title: PropTypes.string.isRequired
-}
+    onClose: PropTypes.func.isRequired,
+    onStart: PropTypes.func.isRequired,
+    onStop: PropTypes.func.isRequired,
+    started: PropTypes.bool,
+    title: PropTypes.string.isRequired,
+    displayDuration: PropTypes.string.isRequired,
+    plannedTime: PropTypes.string.isRequired
+};
 
 export default TimerItem;

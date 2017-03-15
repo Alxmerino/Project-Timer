@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 /**
  *  Debugger
  *  @author Rene Merino
  *  @desc   Utility component to help debugging app, only works when
  *          query string `debug` is present in the url or is a
  *          local environment
+ *
  */
 
 const DEFAULT_NAME = 'Logger';
@@ -13,7 +15,7 @@ class Logger {
     constructor(name) {
         this.name = (typeof(name) !== 'undefined') ? name : DEFAULT_NAME;
         this.debugMode = (window.location.href.indexOf('localhost') > -1) ||
-                     (window.location.href.indexOf('debug=true') > -1)
+                     (window.location.href.indexOf('debug=true') > -1);
 
         this.log('Initialized');
     }

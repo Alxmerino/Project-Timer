@@ -1,14 +1,18 @@
-import React            from 'react'
-import { render }       from 'react-dom'
-import { Provider }     from 'react-redux'
+'use strict';
 
-import App              from './components/App'
-import Logger           from './components/Logger'
-import PersistStore     from './helpers/PersistStore'
-import store            from './store'
+import React            from 'react';
+import { render }       from 'react-dom';
+import { Provider }     from 'react-redux';
 
-const app = document.getElementById('app')
+import App              from './components/App';
+import Logger           from './components/Logger';
+import PersistStore     from './helpers/PersistStore';
+import store            from './store';
+
+const app = document.getElementById('app');
+/* eslint-disable no-unused-vars */
 const Debug = new Logger('App');
+/* eslint-enable no-unused-vars */
 new PersistStore();
 
 // Distpatch initial app load
