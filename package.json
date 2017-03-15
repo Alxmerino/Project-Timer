@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src",
+    "precommit": "npm run lint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -50,6 +51,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^6.10.0",
     "eslint-plugin-standard": "^2.1.1",
-    "gulp-connect": "^5.0.0"
+    "gulp-connect": "^5.0.0",
+    "husky": "^0.13.2"
   }
 }
