@@ -107,6 +107,10 @@ export default function reducer(state={
                 timer.started = false;
 
                 if (timer.id === id) {
+                    timer.endTime = moment.now();
+                    // Save duration in case we want to start timer again
+                    timer.durationCycle = timer.duration;
+
                     // Stop time tracker
                     timer.timeTracker.stop();
 
@@ -123,18 +127,20 @@ export default function reducer(state={
         case 'TIMER_UPDATE': {
             let id = action.payload;
             let newState = _.assign({}, state);
+            let durationCycle;
 
             // Update the total duration of the running timer
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
+                    // Set duration as milliseconds count from the startTime
                     let currentTime = moment();
                     let timeDiff = currentTime.diff(timer.startTime);
+                        timeDiff = moment.duration(timeDiff).asMilliseconds();
 
-                    // Set endTime
-                    timer.endTime = moment.now();
-
-                    // Set duration as milliseconds count from the startTime
-                    timer.duration = moment.duration(timeDiff).asMilliseconds();
+                    // Check to see if we have run this previously and combine the total duration
+                    timer.duration = (timer.durationCycle) ?
+                        (timeDiff + timer.durationCycle) :
+                        timeDiff;
 
                     // Update local storage entry
                     Storage.set(id, timer);
