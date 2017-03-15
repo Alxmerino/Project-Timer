@@ -1,1 +1,1 @@
-import Timer from './moment-timer'
+import Timer from './moment-timer';

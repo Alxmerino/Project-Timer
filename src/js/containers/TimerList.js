@@ -1,15 +1,15 @@
-import React, { PropTypes }         from 'react'
-import { connect }                  from 'react-redux'
-import _                            from 'underscore';
+import React, { PropTypes }         from 'react';
+import { connect }                  from 'react-redux';
+import _                            from 'underscore';;
 
-import TimerItem                    from '../components/TimerItem'
-import Logger                       from '../components/Logger'
-import { formatTime, getTimeIn }    from '../helpers'
+import TimerItem                    from '../components/TimerItem';
+import Logger                       from '../components/Logger';
+import { formatTime, getTimeIn }    from '../helpers';
 import {
     stopTimer,
     startTimer,
     updateTimer,
-    destroyTimer }                  from '../actions'
+    destroyTimer }                  from '../actions';
 
 let Debug = new Logger('TimerList');
 
@@ -27,8 +27,8 @@ let TimerList = ({ timers, onClose, onStart, onStop }) => {
                 />
             )}
         </ul>
-    )
-}
+    );
+};
 
 /**
  *
@@ -38,7 +38,7 @@ let TimerList = ({ timers, onClose, onStart, onStop }) => {
  */
 TimerList.propTypes = {
     onClose: PropTypes.func.isRequired
-}
+};
 
 /**
  *
@@ -60,8 +60,8 @@ const mapStateToProps = (state) => {
 
     return {
         timers
-    }
-}
+    };
+};
 
 /**
  * @desc Maps the dispatcher onto properties to pass onto the
@@ -73,7 +73,7 @@ const mapDispatchToProps = {
     onClose: destroyTimer,
     onStart: startTimer,
     onStop: stopTimer,
-}
+};
 
 TimerList = connect(
     mapStateToProps,

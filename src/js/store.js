@@ -1,22 +1,27 @@
-import { applyMiddleware, createStore } from 'redux'
-import logger                           from 'redux-logger'
-import _                                from 'underscore'
+'use strict';
 
-import Storage                          from './helpers/Storage'
-import Logger                           from './components/Logger'
-import reducer                          from './reducers'
+import { applyMiddleware, createStore } from 'redux';
+import logger                           from 'redux-logger';
+import _                                from 'underscore';
+
+import Storage                          from './helpers/Storage';
+import Logger                           from './components/Logger';
+import reducer                          from './reducers';
 
 const Debug = new Logger('Store');
-
 
 // Default state
 const preloadedState = {};
 
 const persistState = (() => {
     let timers = Storage.all();
+    Debug.log('Persisted', timers);
 
     preloadedState.timers = _.toArray(timers);
-})();
+});
+
+persistState();
+
 // Apply middleware
 const middleware = applyMiddleware(logger());
 

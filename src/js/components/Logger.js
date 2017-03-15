@@ -13,7 +13,7 @@ class Logger {
     constructor(name) {
         this.name = (typeof(name) !== 'undefined') ? name : DEFAULT_NAME;
         this.debugMode = (window.location.href.indexOf('localhost') > -1) ||
-                     (window.location.href.indexOf('debug=true') > -1)
+                     (window.location.href.indexOf('debug=true') > -1);
 
         this.log('Initialized');
     }

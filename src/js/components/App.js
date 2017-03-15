@@ -1,6 +1,6 @@
-import React, { Component}  from 'react'
-import AddTimer             from '../containers/AddTimer'
-import TimerList            from '../containers/TimerList'
+import React, { Component}  from 'react';
+import AddTimer             from '../containers/AddTimer';
+import TimerList            from '../containers/TimerList';
 
 let App = () => {
     return (
@@ -32,7 +32,7 @@ let App = () => {
             </footer>
 
         </div>
-    )
-}
+    );
+};
 
-export default App
+export default App;

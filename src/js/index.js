@@ -1,13 +1,15 @@
-import React            from 'react'
-import { render }       from 'react-dom'
-import { Provider }     from 'react-redux'
+'use strict';
 
-import App              from './components/App'
-import Logger           from './components/Logger'
-import PersistStore     from './helpers/PersistStore'
-import store            from './store'
+import React            from 'react';
+import { render }       from 'react-dom';
+import { Provider }     from 'react-redux';
 
-const app = document.getElementById('app')
+import App              from './components/App';
+import Logger           from './components/Logger';
+import PersistStore     from './helpers/PersistStore';
+import store            from './store';
+
+const app = document.getElementById('app');
 const Debug = new Logger('App');
 new PersistStore();
 

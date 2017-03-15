@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment';
 
 function Timer(duration, attributes, callback) {
     this.timerDuration = duration;
@@ -60,7 +60,7 @@ Timer.prototype.start = function () {
     }
 
     return false;
-}
+};
 
 Timer.prototype.stop = function () {
     if (this.started) {
@@ -72,7 +72,7 @@ Timer.prototype.stop = function () {
     }
 
     return false;
-}
+};
 
 Timer.prototype.clearTimer = function () {
     if (this.timer) {
@@ -86,14 +86,14 @@ Timer.prototype.clearTimer = function () {
     }
 
     return false;
-}
+};
 
 Timer.prototype.updateStartEndTickFromDuration = function (duration) {
     this.startTick = Date.now();
     this.endTick = this.startTick + duration;
 
     return true;
-}
+};
 
 Timer.prototype.duration = function () {
     if (arguments.length > 0) {
@@ -104,11 +104,11 @@ Timer.prototype.duration = function () {
     }
 
     return false;
-}
+};
 
 Timer.prototype.getDuration = function () {
     return this.timerDuration;
-}
+};
 
 Timer.prototype.getRemainingDuration = function () {
     if (this.startTick && this.endTick) {
@@ -120,11 +120,11 @@ Timer.prototype.getRemainingDuration = function () {
     }
 
     return 0;
-}
+};
 
 Timer.prototype.isStopped = function () {
     return this.stopped;
-}
+};
 
 if (!moment) {
     throw "Moment Timer cannot find Moment.js";
