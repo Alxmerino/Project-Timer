@@ -13,7 +13,9 @@ gulp dev // watch + local server
 ```
 
 ## Usage
-Works with the following formats
+Simply fill in the fields and click "Add Timer". In the new timer you have the ability to start, pause or delete the timer.
+When adding planned time (How long?) field, you can add time in any of the following formats.
+
 ````
 // Hours
 3h
@@ -37,7 +39,8 @@ Works with the following formats
 3h 45 minutes
 3 hour 45min
 3 hour 45 minutes
-3hours45min````
+3hours45min
+````
 
 ## MVP Roadmap
 - [x] Save time on local storage
