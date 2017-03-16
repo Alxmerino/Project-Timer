@@ -1,9 +1,15 @@
 import React, { PropTypes }     from 'react';
 import { connect }              from 'react-redux';
 import moment                   from 'moment';
+import _                        from 'underscore';
 
+import Logger                   from '../components/Logger';
 import TimeTracker              from '../containers/TimeTracker';
 import { addTimer, updateTimer} from '../actions';
+
+/* eslint-disable no-unused-vars */
+let Debug = new Logger('AddTimer');
+/* eslint-enable no-unused-vars */
 
 let AddTimer = ({ dispatch }) => {
     let formInputs = {};
@@ -74,14 +80,34 @@ let AddTimer = ({ dispatch }) => {
             return '0:00';
         } else {
             // Get planned time string
-            let plannedStr = formInputs.time.value.split(' ');
-            let totalMinutes = 0;
+            let plannedStr = formInputs.time.value;
+            plannedStr = plannedStr.toLowerCase();
+            plannedStr = plannedStr.match(/[a-zA-Z]+|[0-9]+/g);
 
-            plannedStr.forEach((str) => {
-                totalMinutes += parseTimeStr(str);
-            });
+            // We are dealing with a `3 hours 45 minutes`-like format
+            if (plannedStr.length > 2) {
+                let totalMinutes = 0;
 
-            return totalMinutes;
+                // Group into arrays of 2 values each e.g. [[3, 'hours'], [45, 'minutes']]
+                // @reference: http://stackoverflow.com/questions/10456218/javascript-to-return-a-new-array-of-paired-values-from-an-array-of-single-values/10456344#10456344
+                let plannedStrArr = _.map(plannedStr, (val, i) => {
+                    if (i%2 === 0) {
+                        return [val, plannedStr[ i + 1 ]];
+                    }
+                });
+
+                // Cleanup array from falsy values
+                plannedStrArr = _.compact(plannedStrArr);
+
+                // Combine total minutes
+                _.each(plannedStrArr, (timeArr) => {
+                    totalMinutes += parseTimeStr(timeArr);
+                });
+
+                return totalMinutes;
+            }
+
+            return parseTimeStr(plannedStr);
         }
     };
 
@@ -94,16 +120,26 @@ let AddTimer = ({ dispatch }) => {
      * @return {Number}
      *
      */
-    let parseTimeStr = (str) => {
-        str = str.toLowerCase();
+    let parseTimeStr = (timeArr) => {
+        let timeStr = timeArr[0];
+        let format = timeArr[1];
 
-        if (str.indexOf('h') > -1) {
-            str = parseFloat(str);
+        let totalMinutes = 0;
+        let hoursArr = ['h', 'hour', 'hours'];
+        let minutesArr = ['m', 'min', 'mins', 'minute', 'minutes'];
 
-            return (str * 60);
+        // What time format are we dealing with?
+        // Minutes
+        if (_.contains(minutesArr, format) || _.isUndefined(format)) {
+            totalMinutes += parseFloat(timeStr);
         }
 
-        return parseFloat(str);
+        // Hours
+        if (_.contains(hoursArr, format)) {
+            totalMinutes += (parseFloat(timeStr) * 60);
+        }
+
+        return totalMinutes;
     };
 
     /**
