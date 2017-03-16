@@ -34,7 +34,7 @@ When adding planned time (How long?) field, you can add time in any of the follo
 15minutes
 15 minutes
 
-// Hours + minutes
+// Hours + minutes (combinations of above)
 3h 45m
 3h 45 minutes
 3 hour 45min
