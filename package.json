@@ -1,6 +1,6 @@
 {
   "name": "project-timer",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A small timer app that can add timers for multiple projects.",
   "main": "app.js",
   "scripts": {
