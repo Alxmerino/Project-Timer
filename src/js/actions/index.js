@@ -39,3 +39,17 @@ export const updateTimer = (id) => {
         payload: id
     };
 };
+
+export const toggleTitleChange = (id) => {
+    return {
+        type: 'TIMER_TITLE_CHANGE_TOGGLE',
+        payload: id
+    };
+};
+
+export const updateTitle = (id, title) => {
+    return {
+        type: 'TIMER_TITLE_UPDATE',
+        payload: {id, title}
+    };
+};

@@ -8,13 +8,15 @@ import { formatTime, getTimeIn }    from '../helpers';
 import {
     stopTimer,
     startTimer,
-    destroyTimer }                  from '../actions';
+    destroyTimer,
+    toggleTitleChange,
+    updateTitle }                   from '../actions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
 
     return (
         <ul className="list-group">
@@ -24,6 +26,7 @@ let TimerList = ({ timers, onClose, onStart, onStop }) => {
                     onClose={() => onClose(timer.id)}
                     onStart={() => onStart(timer.id)}
                     onStop={() => onStop(timer.id)}
+                    onTitleToggle={onTitleToggle}
                     key={timer.id}
                 />
             )}
@@ -38,10 +41,11 @@ let TimerList = ({ timers, onClose, onStart, onStop }) => {
  *
  */
 TimerList.propTypes = {
-    timers: PropTypes.array,
-    onClose: PropTypes.func.isRequired,
-    onStart: PropTypes.func.isRequired,
-    onStop: PropTypes.func.isRequired
+    timers:         PropTypes.array,
+    onClose:        PropTypes.func.isRequired,
+    onStart:        PropTypes.func.isRequired,
+    onStop:         PropTypes.func.isRequired,
+    onTitleToggle:  PropTypes.func.isRequired,
 };
 
 /**
@@ -73,10 +77,30 @@ const mapStateToProps = (state) => {
  *
  * @type {Object}
  */
-const mapDispatchToProps = {
-    onClose: destroyTimer,
-    onStart: startTimer,
-    onStop: stopTimer,
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onClose: (id) => {
+            dispatch(destroyTimer(id));
+        },
+        onStart: (id) => {
+            dispatch(startTimer(id));
+        },
+        onStop: (id) => {
+            dispatch(stopTimer(id));
+        },
+        onTitleToggle: (id, proxyData, event) => {
+            if (event.type === 'react-keyup') {
+                // Only toggle title on Enter press (13)
+                if (proxyData.keyCode === 13) {
+                    let title = proxyData.target.value;
+                    dispatch(updateTitle(id, title));
+                }
+            } else {
+                // This was a double click event
+                dispatch(toggleTitleChange(id));
+            }
+        }
+    };
 };
 
 TimerList = connect(

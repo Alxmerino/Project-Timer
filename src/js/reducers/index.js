@@ -152,6 +152,53 @@ export default function reducer(state={
 
             return newState;
         }
+
+        case 'TIMER_TITLE_CHANGE_TOGGLE': {
+            let id = action.payload;
+            let newState = _.assign({}, state);
+
+            // Set editingTitle prop as true
+            newState.timers = _.map(newState.timers, (timer) => {
+                // Delete other timers editingTitle prop
+                delete timer.editingTitle;
+
+                // Add editingTitle
+                if (timer.id === id) {
+                    if (!timer.editingTitle) {
+                        timer.editingTitle = true;
+                    }
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_TITLE_UPDATE': {
+            let id = action.payload.id;
+            let title = action.payload.title;
+            let newState = _.assign({}, state);
+
+            // Update title
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.title = title;
+                    delete timer.editingTitle;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
     }
 
     return state;
