@@ -48,4 +48,16 @@ describe('actions', () => {
 
         expect(actions.startTimer(id)).toEqual(expectedAction);
     });
+
+    /** TIMER_STOP */
+    it('should create an action to stop a timer', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: 'TIMER_STOP',
+            payload: id
+        };
+
+        expect(actions.stopTimer(id)).toEqual(expectedAction);
+    });
 });
