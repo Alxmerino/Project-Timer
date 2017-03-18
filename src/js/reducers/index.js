@@ -106,9 +106,9 @@ export default function reducer(state={
             let newState = _.assign({}, state);
 
             newState.timers = _.map(newState.timers, (timer) => {
-                timer.started = false;
 
                 if (timer.id === id) {
+                    timer.started = false;
                     timer.endTime = moment.now();
                     // Save duration in case we want to start timer again
                     timer.durationCycle = timer.duration;
