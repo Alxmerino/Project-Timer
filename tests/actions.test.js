@@ -60,4 +60,16 @@ describe('actions', () => {
 
         expect(actions.stopTimer(id)).toEqual(expectedAction);
     });
+
+    /** TIMER_TOGGLE */
+    it('should create an action to toggle a timer', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: 'TIMER_TOGGLE',
+            payload: id
+        };
+
+        expect(actions.toggleTimer(id)).toEqual(expectedAction);
+    });
 });
