@@ -1,3 +1,3 @@
-.container{max-width:730px}.timer-row{display:flex;align-items:center}.timer-stats{max-width:160px}.timer-close{color:#e74c3c;margin-right:10px}.timer-close:hover{color:#2c3e50}.active .timer-close:hover{color:#ffffff}.timer-play,.timer-pause{margin-left:10px}.timer-title{flex-grow:1}.daily-stats{text-align:right}
+.container{max-width:730px}.timer-row{display:flex;align-items:center}.timer-stats{max-width:160px}.timer-close{color:#e74c3c;margin-right:10px}.timer-close:hover{color:#2c3e50}.active .timer-close:hover{color:#ffffff}.timer-play,.timer-pause{margin-left:10px}.timer-title{flex-grow:1;margin-bottom:0;margin-right:20px}.daily-stats{text-align:right}
 
 /*# sourceMappingURL=app.css.map */
