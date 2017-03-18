@@ -15,7 +15,7 @@ const timer = {
     timeTracker: new TimeTracker(() => {})
 };
 
-describe('todos reducer', () => {
+describe('Timer reducer', () => {
     // Initial State
     it('should return the initial state', () => {
 
