@@ -155,7 +155,7 @@ let AddTimer = ({ dispatch }) => {
 
     return (
         <form className="row" onSubmit={handleSubmit}>
-            <div className="form-group col-xs-7">
+            <div className="form-group col-xs-12 col-sm-7">
                 <input
                     type="text"
                     placeholder="What are you working on today?"
@@ -163,16 +163,18 @@ let AddTimer = ({ dispatch }) => {
                     ref={(input) => formInputs.title = input}
                 />
             </div>
-            <div className="form-group col-xs-5 col-sm-3">
-                <input
-                    type="text"
-                    placeholder="How long?"
-                    className="form-control"
-                    ref={(input) => formInputs.time = input}
-                />
-            </div>
-            <div className="form-group col-xs-12 col-sm-2">
-                <button type="submit" className="btn btn-success">Add Timer</button>
+            <div className="form-group col-xs-12 col-sm-5">
+                <div className="input-group">
+                    <input
+                        type="text"
+                        placeholder="How long?"
+                        className="form-control"
+                        ref={(input) => formInputs.time = input}
+                    />
+                    <span className="input-group-btn">
+                        <button className="btn btn-success" type="submit">Add timer</button>
+                    </span>
+                </div>
             </div>
         </form>
     );
