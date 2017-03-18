@@ -10,8 +10,13 @@
  */
 .timer {
 
+    &-row {
+        display: flex;
+        align-items: center;
+    }
+
     &-stats {
-        float: right;
+        max-width: 160px;
     }
 
     &-close {
@@ -33,7 +38,7 @@
     }
 
     &-title {
-        display: inline-block;
+        flex-grow: 1;
     }
 }
 
