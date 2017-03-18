@@ -10,7 +10,7 @@
         "lint": "./node_modules/.bin/eslint ./src",
         "precommit": "npm run lint",
         "prepush": "npm test",
-        "test": "./node_modules/.bin/jest  --notify",
+        "test": "./node_modules/.bin/jest --verbose --notify",
         "test:watch": "npm test -- --watch"
     },
     "jest": {
