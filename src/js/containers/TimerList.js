@@ -98,6 +98,7 @@ const mapDispatchToProps = (dispatch) => {
             } else {
                 // This was a double click event
                 dispatch(toggleTitleChange(id));
+                dispatch(stopTimer(id));
             }
         }
     };
