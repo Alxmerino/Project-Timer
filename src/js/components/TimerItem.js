@@ -13,7 +13,7 @@ const TimerItem = ({onClose, onStart, onStop, onTitleToggle, started, title, dis
 
     let titleOrInput = () => {
         if (editingTitle) {
-            return (<input onKeyUp={onTitleToggle.bind(this, id)} type="text" autoFocus defaultValue={title} />);
+            return (<input onKeyUp={onTitleToggle.bind(this, id)} type="text" autoFocus defaultValue={title} className="form-control input-sm" />);
         } else {
             return (<span onDoubleClick={onTitleToggle.bind(this, id)}>{title}</span>);
         }
