@@ -84,4 +84,17 @@ describe('actions', () => {
 
         expect(actions.toggleTitleChange(id)).toEqual(expectedAction);
     });
+
+    /** TIMER_TITLE_UPDATE */
+    it('should create an action to update a timer\'s title', () => {
+        let id = moment.now();
+        let title = 'Timer title';
+
+        const expectedAction = {
+            type: 'TIMER_TITLE_UPDATE',
+            payload: {id, title}
+        };
+
+        expect(actions.updateTitle(id, title)).toEqual(expectedAction);
+    });
 });
