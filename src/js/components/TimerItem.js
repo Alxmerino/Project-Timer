@@ -36,7 +36,7 @@ const TimerItem = ({onClose, onStart, onStop, onTitleToggle, started, title, dis
                 <button
                     type="button"
                     onClick={clickAction}
-                    className={`timer-${timerStatus} btn btn-info btn-xs`}
+                    className={`timer-${timerStatus} btn btn-info btn-sm`}
                 >
                     <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
                 </button>
