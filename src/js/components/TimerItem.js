@@ -15,12 +15,12 @@ const TimerItem = ({onClose, onStart, onStop, onTitleToggle, started, title, dis
         if (editingTitle) {
             return (<input onKeyUp={onTitleToggle.bind(this, id)} type="text" autoFocus defaultValue={title} className="form-control input-sm" />);
         } else {
-            return (<span onDoubleClick={onTitleToggle.bind(this, id)}>{title}</span>);
+            return (<h5 onDoubleClick={onTitleToggle.bind(this, id)}>{title}</h5>);
         }
     };
 
     return (
-        <li className={`list-group-item ${active}`}>
+        <li className={`timer-row list-group-item ${active}`}>
             <a
                 href="#"
                 className="timer-close"
@@ -28,7 +28,7 @@ const TimerItem = ({onClose, onStart, onStop, onTitleToggle, started, title, dis
             >
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
-            <div className="timer-title">
+            <div className="list-group-item-heading timer-title">
                 {titleOrInput()}
             </div>
             <div className="timer-stats">
