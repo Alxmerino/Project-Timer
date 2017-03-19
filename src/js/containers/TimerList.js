@@ -30,6 +30,9 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
                     key={timer.id}
                 />
             )}
+            <li className="timer-row timer-totals list-group-item panel-footer">
+                <span>07:00:00</span>
+            </li>
         </ul>
     );
 };
