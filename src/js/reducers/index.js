@@ -87,6 +87,7 @@ export default function reducer(state={
                 if (timer.id === id) {
                     timer.started = true;
                     timer.startTime = moment.now();
+                    delete timer.editingTitle;
 
                     // Start time tracker
                     timer.timeTracker.start();
