@@ -20,6 +20,5 @@ jspm_packages
 .node_repl_history
 
 # Build files
-# public/css/main.*
-# public/js/*.*
+/dist/js/*
 .DS_Store
