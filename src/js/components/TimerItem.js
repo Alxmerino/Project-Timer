@@ -13,30 +13,30 @@ const TimerItem = ({onClose, onStart, onStop, onTitleToggle, started, title, dis
 
     let titleOrInput = () => {
         if (editingTitle) {
-            return (<input onKeyUp={onTitleToggle.bind(this, id)} type="text" autoFocus defaultValue={title} className="form-control input-sm" />);
+            return (<input onKeyUp={onTitleToggle.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />);
         } else {
-            return (<h5 onDoubleClick={onTitleToggle.bind(this, id)}>{title}</h5>);
+            return (<span className="timer__title" onDoubleClick={onTitleToggle.bind(this, id)}>{title}</span>);
         }
     };
 
     return (
-        <li className={`timer-row list-group-item ${active}`}>
+        <li className={`timer list-group-item ${active}`}>
             <a
                 href="#"
-                className="timer-close"
+                className="timer__close"
                 onClick={onClose}
             >
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
-            <div className="list-group-item-heading timer-title">
+            <div className="list-group-item-heading timer__titleWrapper">
                 {titleOrInput()}
             </div>
-            <div className="timer-stats">
-                <span className="timer-current">{displayDuration}</span> / <span className="timer-planned">{plannedTime}</span>
+            <div className="timer__stats">
+                <span className="timer__current">{displayDuration}</span> / <span className="timer__planned">{plannedTime}</span>
                 <button
                     type="button"
                     onClick={clickAction}
-                    className={`timer-${timerStatus} btn btn-info btn-sm`}
+                    className={`timer__${timerStatus} btn btn-info btn-sm`}
                 >
                     <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
                 </button>
