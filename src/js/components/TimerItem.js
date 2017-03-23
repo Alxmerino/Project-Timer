@@ -6,7 +6,7 @@ import Logger                from '../components/Logger';
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, started, title, displayDuration, plannedTime, editingTitle, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, started, title, displayDuration, plannedTime, editingTitle, editingCurrentTime, editingPlannedTime, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
@@ -26,6 +26,14 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
         }
     };
 
+    let renderDurationInput = (value, type) => {
+        return (
+            <div className="input-group timer__timeGroup">
+                <span className={`timer__${type}`}>{value}</span>
+            </div>
+        );
+    };
+
     return (
         <li className={`timer list-group-item ${active}`}>
             <a
@@ -39,7 +47,9 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
                 {titleOrInput()}
             </div>
             <div className="timer__stats">
-                <span className="timer__current">{displayDuration}</span> / <span className="timer__planned">{plannedTime}</span>
+                {renderDurationInput(displayDuration, editingCurrentTime, 'current')}
+                <div className="timer__separator">/</div>
+                {renderDurationInput(plannedTime, editingPlannedTime, 'planned')}
                 <button
                     type="button"
                     onClick={clickAction}
@@ -65,12 +75,14 @@ TimerItem.propTypes = {
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
-    editingTitle:       PropTypes.bool,
-    started:            PropTypes.bool,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     displayDuration:    PropTypes.string.isRequired,
-    plannedTime:        PropTypes.string.isRequired
+    plannedTime:        PropTypes.string.isRequired,
+    editingTitle:       PropTypes.bool,
+    editingCurrentTime: PropTypes.bool,
+    editingPlannedTime: PropTypes.bool,
+    started:            PropTypes.bool,
 };
 
 export default TimerItem;
