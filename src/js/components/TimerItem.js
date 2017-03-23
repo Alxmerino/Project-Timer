@@ -6,7 +6,7 @@ import Logger                from '../components/Logger';
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, started, title, displayDuration, plannedTime, editingTitle, editingCurrentTime, editingPlannedTime, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onTimeInputOn, onTimeInputOff, started, title, displayDuration, plannedTime, editingTitle, editingCurrentTime, editingPlannedTime, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
@@ -26,20 +26,20 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
         }
     };
 
-    let renderDurationInput = (value, propName, type) => {
-        if (propName) {
+    let renderDurationInput = (value, proValue, propName, type) => {
+        if (proValue) {
             return (
                 <div className="input-group timer__inputGroup">
                     <input type="text" autoFocus defaultValue={value} className={`timer__${type}Input form-control input-sm`} />
                     <span className="input-group-btn">
-                        <button className="btn btn-sm btn-success">Edit</button>
+                        <button onClick={onTimeInputOff.bind(this, id, propName)} className="btn btn-sm btn-success">Edit</button>
                     </span>
                 </div>
             );
         } else {
             return (
                 <div className="input-group timer__inputGroup">
-                    <span className={`timer__${type}`}>{value}</span>
+                    <span onClick={onTimeInputOn.bind(this, id, propName)} className={`timer__${type}`}>{value}</span>
                 </div>
             );
         }
@@ -58,9 +58,9 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
                 {renderTitleInput()}
             </div>
             <div className="timer__stats">
-                {renderDurationInput(displayDuration, editingCurrentTime, 'current')}
+                {renderDurationInput(displayDuration, editingCurrentTime, 'editingCurrentTime', 'current')}
                 <div className="timer__separator">/</div>
-                {renderDurationInput(plannedTime, editingPlannedTime, 'planned')}
+                {renderDurationInput(plannedTime, editingPlannedTime, 'editingPlannedTime', 'planned')}
                 <button
                     type="button"
                     onClick={clickAction}
@@ -86,6 +86,8 @@ TimerItem.propTypes = {
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
+    onTimeInputOn:      PropTypes.func.isRequired,
+    onTimeInputOff:     PropTypes.func.isRequired,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     displayDuration:    PropTypes.string.isRequired,
