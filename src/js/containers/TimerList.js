@@ -100,8 +100,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(stopTimer(id));
         },
         onTitleEditOn: (id) => {
-            dispatch(toggleTitleChangeOn(id));
             dispatch(stopTimer(id));
+            dispatch(toggleTitleChangeOn(id));
         },
         onTitleEditOff: (id, proxyData) => {
             // Get previous element values

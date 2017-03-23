@@ -162,12 +162,7 @@ export default function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 // Add editingTitle
                 if (timer.id === id) {
-                    if (!timer.editingTitle) {
-                        timer.editingTitle = true;
-                    }
-
-                    // Update local storage entry
-                    Storage.set(id, timer);
+                    timer.editingTitle = true;
                 }
 
                 return timer;
@@ -185,9 +180,6 @@ export default function reducer(state={
                 // Delete editingTitle prop
                 if (timer.id === id) {
                     delete timer.editingTitle;
-
-                    // Update local storage entry
-                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -226,9 +218,6 @@ export default function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer[prop] = true;
-
-                    // Update local storage entry
-                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -246,9 +235,6 @@ export default function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     delete timer[prop];
-
-                    // Update local storage entry
-                    Storage.set(id, timer);
                 }
 
                 return timer;
