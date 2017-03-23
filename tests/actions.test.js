@@ -73,16 +73,28 @@ describe('actions', () => {
         expect(actions.toggleTimer(id)).toEqual(expectedAction);
     });
 
-    /** TIMER_TITLE_CHANGE_TOGGLE */
-    it('should create an action to change a timer\'s title', () => {
+    /** TIMER_TITLE_CHANGE_OFF */
+    it('should create an action to change a timer\'s title on', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_TITLE_CHANGE_TOGGLE',
+            type: 'TIMER_TITLE_CHANGE_ON',
             payload: id
         };
 
-        expect(actions.toggleTitleChange(id)).toEqual(expectedAction);
+        expect(actions.toggleTitleChangeOn(id)).toEqual(expectedAction);
+    });
+
+    /** TIMER_TITLE_CHANGE_OFF */
+    it('should create an action to change a timer\'s title off', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: 'TIMER_TITLE_CHANGE_OFF',
+            payload: id
+        };
+
+        expect(actions.toggleTitleChangeOff(id)).toEqual(expectedAction);
     });
 
     /** TIMER_TITLE_UPDATE */

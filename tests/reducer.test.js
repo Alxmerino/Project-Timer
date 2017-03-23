@@ -118,10 +118,10 @@ describe('Timer reducer', () => {
         });
     });
 
-    /** TIMER_TITLE_CHANGE_TOGGLE */
-    it('should handle TIMER_TITLE_CHANGE_TOGGLE', () => {
+    /** TIMER_TITLE_CHANGE_ON */
+    it('should handle TIMER_TITLE_CHANGE_ON', () => {
         let action = {
-            type: 'TIMER_TITLE_CHANGE_TOGGLE',
+            type: 'TIMER_TITLE_CHANGE_ON',
             payload: id
         };
 
@@ -130,6 +130,26 @@ describe('Timer reducer', () => {
                 timers: [timer]
             }, action)
         ).toEqual({
+            timers: [
+                expect.objectContaining({
+                    editingTitle: true
+                })
+            ]
+        });
+    });
+
+    /** TIMER_TITLE_CHANGE_OFF */
+    it('should handle TIMER_TITLE_CHANGE_OFF', () => {
+        let action = {
+            type: 'TIMER_TITLE_CHANGE_OFF',
+            payload: id
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).not.toEqual({
             timers: [
                 expect.objectContaining({
                     editingTitle: true
