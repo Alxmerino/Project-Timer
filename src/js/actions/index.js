@@ -65,12 +65,12 @@ export const toggleTimeInputOn = (id, prop) => {
     return {
         type: 'TIMER_DURATION_ON',
         payload: {id, prop}
-    }
-}
+    };
+};
 
 export const toggleTimeInputOff = (id, prop) => {
     return {
         type: 'TIMER_DURATION_OFF',
         payload: {id, prop}
-    }
-}
+    };
+};

@@ -109,4 +109,30 @@ describe('actions', () => {
 
         expect(actions.updateTitle(id, title)).toEqual(expectedAction);
     });
+
+    /** TIMER_DURATION_ON */
+    it('should create an action to update a timer\'s duration input on', () => {
+      let id = moment.now();
+      let prop = 'editintCurrentTime';
+
+      const expectedAction = {
+          type: 'TIMER_DURATION_ON',
+          payload: {id, prop}
+      };
+
+      expect(actions.toggleTimeInputOn(id, prop)).toEqual(expectedAction);
+    });
+
+    /** TIMER_DURATION_OFF */
+    it('should create an action to update a timer\'s duration input on', () => {
+      let id = moment.now();
+      let prop = 'editintCurrentTime';
+
+      const expectedAction = {
+          type: 'TIMER_DURATION_OFF',
+          payload: {id, prop}
+      };
+
+      expect(actions.toggleTimeInputOff(id, prop)).toEqual(expectedAction);
+    });
 });
