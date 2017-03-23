@@ -180,7 +180,7 @@ export default function reducer(state={
             let id = action.payload;
             let newState = _.assign({}, state);
 
-            // Set editingTitle prop as true
+            // Delete editingTitle
             newState.timers = _.map(newState.timers, (timer) => {
                 // Delete editingTitle prop
                 if (timer.id === id) {
@@ -206,6 +206,46 @@ export default function reducer(state={
                 if (timer.id === id) {
                     timer.title = title;
                     delete timer.editingTitle;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_DURATION_ON': {
+            let id = action.payload.id;
+            let prop = action.payload.prop;
+            let newState = _.assign({}, state);
+
+            // Set `prop` as true
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer[prop] = true;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_DURATION_OFF': {
+            let id = action.payload.id;
+            let prop = action.payload.prop;
+            let newState = _.assign({}, state);
+
+            // Delete `prop`
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    delete timer[prop];
 
                     // Update local storage entry
                     Storage.set(id, timer);
