@@ -53,6 +53,10 @@
     &__planned {
         cursor: pointer;
     }
+
+    &__inputGroup {
+      max-width: 115px;
+    }
 }
 
 .daily-stats {
