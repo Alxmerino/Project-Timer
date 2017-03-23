@@ -9,17 +9,17 @@
  * Custom Styles
  */
 .timer {
+    display: flex;
+    align-items: center;
 
-    &-row {
+    &__stats {
+        flex-grow: 1;
         display: flex;
         align-items: center;
+        justify-content: flex-end;
     }
 
-    &-stats {
-        max-width: 160px;
-    }
-
-    &-close {
+    &__close {
         color: #e74c3c;
         margin-right: 10px;
 
@@ -32,15 +32,26 @@
         }
     }
 
-    &-play,
-    &-pause {
+    &__play,
+    &__pause {
         margin-left: 10px;
     }
 
-    &-title {
+    &__titleWrapper {
         flex-grow: 1;
         margin-bottom: 0;
         margin-right: 20px;
+        flex-grow: 5;
+        max-width: 380px;
+    }
+
+    &__title {
+        cursor: pointer;
+    }
+
+    &__current,
+    &__planned {
+        cursor: pointer;
     }
 }
 

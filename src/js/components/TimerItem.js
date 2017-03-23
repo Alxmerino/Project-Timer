@@ -6,37 +6,44 @@ import Logger                from '../components/Logger';
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onTitleToggle, started, title, displayDuration, plannedTime, editingTitle, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, started, title, displayDuration, plannedTime, editingTitle, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
 
     let titleOrInput = () => {
         if (editingTitle) {
-            return (<input onKeyUp={onTitleToggle.bind(this, id)} type="text" autoFocus defaultValue={title} className="form-control input-sm" />);
+            return (
+                <div className="input-group">
+                    <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
+                    <span className="input-group-btn">
+                        <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >Edit</button>
+                    </span>
+                </div>
+            );
         } else {
-            return (<h5 onDoubleClick={onTitleToggle.bind(this, id)}>{title}</h5>);
+            return (<span className="timer__title" onClick={onTitleEditOn.bind(this, id)}>{title}</span>);
         }
     };
 
     return (
-        <li className={`timer-row list-group-item ${active}`}>
+        <li className={`timer list-group-item ${active}`}>
             <a
                 href="#"
-                className="timer-close"
+                className="timer__close"
                 onClick={onClose}
             >
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
-            <div className="list-group-item-heading timer-title">
+            <div className="list-group-item-heading timer__titleWrapper">
                 {titleOrInput()}
             </div>
-            <div className="timer-stats">
-                <span className="timer-current">{displayDuration}</span> / <span className="timer-planned">{plannedTime}</span>
+            <div className="timer__stats">
+                <span className="timer__current">{displayDuration}</span> / <span className="timer__planned">{plannedTime}</span>
                 <button
                     type="button"
                     onClick={clickAction}
-                    className={`timer-${timerStatus} btn btn-info btn-sm`}
+                    className={`timer__${timerStatus} btn btn-info btn-sm`}
                 >
                     <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
                 </button>
@@ -55,7 +62,9 @@ TimerItem.propTypes = {
     onClose:            PropTypes.func.isRequired,
     onStart:            PropTypes.func.isRequired,
     onStop:             PropTypes.func.isRequired,
-    onTitleToggle:      PropTypes.func.isRequired,
+    onTitleEditOn:      PropTypes.func.isRequired,
+    onTitleEditOff:     PropTypes.func.isRequired,
+    onTitleUpdate:      PropTypes.func.isRequired,
     editingTitle:       PropTypes.bool,
     started:            PropTypes.bool,
     id:                 PropTypes.number.isRequired,

@@ -9,14 +9,15 @@ import {
     stopTimer,
     startTimer,
     destroyTimer,
-    toggleTitleChange,
+    toggleTitleChangeOn,
+    toggleTitleChangeOff,
     updateTitle }                   from '../actions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate }) => {
 
     return (
         <ul className="list-group">
@@ -26,7 +27,9 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
                     onClose={() => onClose(timer.id)}
                     onStart={() => onStart(timer.id)}
                     onStop={() => onStop(timer.id)}
-                    onTitleToggle={onTitleToggle}
+                    onTitleEditOn={onTitleEditOn}
+                    onTitleEditOff={onTitleEditOff}
+                    onTitleUpdate={onTitleUpdate}
                     key={timer.id}
                 />
             )}
@@ -45,7 +48,9 @@ TimerList.propTypes = {
     onClose:        PropTypes.func.isRequired,
     onStart:        PropTypes.func.isRequired,
     onStop:         PropTypes.func.isRequired,
-    onTitleToggle:  PropTypes.func.isRequired,
+    onTitleEditOn:  PropTypes.func.isRequired,
+    onTitleEditOff: PropTypes.func.isRequired,
+    onTitleUpdate:  PropTypes.func.isRequired,
 };
 
 /**
@@ -88,17 +93,24 @@ const mapDispatchToProps = (dispatch) => {
         onStop: (id) => {
             dispatch(stopTimer(id));
         },
-        onTitleToggle: (id, proxyData, event) => {
+        onTitleEditOn: (id) => {
+            dispatch(toggleTitleChangeOn(id));
+            dispatch(stopTimer(id));
+        },
+        onTitleEditOff: (id, proxyData) => {
+            // Get previous element values
+            let title = proxyData.target.parentElement.previousSibling.value;
+            dispatch(updateTitle(id, title));
+            dispatch(toggleTitleChangeOff(id));
+        },
+        onTitleUpdate: (id, proxyData, event) => {
             if (event.type === 'react-keyup') {
                 // Only toggle title on Enter press (13)
                 if (proxyData.keyCode === 13) {
                     let title = proxyData.target.value;
                     dispatch(updateTitle(id, title));
+                    dispatch(toggleTitleChangeOff(id));
                 }
-            } else {
-                // This was a double click event
-                dispatch(toggleTitleChange(id));
-                dispatch(stopTimer(id));
             }
         }
     };

@@ -40,9 +40,16 @@ export const updateTimer = (id) => {
     };
 };
 
-export const toggleTitleChange = (id) => {
+export const toggleTitleChangeOn = (id) => {
     return {
-        type: 'TIMER_TITLE_CHANGE_TOGGLE',
+        type: 'TIMER_TITLE_CHANGE_ON',
+        payload: id
+    };
+};
+
+export const toggleTitleChangeOff = (id) => {
+    return {
+        type: 'TIMER_TITLE_CHANGE_OFF',
         payload: id
     };
 };
