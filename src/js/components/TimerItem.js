@@ -11,7 +11,7 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
 
-    let titleOrInput = () => {
+    let renderTitleInput = () => {
         if (editingTitle) {
             return (
                 <div className="input-group">
@@ -26,12 +26,23 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
         }
     };
 
-    let renderDurationInput = (value, type) => {
-        return (
-            <div className="input-group timer__timeGroup">
-                <span className={`timer__${type}`}>{value}</span>
-            </div>
-        );
+    let renderDurationInput = (value, propName, type) => {
+        if (propName) {
+            return (
+                <div className="input-group timer__inputGroup">
+                    <input type="text" autoFocus defaultValue={value} className={`timer__${type}Input form-control input-sm`} />
+                    <span className="input-group-btn">
+                        <button className="btn btn-sm btn-success">Edit</button>
+                    </span>
+                </div>
+            );
+        } else {
+            return (
+                <div className="input-group timer__inputGroup">
+                    <span className={`timer__${type}`}>{value}</span>
+                </div>
+            );
+        }
     };
 
     return (
@@ -44,7 +55,7 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
             <div className="list-group-item-heading timer__titleWrapper">
-                {titleOrInput()}
+                {renderTitleInput()}
             </div>
             <div className="timer__stats">
                 {renderDurationInput(displayDuration, editingCurrentTime, 'current')}
