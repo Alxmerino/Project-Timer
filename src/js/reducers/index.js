@@ -127,6 +127,22 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
+        case 'TIMER_RESET': {
+            let id = action.payload;
+            let newState = _.assign({}, state);
+
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.duration = 0;
+                    timer.durationCycle = 0;
+                }
+
+                return timer;
+            });
+
+            return _.assign({}, state, newState);
+        }
+
         case 'TIMER_UPDATE': {
             let id = action.payload;
             let newState = _.assign({}, state);
