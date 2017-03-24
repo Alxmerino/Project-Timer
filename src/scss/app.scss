@@ -32,9 +32,12 @@
         }
     }
 
-    &__play,
-    &__pause {
+    &__btnGroup {
         margin-left: 10px;
+
+        .btn:focus {
+            outline: none;
+        }
     }
 
     &__titleWrapper {
