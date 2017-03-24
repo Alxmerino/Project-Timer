@@ -17,7 +17,9 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
                 <div className="input-group">
                     <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
                     <span className="input-group-btn">
-                        <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >Edit</button>
+                        <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >
+                            <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        </button>
                     </span>
                 </div>
             );
@@ -32,7 +34,7 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
                 <div className="input-group timer__inputGroup">
                     <input type="text" autoFocus defaultValue={value} className={`timer__${type}Input form-control input-sm`} />
                     <span className="input-group-btn">
-                        <button onClick={onTimeInputOff.bind(this, id, propName)} className="btn btn-sm btn-success">Edit</button>
+                        <button onClick={onTimeInputOff.bind(this, id, propName)} className="btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                     </span>
                 </div>
             );
