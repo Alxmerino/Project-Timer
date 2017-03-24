@@ -77,7 +77,7 @@ let AddTimer = ({ dispatch }) => {
     let getPlannedTime = () => {
         if (formInputs.time.value === '') {
             // No time planned, set to 0:00:00 and start counting up
-            return '0:00';
+            return 0;
         } else {
             // Get planned time string
             let plannedStr = formInputs.time.value;
@@ -86,7 +86,7 @@ let AddTimer = ({ dispatch }) => {
 
             // We are dealing with a `3 hours 45 minutes`-like format
             if (plannedStr.length > 2) {
-                let totalMinutes = 0;
+                let totalTimeInMillis = 0;
 
                 // Group into arrays of 2 values each e.g. [[3, 'hours'], [45, 'minutes']]
                 // @reference: http://stackoverflow.com/questions/10456218/javascript-to-return-a-new-array-of-paired-values-from-an-array-of-single-values/10456344#10456344
@@ -101,10 +101,10 @@ let AddTimer = ({ dispatch }) => {
 
                 // Combine total minutes
                 _.each(plannedStrArr, (timeArr) => {
-                    totalMinutes += parseTimeStr(timeArr);
+                    totalTimeInMillis += parseTimeStr(timeArr);
                 });
 
-                return totalMinutes;
+                return totalTimeInMillis;
             }
 
             return parseTimeStr(plannedStr);
@@ -124,22 +124,28 @@ let AddTimer = ({ dispatch }) => {
         let timeStr = timeArr[0];
         let format = timeArr[1];
 
-        let totalMinutes = 0;
+        let totalTimeInMillis = 0;
         let hoursArr = ['h', 'hour', 'hours'];
         let minutesArr = ['m', 'min', 'mins', 'minute', 'minutes'];
 
         // What time format are we dealing with?
         // Minutes
         if (_.contains(minutesArr, format) || _.isUndefined(format)) {
-            totalMinutes += parseFloat(timeStr);
+            totalTimeInMillis += parseFloat(timeStr);
         }
 
         // Hours
         if (_.contains(hoursArr, format)) {
-            totalMinutes += (parseFloat(timeStr) * 60);
+            totalTimeInMillis += (parseFloat(timeStr) * 60);
         }
 
-        return totalMinutes;
+        /**
+         * Untile now, totalTimeInMillis is in minute format, this converts it
+         * into milliseconds
+         */
+        totalTimeInMillis = ((totalTimeInMillis*1000)*60);
+
+        return totalTimeInMillis;
     };
 
     /**

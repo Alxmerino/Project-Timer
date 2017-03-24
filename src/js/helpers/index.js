@@ -15,6 +15,7 @@ export const formatTime = (time, format) => {
 
 /**
  * @desc Get total timer duration in specified format
+ * @param {Number} duration
  * @param  {String} format
  * @return {Number}
  */

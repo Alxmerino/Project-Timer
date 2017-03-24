@@ -4,7 +4,6 @@ import _                            from 'underscore';
 
 import TimerItem                    from '../components/TimerItem';
 import Logger                       from '../components/Logger';
-import { formatTime, getTimeIn }    from '../helpers';
 import {
     stopTimer,
     startTimer,
@@ -70,10 +69,6 @@ TimerList.propTypes = {
  */
 const mapStateToProps = (state) => {
     let timers = _.map(state.timers, (timer) => {
-        let duration = getTimeIn(timer.duration, 'seconds');
-        timer.plannedTime = formatTime(timer.plannedTime);
-        timer.displayDuration = formatTime(duration, 'seconds');
-
         return timer;
     });
 
@@ -104,8 +99,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleTitleChangeOn(id));
         },
         onTitleEditOff: (id, proxyData) => {
-            // Get previous element values
-            let title = proxyData.target.parentElement.previousSibling.value;
+            // Get input value
+            let title = proxyData.currentTarget.parentElement.previousSibling.value;
             dispatch(updateTitle(id, title));
             dispatch(toggleTitleChangeOff(id));
         },
@@ -123,6 +118,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleTimeInputOn(id, prop));
         },
         onTimeInputOff: (id, prop) => {
+            // Get the input value
+            // let duration = proxyData.currentTarget.parentElement.previousSibling.value;
             dispatch(toggleTimeInputOff(id, prop));
         }
     };
