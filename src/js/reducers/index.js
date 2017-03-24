@@ -134,7 +134,10 @@ export default function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.duration = 0;
-                    timer.durationCycle = 0;
+                    delete timer.durationCycle;
+
+                    // Reset the start date so we can start again from 0
+                    timer.startTime = moment.now();
                 }
 
                 return timer;
