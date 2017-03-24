@@ -60,3 +60,10 @@ export const updateTitle = (id, title) => {
         payload: {id, title}
     };
 };
+
+export const resetTimer = (id) => {
+    return {
+        type: 'TIMER_RESET',
+        payload: id
+    };
+};
