@@ -81,71 +81,39 @@ let AddTimer = ({ dispatch }) => {
         } else {
             // Get planned time string
             let plannedStr = formInputs.time.value;
-            plannedStr = plannedStr.toLowerCase();
+            plannedStr = plannedStr.toUpperCase();
             plannedStr = plannedStr.match(/[a-zA-Z]+|[0-9]+/g);
 
-            // We are dealing with a `3 hours 45 minutes`-like format
-            if (plannedStr.length > 2) {
-                let totalTimeInMillis = 0;
+            plannedStr = createISOstr(plannedStr);
 
-                // Group into arrays of 2 values each e.g. [[3, 'hours'], [45, 'minutes']]
-                // @reference: http://stackoverflow.com/questions/10456218/javascript-to-return-a-new-array-of-paired-values-from-an-array-of-single-values/10456344#10456344
-                let plannedStrArr = _.map(plannedStr, (val, i) => {
-                    if (i%2 === 0) {
-                        return [val, plannedStr[ i + 1 ]];
-                    }
-                });
-
-                // Cleanup array from falsy values
-                plannedStrArr = _.compact(plannedStrArr);
-
-                // Combine total minutes
-                _.each(plannedStrArr, (timeArr) => {
-                    totalTimeInMillis += parseTimeStr(timeArr);
-                });
-
-                return totalTimeInMillis;
-            }
-
-            return parseTimeStr(plannedStr);
+            return moment.duration(plannedStr).asMilliseconds();
         }
     };
 
     /**
      *
-     * @desc Parse the time string to check if it's an hour value. If
-     *       so, multiply by 60 to get the total number in minutes
+     * @desc Parse the time string and convert it into an ISO 8601 string.
+     *       Then use moment to return milliseconds from the new string
      *
      * @param  {String} str
      * @return {Number}
      *
      */
-    let parseTimeStr = (timeArr) => {
-        let timeStr = timeArr[0];
-        let format = timeArr[1];
+    let createISOstr = (timeStr) => {
+        let prefix = 'PT';
+        let outputStr = prefix;
 
-        let totalTimeInMillis = 0;
-        let hoursArr = ['h', 'hour', 'hours'];
-        let minutesArr = ['m', 'min', 'mins', 'minute', 'minutes'];
+        _.each(timeStr, (str) => {
+            if (!_.isNaN(+str)) {
+                // Number
+                outputStr += (+str);
+            } else {
+                // Letter
+                outputStr += str.charAt(0);
+            }
+        });
 
-        // What time format are we dealing with?
-        // Minutes
-        if (_.contains(minutesArr, format) || _.isUndefined(format)) {
-            totalTimeInMillis += parseFloat(timeStr);
-        }
-
-        // Hours
-        if (_.contains(hoursArr, format)) {
-            totalTimeInMillis += (parseFloat(timeStr) * 60);
-        }
-
-        /**
-         * Untile now, totalTimeInMillis is in minute format, this converts it
-         * into milliseconds
-         */
-        totalTimeInMillis = ((totalTimeInMillis*1000)*60);
-
-        return totalTimeInMillis;
+        return outputStr;
     };
 
     /**
