@@ -116,8 +116,7 @@ describe('Timer reducer', () => {
         ).toEqual({
             timers: [
                 expect.objectContaining({
-                    duration: 0,
-                    durationCycle: 0
+                    duration: 0
                 })
             ]
         });
