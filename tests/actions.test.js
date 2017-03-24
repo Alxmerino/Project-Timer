@@ -109,4 +109,15 @@ describe('actions', () => {
 
         expect(actions.updateTitle(id, title)).toEqual(expectedAction);
     });
+
+    it('should create an action to reset the timer', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: 'TIMER_RESET',
+            payload: id
+        };
+
+        expect(actions.resetTimer(id)).toEqual(expectedAction);
+    });
 });

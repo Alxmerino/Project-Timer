@@ -6,7 +6,7 @@ import Logger                from '../components/Logger';
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, started, title, displayDuration, plannedTime, editingTitle, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, started, title, displayDuration, plannedTime, editingTitle, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
@@ -40,13 +40,22 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
             </div>
             <div className="timer__stats">
                 <span className="timer__current">{displayDuration}</span> / <span className="timer__planned">{plannedTime}</span>
-                <button
-                    type="button"
-                    onClick={clickAction}
-                    className={`timer__${timerStatus} btn btn-info btn-sm`}
-                >
-                    <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
-                </button>
+                <div className="timer__btnGroup btn-group" role="group" aria-label="...">
+                    <button
+                        type="button"
+                        onClick={clickAction}
+                        className={`timer__${timerStatus} btn btn-info btn-sm`}
+                    >
+                        <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onReset}
+                        className="timer__reset btn btn-default btn-sm"
+                    >
+                        <span className="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
         </li>
     );
@@ -62,6 +71,7 @@ TimerItem.propTypes = {
     onClose:            PropTypes.func.isRequired,
     onStart:            PropTypes.func.isRequired,
     onStop:             PropTypes.func.isRequired,
+    onReset:            PropTypes.func.isRequired,
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
