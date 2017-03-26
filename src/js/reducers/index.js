@@ -245,12 +245,21 @@ export default function reducer(state={
             let { id, timeStr } = action.payload;
             let newState = _.assign({}, state);
 
-            // Update timer duration
+            /**
+             * To update the timer's duration we have to parse the duration string
+             * from the payload, and set both duration and durationCycle to that
+             * duration, then we reset the startTime prop to allow the timer
+             * to resume and save to localStorage
+             */
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.duration = moment.duration(timeStr).asMilliseconds();
+                    timer.durationCycle = timer.duration;
                     timer.startTime = moment.now();
                     delete timer.editingDuration;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
