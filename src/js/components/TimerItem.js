@@ -9,7 +9,7 @@ import Logger               from '../components/Logger';
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onTimeInputOn, onTimeInputOff, started, title, duration, plannedTime, editingTitle, editingCurrentTime, editingPlannedTime, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
@@ -31,22 +31,22 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
         }
     };
 
-    let renderDurationInput = (value, proValue, propName, type) => {
+    let renderDurationInput = (value, isEditing, type) => {
         let timeInSeconds = getTimeIn(value, 'seconds');
 
-        if (proValue) {
+        if (isEditing) {
             return (
                 <div className="input-group timer__inputGroup">
-                    <input type="text" autoFocus defaultValue={value} className={`timer__${type}Input form-control input-sm`} />
+                    <input onKeyUp={onDurationUpdate.bind(this, id)} type="text" autoFocus defaultValue={formatTime(timeInSeconds, 'seconds')} className={`timer__${type}Input form-control input-sm`} />
                     <span className="input-group-btn">
-                        <button onClick={onTimeInputOff.bind(this, id, propName)} className="btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                        <button onClick={onDurationEditOff.bind(this, id)} className="btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                     </span>
                 </div>
             );
         } else {
             return (
                 <div className="input-group timer__inputGroup">
-                    <span onClick={onTimeInputOn.bind(this, id, propName)} className={`timer__${type}`}>{formatTime(timeInSeconds, 'seconds')}</span>
+                    <span onClick={onDurationEditOn.bind(this, id)} className={`timer__${type}`}>{formatTime(timeInSeconds, 'seconds')}</span>
                 </div>
             );
         }
@@ -65,9 +65,9 @@ const TimerItem = ({onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onT
                 {renderTitleInput()}
             </div>
             <div className="timer__stats">
-                {renderDurationInput(duration, editingCurrentTime, 'editingCurrentTime', 'current')}
+                {renderDurationInput(duration, editingDuration, 'duration')}
                 <div className="timer__separator">/</div>
-                {renderDurationInput(plannedTime, editingPlannedTime, 'editingPlannedTime', 'planned')}
+                {renderDurationInput(plannedTime, editingPlannedTime, 'plannedTime')}
                 <button
                     type="button"
                     onClick={clickAction}
@@ -93,14 +93,15 @@ TimerItem.propTypes = {
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
-    onTimeInputOn:      PropTypes.func.isRequired,
-    onTimeInputOff:     PropTypes.func.isRequired,
+    onDurationEditOn:   PropTypes.func.isRequired,
+    onDurationEditOff:  PropTypes.func.isRequired,
+    onDurationUpdate:   PropTypes.func.isRequired,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     duration:           PropTypes.number.isRequired,
     plannedTime:        PropTypes.number.isRequired,
     editingTitle:       PropTypes.bool,
-    editingCurrentTime: PropTypes.bool,
+    editingDuration:    PropTypes.bool,
     editingPlannedTime: PropTypes.bool,
     started:            PropTypes.bool,
 };

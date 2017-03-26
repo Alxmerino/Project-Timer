@@ -8,8 +8,9 @@ import {
     stopTimer,
     startTimer,
     destroyTimer,
-    toggleTimeInputOn,
-    toggleTimeInputOff,
+    toggleDurationInputOn,
+    toggleDurationInputOff,
+    updateTimeDuration,
     toggleTitleChangeOn,
     toggleTitleChangeOff,
     updateTitle }                   from '../actions';
@@ -18,7 +19,7 @@ import {
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onTimeInputOn, onTimeInputOff }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate }) => {
 
     return (
         <ul className="list-group">
@@ -31,8 +32,9 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditO
                     onTitleEditOn={onTitleEditOn}
                     onTitleEditOff={onTitleEditOff}
                     onTitleUpdate={onTitleUpdate}
-                    onTimeInputOn={onTimeInputOn}
-                    onTimeInputOff={onTimeInputOff}
+                    onDurationEditOn={onDurationEditOn}
+                    onDurationEditOff={onDurationEditOff}
+                    onDurationUpdate={onDurationUpdate}
                     key={timer.id}
                 />
             )}
@@ -47,15 +49,16 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditO
  *
  */
 TimerList.propTypes = {
-    timers:         PropTypes.array,
-    onClose:        PropTypes.func.isRequired,
-    onStart:        PropTypes.func.isRequired,
-    onStop:         PropTypes.func.isRequired,
-    onTitleEditOn:  PropTypes.func.isRequired,
-    onTitleEditOff: PropTypes.func.isRequired,
-    onTitleUpdate:  PropTypes.func.isRequired,
-    onTimeInputOn:  PropTypes.func.isRequired,
-    onTimeInputOff: PropTypes.func.isRequired,
+    timers:             PropTypes.array,
+    onClose:            PropTypes.func.isRequired,
+    onStart:            PropTypes.func.isRequired,
+    onStop:             PropTypes.func.isRequired,
+    onTitleEditOn:      PropTypes.func.isRequired,
+    onTitleEditOff:     PropTypes.func.isRequired,
+    onTitleUpdate:      PropTypes.func.isRequired,
+    onDurationEditOn:      PropTypes.func.isRequired,
+    onDurationEditOff:     PropTypes.func.isRequired,
+    onDurationUpdate:   PropTypes.func.isRequired,
 };
 
 /**
@@ -106,7 +109,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         onTitleUpdate: (id, proxyData, event) => {
             if (event.type === 'react-keyup') {
-                // Only toggle title on Enter press (13)
+                // Save title when enter key is presses (13)
                 if (proxyData.keyCode === 13) {
                     let title = proxyData.target.value;
                     dispatch(updateTitle(id, title));
@@ -114,13 +117,24 @@ const mapDispatchToProps = (dispatch) => {
                 }
             }
         },
-        onTimeInputOn: (id, prop) => {
-            dispatch(toggleTimeInputOn(id, prop));
+        onDurationEditOn: (id) => {
+            dispatch(toggleDurationInputOn(id));
         },
-        onTimeInputOff: (id, prop) => {
+        onDurationEditOff: (id, proxyData) => {
             // Get the input value
-            // let duration = proxyData.currentTarget.parentElement.previousSibling.value;
-            dispatch(toggleTimeInputOff(id, prop));
+            let newDuration = proxyData.currentTarget.parentElement.previousSibling.value;
+            dispatch(updateTimeDuration(id, newDuration));
+            dispatch(toggleDurationInputOff(id));
+        },
+        onDurationUpdate: (id, proxyData) => {
+            if (event.type === 'react-keyup') {
+                // Save duration when enter key is pressed (13)
+                if (proxyData.keyCode === 13) {
+                    let newDuration = proxyData.target.value;
+                    dispatch(updateTimeDuration(id, newDuration));
+                    dispatch(toggleDurationInputOff(id));
+                }
+            }
         }
     };
 };
