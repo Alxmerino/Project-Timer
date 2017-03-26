@@ -216,7 +216,7 @@ describe('Timer reducer', () => {
     it('should handle TIMER_DURATION_OFF', () => {
         let action = {
             type: 'TIMER_DURATION_OFF',
-            payload: {id, prop: 'editingCurrentTime'}
+            payload: {id}
         };
 
         expect(
@@ -247,6 +247,67 @@ describe('Timer reducer', () => {
             timers: [
                 expect.objectContaining({
                     duration: 9453000
+                })
+            ]
+        });
+    });
+
+
+    /** TIMER_PLANNED_ON */
+    it('should handle TIMER_PLANNED_ON', () => {
+        let action = {
+            type: 'TIMER_PLANNED_ON',
+            payload: {id}
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).toEqual({
+            timers: [
+                expect.objectContaining({
+                    editingPlannedTime: true
+                })
+            ]
+        });
+    });
+
+    /** TIMER_PLANNED_OFF */
+    it('should handle TIMER_PLANNED_OFF', () => {
+        let action = {
+            type: 'TIMER_PLANNED_OFF',
+            payload: {id}
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).not.toEqual({
+            timers: [
+                expect.objectContaining({
+                    editingDuration: true
+                })
+            ]
+        });
+    });
+
+    /** TIMER_PLANNED_UPDATE */
+    it('should handle TIMER_PLANNED_UPDATE', () => {
+        let action = {
+            type: 'TIMER_PLANNED_UPDATE',
+            payload: {id, timeStr: '23:09:01'}
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).toEqual({
+            timers: [
+                expect.objectContaining({
+                    plannedTime: 83341000
                 })
             ]
         });

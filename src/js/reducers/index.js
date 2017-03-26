@@ -256,6 +256,8 @@ export default function reducer(state={
              * from the payload, and set both duration and durationCycle to that
              * duration, then we reset the startTime prop to allow the timer
              * to resume and save to localStorage
+             *
+             * @TODO: Look into a way to parse `timeStr` with ISO 8601
              */
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
@@ -263,6 +265,70 @@ export default function reducer(state={
                     timer.durationCycle = timer.duration;
                     timer.startTime = moment.now();
                     delete timer.editingDuration;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_PLANNED_ON': {
+            let id = action.payload.id;
+            let newState = _.assign({}, state);
+
+            // Set `editingPlannedTime` as true
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.editingPlannedTime = true;
+
+                    // Stop the timer if is running
+                    if (timer.started) {
+                        timer.timeTracker.stop();
+                        timer.started = false;
+                    }
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_PLANNED_OFF': {
+            let id = action.payload.id;
+            let newState = _.assign({}, state);
+
+            // Delete `editingDuration` prop
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    delete timer.editingDuration;
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_PLANNED_UPDATE': {
+            let { id, timeStr } = action.payload;
+            let newState = _.assign({}, state);
+
+            /**
+             * To update the timer's planned time we have to parse the duration string
+             * from the payload, and set both duration and durationCycle to that
+             * duration, then we reset the startTime prop to allow the timer
+             * to resume and save to localStorage
+             * @TODO: Look into a way to parse `timeStr` with ISO 8601
+             */
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.plannedTime = moment.duration(timeStr).asMilliseconds();
+                    delete timer.editingPlannedTime;
 
                     // Update local storage entry
                     Storage.set(id, timer);
