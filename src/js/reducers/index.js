@@ -211,13 +211,12 @@ export default function reducer(state={
 
         case 'TIMER_DURATION_ON': {
             let id = action.payload.id;
-            let prop = action.payload.prop;
             let newState = _.assign({}, state);
 
-            // Set `prop` as true
+            // Set `editingDuration` as true
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
-                    timer[prop] = true;
+                    timer.editingDuration = true;
                 }
 
                 return timer;
@@ -228,13 +227,30 @@ export default function reducer(state={
 
         case 'TIMER_DURATION_OFF': {
             let id = action.payload.id;
-            let prop = action.payload.prop;
             let newState = _.assign({}, state);
 
-            // Delete `prop`
+            // Delete `editingDuration` prop
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
-                    delete timer[prop];
+                    delete timer.editingDuration;
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_DURATION_UPDATE': {
+            let { id, timeStr } = action.payload;
+            let newState = _.assign({}, state);
+
+            // Update timer duration
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.duration = moment.duration(timeStr).asMilliseconds();
+                    timer.startTime = moment.now();
+                    delete timer.editingDuration;
                 }
 
                 return timer;

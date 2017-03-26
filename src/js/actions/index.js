@@ -79,8 +79,8 @@ export const updateTimeDuration = (id, timeStr) => {
     return {
         type: 'TIMER_DURATION_UPDATE',
         payload: {id, timeStr}
-    }
-}
+    };
+};
 
 export const togglePlannedInputOn = (id) => {
     return {
@@ -100,5 +100,5 @@ export const updateTimePlanned = (id, timeStr) => {
     return {
         type: 'TIMER_PLANNED_UPDATE',
         payload: {id, timeStr}
-    }
-}
+    };
+};

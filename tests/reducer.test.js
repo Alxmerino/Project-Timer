@@ -192,4 +192,64 @@ describe('Timer reducer', () => {
         });
     });
 
+    /** TIMER_DURATION_ON */
+    it('should handle TIMER_DURATION_ON', () => {
+        let action = {
+            type: 'TIMER_DURATION_ON',
+            payload: {id}
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).toEqual({
+            timers: [
+                expect.objectContaining({
+                    editingDuration: true
+                })
+            ]
+        });
+    });
+
+    /** TIMER_DURATION_OFF */
+    it('should handle TIMER_DURATION_OFF', () => {
+        let action = {
+            type: 'TIMER_DURATION_OFF',
+            payload: {id, prop: 'editingCurrentTime'}
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).not.toEqual({
+            timers: [
+                expect.objectContaining({
+                    editingDuration: true
+                })
+            ]
+        });
+    });
+
+    /** TIMER_DURATION_UPDATE */
+    it('should handle TIMER_DURATION_UPDATE', () => {
+        let action = {
+            type: 'TIMER_DURATION_UPDATE',
+            payload: {id, timeStr: '2:37:33'}
+        };
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).toEqual({
+            timers: [
+                expect.objectContaining({
+                    duration: 9453000
+                })
+            ]
+        });
+    });
+
 });
