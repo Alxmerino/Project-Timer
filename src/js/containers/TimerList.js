@@ -7,6 +7,7 @@ import Logger                       from '../components/Logger';
 import {
     stopTimer,
     startTimer,
+    resetTimer,
     destroyTimer,
     toggleDurationInputOn,
     toggleDurationInputOff,
@@ -22,7 +23,7 @@ import {
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate }) => {
 
     return (
         <ul className="list-group">
@@ -32,6 +33,7 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditO
                     onClose={() => onClose(timer.id)}
                     onStart={() => onStart(timer.id)}
                     onStop={() => onStop(timer.id)}
+                    onReset={() => onReset(timer.id)}
                     onTitleEditOn={onTitleEditOn}
                     onTitleEditOff={onTitleEditOff}
                     onTitleUpdate={onTitleUpdate}
@@ -59,6 +61,7 @@ TimerList.propTypes = {
     onClose:            PropTypes.func.isRequired,
     onStart:            PropTypes.func.isRequired,
     onStop:             PropTypes.func.isRequired,
+    onReset:            PropTypes.func.isRequired,
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
@@ -105,6 +108,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onStop: (id) => {
             dispatch(stopTimer(id));
+        },
+        onReset: (id) => {
+            dispatch(resetTimer(id));
         },
         onTitleEditOn: (id) => {
             dispatch(stopTimer(id));

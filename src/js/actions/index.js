@@ -102,3 +102,10 @@ export const updateTimePlanned = (id, timeStr) => {
         payload: {id, timeStr}
     };
 };
+
+export const resetTimer = (id) => {
+    return {
+        type: 'TIMER_RESET',
+        payload: id
+    };
+};

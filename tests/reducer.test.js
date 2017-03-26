@@ -98,6 +98,30 @@ describe('Timer reducer', () => {
         });
     });
 
+    /** TIMER_RESET */
+    it('should handle TIMER_RESET', () => {
+        let action = {
+            type: 'TIMER_RESET',
+            payload: id
+        };
+
+        // Set fake duration
+        timer.duration = 89000;
+        timer.durationCycle = 104000;
+
+        expect(
+            reducer({
+                timers: [timer]
+            }, action)
+        ).toEqual({
+            timers: [
+                expect.objectContaining({
+                    duration: 0
+                })
+            ]
+        });
+    });
+
     /** TIMER_UPDATE */
     it('should handle TIMER_UPDATE', () => {
         let action = {
