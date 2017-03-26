@@ -11,6 +11,9 @@ import {
     toggleDurationInputOn,
     toggleDurationInputOff,
     updateTimeDuration,
+    togglePlannedInputOn,
+    togglePlannedInputOff,
+    updateTimePlanned,
     toggleTitleChangeOn,
     toggleTitleChangeOff,
     updateTitle }                   from '../actions';
@@ -19,7 +22,7 @@ import {
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate }) => {
 
     return (
         <ul className="list-group">
@@ -35,6 +38,9 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleEditOn, onTitleEditO
                     onDurationEditOn={onDurationEditOn}
                     onDurationEditOff={onDurationEditOff}
                     onDurationUpdate={onDurationUpdate}
+                    onPlannedEditOn={onPlannedEditOn}
+                    onPlannedEditOff={onPlannedEditOff}
+                    onPlannedUpdate={onPlannedUpdate}
                     key={timer.id}
                 />
             )}
@@ -56,9 +62,12 @@ TimerList.propTypes = {
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
-    onDurationEditOn:      PropTypes.func.isRequired,
-    onDurationEditOff:     PropTypes.func.isRequired,
+    onDurationEditOn:   PropTypes.func.isRequired,
+    onDurationEditOff:  PropTypes.func.isRequired,
     onDurationUpdate:   PropTypes.func.isRequired,
+    onPlannedEditOn:    PropTypes.func.isRequired,
+    onPlannedEditOff:   PropTypes.func.isRequired,
+    onPlannedUpdate:    PropTypes.func.isRequired,
 };
 
 /**
@@ -135,7 +144,26 @@ const mapDispatchToProps = (dispatch) => {
                     dispatch(toggleDurationInputOff(id));
                 }
             }
-        }
+        },
+        onPlannedEditOn: (id) => {
+            dispatch(togglePlannedInputOn(id));
+        },
+        onPlannedEditOff: (id, proxyData) => {
+            // get the input value
+            let newPlannedTime = proxyData.currentTarget.parentElement.previousSibling.value;
+            dispatch(updateTimePlanned(id, newPlannedTime));
+            dispatch(togglePlannedInputOff(id));
+        },
+        onPlannedUpdate: (id, proxyData) => {
+            if (event.type === 'react-keyup') {
+                // Save planned time when enter key is pressed (13)
+                if (proxyData.keyCode === 13) {
+                    let newPlannedTime = proxyData.target.value;
+                    dispatch(updateTimePlanned(id, newPlannedTime));
+                    dispatch(togglePlannedInputOff(id));
+                }
+            }
+        },
     };
 };
 
