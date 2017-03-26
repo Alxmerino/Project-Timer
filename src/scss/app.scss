@@ -45,7 +45,7 @@
         margin-bottom: 0;
         margin-right: 20px;
         flex-grow: 5;
-        max-width: 380px;
+        max-width: 350px;
     }
 
     &__title {
@@ -55,6 +55,11 @@
     &__current,
     &__planned {
         cursor: pointer;
+    }
+
+    &__inputGroup {
+      max-width: 115px;
+      cursor: pointer;
     }
 }
 
