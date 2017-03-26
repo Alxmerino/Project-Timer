@@ -61,16 +61,44 @@ export const updateTitle = (id, title) => {
     };
 };
 
-export const toggleTimeInputOn = (id, prop) => {
+export const toggleDurationInputOn = (id) => {
     return {
         type: 'TIMER_DURATION_ON',
-        payload: {id, prop}
+        payload: {id}
     };
 };
 
-export const toggleTimeInputOff = (id, prop) => {
+export const toggleDurationInputOff = (id) => {
     return {
         type: 'TIMER_DURATION_OFF',
-        payload: {id, prop}
+        payload: {id}
     };
 };
+
+export const updateTimeDuration = (id, timeStr) => {
+    return {
+        type: 'TIMER_DURATION_UPDATE',
+        payload: {id, timeStr}
+    }
+}
+
+export const togglePlannedInputOn = (id) => {
+    return {
+        type: 'TIMER_PLANNED_ON',
+        payload: {id}
+    };
+};
+
+export const togglePlannedInputOff = (id) => {
+    return {
+        type: 'TIMER_PLANNED_OFF',
+        payload: {id}
+    };
+};
+
+export const updateTimePlanned = (id, timeStr) => {
+    return {
+        type: 'TIMER_PLANNED_UPDATE',
+        payload: {id, timeStr}
+    }
+}
