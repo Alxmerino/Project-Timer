@@ -26,7 +26,6 @@ When adding planned time (How long?) field, you can add time in any of the follo
 3 hours
 
 // Minutes
-15
 15m
 15 m
 15min

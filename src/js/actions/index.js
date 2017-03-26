@@ -61,6 +61,48 @@ export const updateTitle = (id, title) => {
     };
 };
 
+export const toggleDurationInputOn = (id) => {
+    return {
+        type: 'TIMER_DURATION_ON',
+        payload: {id}
+    };
+};
+
+export const toggleDurationInputOff = (id) => {
+    return {
+        type: 'TIMER_DURATION_OFF',
+        payload: {id}
+    };
+};
+
+export const updateTimeDuration = (id, timeStr) => {
+    return {
+        type: 'TIMER_DURATION_UPDATE',
+        payload: {id, timeStr}
+    };
+};
+
+export const togglePlannedInputOn = (id) => {
+    return {
+        type: 'TIMER_PLANNED_ON',
+        payload: {id}
+    };
+};
+
+export const togglePlannedInputOff = (id) => {
+    return {
+        type: 'TIMER_PLANNED_OFF',
+        payload: {id}
+    };
+};
+
+export const updateTimePlanned = (id, timeStr) => {
+    return {
+        type: 'TIMER_PLANNED_UPDATE',
+        payload: {id, timeStr}
+    };
+};
+
 export const resetTimer = (id) => {
     return {
         type: 'TIMER_RESET',
