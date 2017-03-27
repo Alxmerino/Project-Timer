@@ -4,19 +4,26 @@ import _                            from 'underscore';
 
 import TimerItem                    from '../components/TimerItem';
 import Logger                       from '../components/Logger';
-import { formatTime, getTimeIn }    from '../helpers';
 import {
     stopTimer,
     startTimer,
+    resetTimer,
     destroyTimer,
-    toggleTitleChange,
+    toggleDurationInputOn,
+    toggleDurationInputOff,
+    updateTimeDuration,
+    togglePlannedInputOn,
+    togglePlannedInputOff,
+    updateTimePlanned,
+    toggleTitleChangeOn,
+    toggleTitleChangeOff,
     updateTitle }                   from '../actions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate }) => {
 
     return (
         <ul className="list-group">
@@ -26,7 +33,16 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
                     onClose={() => onClose(timer.id)}
                     onStart={() => onStart(timer.id)}
                     onStop={() => onStop(timer.id)}
-                    onTitleToggle={onTitleToggle}
+                    onReset={() => onReset(timer.id)}
+                    onTitleEditOn={onTitleEditOn}
+                    onTitleEditOff={onTitleEditOff}
+                    onTitleUpdate={onTitleUpdate}
+                    onDurationEditOn={onDurationEditOn}
+                    onDurationEditOff={onDurationEditOff}
+                    onDurationUpdate={onDurationUpdate}
+                    onPlannedEditOn={onPlannedEditOn}
+                    onPlannedEditOff={onPlannedEditOff}
+                    onPlannedUpdate={onPlannedUpdate}
                     key={timer.id}
                 />
             )}
@@ -44,11 +60,20 @@ let TimerList = ({ timers, onClose, onStart, onStop, onTitleToggle }) => {
  *
  */
 TimerList.propTypes = {
-    timers:         PropTypes.array,
-    onClose:        PropTypes.func.isRequired,
-    onStart:        PropTypes.func.isRequired,
-    onStop:         PropTypes.func.isRequired,
-    onTitleToggle:  PropTypes.func.isRequired,
+    timers:             PropTypes.array,
+    onClose:            PropTypes.func.isRequired,
+    onStart:            PropTypes.func.isRequired,
+    onStop:             PropTypes.func.isRequired,
+    onReset:            PropTypes.func.isRequired,
+    onTitleEditOn:      PropTypes.func.isRequired,
+    onTitleEditOff:     PropTypes.func.isRequired,
+    onTitleUpdate:      PropTypes.func.isRequired,
+    onDurationEditOn:   PropTypes.func.isRequired,
+    onDurationEditOff:  PropTypes.func.isRequired,
+    onDurationUpdate:   PropTypes.func.isRequired,
+    onPlannedEditOn:    PropTypes.func.isRequired,
+    onPlannedEditOff:   PropTypes.func.isRequired,
+    onPlannedUpdate:    PropTypes.func.isRequired,
 };
 
 /**
@@ -62,10 +87,6 @@ TimerList.propTypes = {
  */
 const mapStateToProps = (state) => {
     let timers = _.map(state.timers, (timer) => {
-        let duration = getTimeIn(timer.duration, 'seconds');
-        timer.plannedTime = formatTime(timer.plannedTime);
-        timer.displayDuration = formatTime(duration, 'seconds');
-
         return timer;
     });
 
@@ -91,19 +112,67 @@ const mapDispatchToProps = (dispatch) => {
         onStop: (id) => {
             dispatch(stopTimer(id));
         },
-        onTitleToggle: (id, proxyData, event) => {
+        onReset: (id) => {
+            dispatch(resetTimer(id));
+        },
+        onTitleEditOn: (id) => {
+            dispatch(stopTimer(id));
+            dispatch(toggleTitleChangeOn(id));
+        },
+        onTitleEditOff: (id, proxyData) => {
+            // Get input value
+            let title = proxyData.currentTarget.parentElement.previousSibling.value;
+            dispatch(updateTitle(id, title));
+            dispatch(toggleTitleChangeOff(id));
+        },
+        onTitleUpdate: (id, proxyData, event) => {
             if (event.type === 'react-keyup') {
-                // Only toggle title on Enter press (13)
+                // Save title when enter key is presses (13)
                 if (proxyData.keyCode === 13) {
                     let title = proxyData.target.value;
                     dispatch(updateTitle(id, title));
+                    dispatch(toggleTitleChangeOff(id));
                 }
-            } else {
-                // This was a double click event
-                dispatch(toggleTitleChange(id));
-                dispatch(stopTimer(id));
             }
-        }
+        },
+        onDurationEditOn: (id) => {
+            dispatch(toggleDurationInputOn(id));
+        },
+        onDurationEditOff: (id, proxyData) => {
+            // Get the input value
+            let newDuration = proxyData.currentTarget.parentElement.previousSibling.value;
+            dispatch(updateTimeDuration(id, newDuration));
+            dispatch(toggleDurationInputOff(id));
+        },
+        onDurationUpdate: (id, proxyData) => {
+            if (event.type === 'react-keyup') {
+                // Save duration when enter key is pressed (13)
+                if (proxyData.keyCode === 13) {
+                    let newDuration = proxyData.target.value;
+                    dispatch(updateTimeDuration(id, newDuration));
+                    dispatch(toggleDurationInputOff(id));
+                }
+            }
+        },
+        onPlannedEditOn: (id) => {
+            dispatch(togglePlannedInputOn(id));
+        },
+        onPlannedEditOff: (id, proxyData) => {
+            // get the input value
+            let newPlannedTime = proxyData.currentTarget.parentElement.previousSibling.value;
+            dispatch(updateTimePlanned(id, newPlannedTime));
+            dispatch(togglePlannedInputOff(id));
+        },
+        onPlannedUpdate: (id, proxyData) => {
+            if (event.type === 'react-keyup') {
+                // Save planned time when enter key is pressed (13)
+                if (proxyData.keyCode === 13) {
+                    let newPlannedTime = proxyData.target.value;
+                    dispatch(updateTimePlanned(id, newPlannedTime));
+                    dispatch(togglePlannedInputOff(id));
+                }
+            }
+        },
     };
 };
 

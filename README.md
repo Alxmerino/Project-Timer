@@ -26,7 +26,6 @@ When adding planned time (How long?) field, you can add time in any of the follo
 3 hours
 
 // Minutes
-15
 15m
 15 m
 15min
@@ -54,7 +53,7 @@ When adding planned time (How long?) field, you can add time in any of the follo
 
 ## Todo
 - [x] Add lint
-- [ ] Ability to edit/reset timer
+- [x] Ability to edit/reset timer
 - [x] Able to change title after it's added
 - [ ] Integrate Per-day project hours (calendar?)
 - [x] test!!!
