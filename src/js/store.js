@@ -1,7 +1,6 @@
 'use strict';
 
 import { applyMiddleware, createStore } from 'redux';
-import logger                           from 'redux-logger';
 import _                                from 'underscore';
 
 import Storage                          from './helpers/Storage';
@@ -24,6 +23,6 @@ const persistState = (() => {
 persistState();
 
 // Apply middleware
-const middleware = applyMiddleware(logger());
+const middleware = applyMiddleware();
 
 export default createStore(reducer, preloadedState, middleware);
