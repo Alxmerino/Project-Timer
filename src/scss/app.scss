@@ -63,6 +63,25 @@
     }
 }
 
-.daily-stats {
-    text-align: right;
+.timerSumary {
+    display: flex;
+    align-items: center;
+    border-top: 2px solid #dce4ec;
+
+    &__text,
+    &__totals {
+        flex-grow: 1;
+    }
+
+    &__text {
+        margin: 0;
+    }
+
+    &__totals {
+        text-align: right;
+    }
+
+    &__legend {
+        color: #95a5a6;
+    }
 }

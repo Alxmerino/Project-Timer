@@ -1,6 +1,7 @@
-import React  from 'react';
-import AddTimer             from '../containers/AddTimer';
-import TimerList            from '../containers/TimerList';
+import React        from 'react';
+import AddTimer     from '../containers/AddTimer';
+import TimerList    from '../containers/TimerList';
+import Summary      from '../containers/Summary';
 
 let App = () => {
     return (
@@ -20,7 +21,10 @@ let App = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-xs-12">
-                        <TimerList />
+                        <div className="panel panel-default">
+                            <TimerList />
+                            <Summary />
+                        </div>
                     </div>
                 </div>
             </div>
