@@ -1,5 +1,6 @@
 {
   "name": "project-timer",
+  "productName": "Project Time",
   "version": "0.1.5",
   "description": "A small timer app that can add timers for multiple projects.",
   "main": "index.js",
@@ -10,8 +11,10 @@
     "lint": "./node_modules/.bin/eslint ./src",
     "precommit": "npm run lint",
     "prepush": "npm test",
-    "test": "./node_modules/.bin/jest --verbose --notify",
     "dev": "./node_modules/.bin/electron .",
+    "build": "./node_modules/.bin/electron-packager . ProjectTimer --platform=darwin --arch=x64 --ignore=node_modules",
+    "postbuild": "echo 'add postbuild command here'",
+    "test": "./node_modules/.bin/jest --verbose --notify",
     "test:watch": "npm test -- --watch"
   },
   "jest": {
@@ -52,8 +55,9 @@
     "xStore": "^2.0.3"
   },
   "devDependencies": {
-    "electron": "^1.6.2",
     "babel-jest": "^19.0.0",
+    "electron": "^1.6.2",
+    "electron-packager": "^8.6.0",
     "eslint": "^3.17.1",
     "eslint-config-standard": "^7.0.1",
     "eslint-plugin-promise": "^3.5.0",
