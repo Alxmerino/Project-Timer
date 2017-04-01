@@ -31,6 +31,9 @@ let App = () => {
 
             <footer className="container footer">
                 <div className="row">
+                    <p className="col-xs-12">
+                        <button className="btn btn-success">Quit</button>
+                    </p>
                     <p className="col-xs-12">&copy; 2017 Amaya Media</p>
                 </div>
             </footer>
