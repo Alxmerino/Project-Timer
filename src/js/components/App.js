@@ -1,4 +1,3 @@
-const ipcRenderer       = require('electron').ipcRenderer;
 import React            from 'react';
 import AddTimer         from '../containers/AddTimer';
 import TimerList        from '../containers/TimerList';
@@ -12,7 +11,7 @@ let App = () => {
      *
      */
     let onQuit = () => {
-        ipcRenderer.send('async-message', 'quit');
+        // ipcRenderer.send('async-message', 'quit');
     }
 
     return (
