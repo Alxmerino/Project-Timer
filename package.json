@@ -12,7 +12,8 @@
     "precommit": "npm run lint",
     "prepush": "npm test",
     "dev": "./node_modules/.bin/electron .",
-    "build": "./node_modules/.bin/electron-packager . ProjectTimer --platform=darwin --arch=x64 --ignore=node_modules",
+    "build": "./node_modules/.bin/electron-packager ./ ProjectTimer --platform=darwin --arch=x64 --ignore=node_modules --overwrite",
+    "package": "./node_modules/.bin/electron-packager ./ ProjectTimer --platform=darwin --arch=x64 --ignore=node_modules --asar --overwrite",
     "postbuild": "echo 'add postbuild command here'",
     "test": "./node_modules/.bin/jest --verbose --notify",
     "test:watch": "npm test -- --watch"
