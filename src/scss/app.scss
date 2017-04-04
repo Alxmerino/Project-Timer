@@ -11,6 +11,7 @@
 .timer {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     &__stats {
         flex-grow: 1;
@@ -60,6 +61,25 @@
     &__inputGroup {
       max-width: 115px;
       cursor: pointer;
+    }
+
+    &__descContainer {
+        width: 100%;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    &__description {
+        padding-right: 45px;
+    }
+
+    &__descConfirm {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        top: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }
 
