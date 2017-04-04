@@ -92,12 +92,24 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     </button>
                     <button
                         type="button"
+                        className="timer__descToggle btn btn-default btn-sm"
+                    >
+                        <span className="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </button>
+                    <button
+                        type="button"
                         onClick={onReset}
                         className="timer__reset btn btn-default btn-sm"
                     >
                         <span className="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     </button>
                 </div>
+            </div>
+            <div className="timer__descContainer">
+                <textarea className="form-control timer__description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi imperdiet tortor id ligula vulputate volutpat.
+                </textarea>
+                <button className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
             </div>
         </li>
     );
