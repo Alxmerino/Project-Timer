@@ -15,20 +15,20 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
     let clickAction = (started) ? onStop : onStart;
 
     let renderTitleInput = () => {
-        if (editingTitle) {
-            return (
-                <div className="input-group">
-                    <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
-                    <span className="input-group-btn">
-                        <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >
-                            <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        </button>
-                    </span>
-                </div>
-            );
-        } else {
-            return (<span className="timer__title" onClick={onTitleEditOn.bind(this, id)}>{title}</span>);
-        }
+        return (
+            <div className="input-group">
+                <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
+                <span className="input-group-btn">
+                    <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >
+                        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </button>
+                </span>
+            </div>
+        );
+    };
+
+    let renderTitle = () => {
+        return (<span className="timer__title" onClick={onTitleEditOn.bind(this, id)}>{title}</span>);
     };
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
@@ -62,7 +62,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
             <div className="list-group-item-heading timer__titleWrapper">
-                {renderTitleInput()}
+                { (editingTitle) ? renderTitleInput() : renderTitle()}
             </div>
             <div className="timer__stats">
                 {renderDurationInput(
@@ -89,12 +89,6 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                         className={`timer__${timerStatus} btn btn-info btn-sm`}
                     >
                         <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
-                    </button>
-                    <button
-                        type="button"
-                        className="timer__descToggle btn btn-default btn-sm"
-                    >
-                        <span className="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </button>
                     <button
                         type="button"
