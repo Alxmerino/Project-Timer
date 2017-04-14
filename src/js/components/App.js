@@ -2,7 +2,7 @@ import React        from 'react';
 import AddTimer     from '../containers/AddTimer';
 import TimerList    from '../containers/TimerList';
 import Summary      from '../containers/Summary';
-import TimerIcon    from '../components/TimerIcon';
+import AppIcon    from '../components/AppIcon';
 
 let App = () => {
     return (
@@ -12,7 +12,7 @@ let App = () => {
                 <div className="header clearfix">
                     <div className="row">
                         <div className="col-xs-12">
-                            <h1 className="app__title"><TimerIcon /> Projects Timer</h1>
+                            <h1 className="app__title"><AppIcon /> Projects Timer</h1>
                         </div>
                     </div>
                     <AddTimer />
