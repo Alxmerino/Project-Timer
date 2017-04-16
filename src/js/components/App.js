@@ -12,7 +12,7 @@ let App = () => {
                 <div className="header clearfix">
                     <div className="row">
                         <div className="col-xs-12">
-                            <h1 className="app__title"><AppIcon /> Projects Timer</h1>
+                            <h1 className="app__title"><AppIcon /> Project Timer</h1>
                         </div>
                     </div>
                     <AddTimer />
