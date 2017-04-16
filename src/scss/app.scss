@@ -1,3 +1,5 @@
+$titleBreak: 510px;
+
 /**
  * Bootstrap Overrides
  */
@@ -8,6 +10,26 @@
 /**
  * Custom Styles
  */
+.app {
+    &__title {
+        color: #000000;
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+
+        @media only screen and (min-width: $titleBreak) {
+            font-size: 60px;
+        }
+    }
+
+    &__icon {
+        width: 65px;
+        position: relative;
+        bottom: -5px;
+        margin-right: 20px;
+    }
+}
+
 .timer {
     display: flex;
     align-items: center;
