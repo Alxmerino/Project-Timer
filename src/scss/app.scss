@@ -1,3 +1,7 @@
+/**
+ * Variables
+ */
+$fontFamily: 'Paytone One', sans-serif;
 $titleBreak: 510px;
 
 /**
@@ -16,6 +20,7 @@ $titleBreak: 510px;
         display: flex;
         align-items: center;
         margin-bottom: 25px;
+        font-family: $fontFamily;
 
         @media only screen and (min-width: $titleBreak) {
             font-size: 60px;
