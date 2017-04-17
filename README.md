@@ -1,6 +1,7 @@
 # Project Timer
 
 A small timer app that can add timers for multiple projects.
+Use it on your browser! [Demo](https://alxmerino.github.io/Project-Timer/)
 
 ## Getting started
 This project uses is made with ReactJS, Redux, Browserify and uses gulp as a build tool.
@@ -10,6 +11,7 @@ Run the `connect` gulp task to run a local server or the `dev` task to watch for
 ```
 gulp connect // Local server
 gulp dev // watch + local server
+gulp // Builds for production
 ```
 
 ## Usage
@@ -57,3 +59,6 @@ When adding planned time (How long?) field, you can add time in any of the follo
 - [x] Able to change title after it's added
 - [ ] Integrate Per-day project hours (calendar?)
 - [x] test!!!
+
+## Special Thanks
+- [Nick](https://twitter.com/ncsfoo) For creating such amazing app icon!
