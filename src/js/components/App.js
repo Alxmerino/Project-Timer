@@ -32,7 +32,7 @@ let App = () => {
 
             <footer className="container footer">
                 <div className="row">
-                    <p className="col-xs-12">&copy; 2017 Amaya Media</p>
+                    <p className="col-xs-12">&copy; 2017 <a href="https://www.amayamedia.com" target="_blank">Amaya Media</a></p>
                 </div>
             </footer>
 
