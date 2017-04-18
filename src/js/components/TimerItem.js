@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 import {
     formatTime,
     getTimeIn }             from '../helpers';
+import TimerTitle           from '../components/TimerTitle';
 import Logger               from '../components/Logger';
 
 /* eslint-disable no-unused-vars */
@@ -13,23 +14,6 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
-
-    let renderTitleInput = () => {
-        return (
-            <div className="input-group">
-                <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
-                <span className="input-group-btn">
-                    <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >
-                        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    </button>
-                </span>
-            </div>
-        );
-    };
-
-    let renderTitle = () => {
-        return (<span className="timer__title" onClick={onTitleEditOn.bind(this, id)}>{title}</span>);
-    };
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
         let timeInSeconds = getTimeIn(value, 'seconds');
@@ -62,7 +46,15 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
             <div className="list-group-item-heading timer__titleWrapper">
-                { (editingTitle) ? renderTitleInput() : renderTitle()}
+                {/* (editingTitle) ? renderTitleInput() : renderTitle() */}
+                <TimerTitle
+                    id={id}
+                    title={title}
+                    editingTitle={editingTitle}
+                    onTitleUpdate={onTitleUpdate}
+                    onTitleEditOn={onTitleEditOn}
+                    onTitleEditOff={onTitleEditOff}
+                />
             </div>
             <div className="timer__stats">
                 {renderDurationInput(
