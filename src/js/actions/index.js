@@ -103,6 +103,27 @@ export const updateTimePlanned = (id, timeStr) => {
     };
 };
 
+export const toggleDescInputOn = (id) => {
+    return {
+        type: 'TIMER_DESCRIPTIOND_ON',
+        payload: {id}
+    };
+};
+
+export const toggleDescInputOff = (id) => {
+    return {
+        type: 'TIMER_DESCRIPTION_OFF',
+        payload: {id}
+    };
+};
+
+export const updateTimeDescription = (id, desc) => {
+    return {
+        type: 'TIMER_DESCRIPTION_UPDATE',
+        payload: {id, desc}
+    };
+};
+
 export const resetTimer = (id) => {
     return {
         type: 'TIMER_RESET',
