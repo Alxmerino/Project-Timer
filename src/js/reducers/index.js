@@ -362,6 +362,63 @@ export default function reducer(state={
             return newState;
         }
 
+        case 'TIMER_DESCRIPTION_ON': {
+            let id = action.payload.id;
+            let newState = _.assign({}, state);
+
+            // Set `editingDescription` as true
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.editingDescription = true;
+
+                    // Stop the timer if is running
+                    if (timer.started) {
+                        timer.timeTracker.stop();
+                        timer.started = false;
+                    }
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_DESCRIPTION_OFF': {
+            let id = action.payload.id;
+            let newState = _.assign({}, state);
+
+            // Delete `editingDescription` prop
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    delete timer.editingDescription;
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case 'TIMER_DESCRIPTION_UPDATE': {
+            let { id, desc } = action.payload;
+            let newState = _.assign({}, state);
+
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.description = desc;
+                    delete timer.editingDescription;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
     }
 
     return state;
