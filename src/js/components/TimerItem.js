@@ -10,7 +10,7 @@ import Logger               from '../components/Logger';
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, editingDescription, description, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
@@ -36,6 +36,19 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         }
     };
 
+    let renderDescription = () => {
+        if (!editingDescription) {
+            return null;
+        }
+
+        return (
+            <div className="timer__descContainer">
+                <textarea className="form-control timer__description" defaultValue={description} maxLength="500"></textarea>
+                <button className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+            </div>
+        );
+    };
+
     return (
         <li className={`timer list-group-item ${active}`}>
             <a
@@ -54,6 +67,8 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     onTitleUpdate={onTitleUpdate}
                     onTitleEditOn={onTitleEditOn}
                     onTitleEditOff={onTitleEditOff}
+                    onDescEditOn={onDescEditOn}
+                    onDescEditOff={onDescEditOff}
                 />
             </div>
             <div className="timer__stats">
@@ -91,12 +106,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     </button>
                 </div>
             </div>
-            <div className="timer__descContainer">
-                <textarea className="form-control timer__description">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi imperdiet tortor id ligula vulputate volutpat.
-                </textarea>
-                <button className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-            </div>
+            {renderDescription()}
         </li>
     );
 };
