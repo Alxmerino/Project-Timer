@@ -105,7 +105,7 @@ export const updateTimePlanned = (id, timeStr) => {
 
 export const toggleDescInputOn = (id) => {
     return {
-        type: 'TIMER_DESCRIPTIOND_ON',
+        type: 'TIMER_DESCRIPTION_ON',
         payload: {id}
     };
 };
