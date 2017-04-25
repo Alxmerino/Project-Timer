@@ -69,6 +69,19 @@
         position: relative;
     }
 
+    &__descExcerpt {
+        display: inline-block;
+        vertical-align: bottom;
+        font-size: 80%;
+        margin-left: 15px;
+        color: #acb6c0;
+        cursor: pointer;
+        width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     &__description {
         padding-right: 45px;
     }
