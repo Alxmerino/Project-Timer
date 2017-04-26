@@ -131,13 +131,17 @@ TimerItem.propTypes = {
     onPlannedEditOn:    PropTypes.func.isRequired,
     onPlannedEditOff:   PropTypes.func.isRequired,
     onPlannedUpdate:    PropTypes.func.isRequired,
+    onDescEditOn:       PropTypes.func.isRequired,
+    onDescEditOff:      PropTypes.func.isRequired,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     duration:           PropTypes.number.isRequired,
     plannedTime:        PropTypes.number.isRequired,
+    description:        PropTypes.string,
     editingTitle:       PropTypes.bool,
     editingDuration:    PropTypes.bool,
     editingPlannedTime: PropTypes.bool,
+    editingDescription: PropTypes.bool,
     started:            PropTypes.bool,
 };
 

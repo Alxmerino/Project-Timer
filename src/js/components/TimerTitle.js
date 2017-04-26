@@ -13,7 +13,12 @@ const TimerTitle = (props) => {
             </div>
         );
     } else {
-        return (<span className="timer__title" onClick={props.onTitleEditOn.bind(this, props.id)}>{props.title}</span>);
+        return (
+            <div className="timer__titleDesc">
+                <span className="timer__title" onClick={props.onTitleEditOn.bind(this, props.id)}>{props.title}</span>
+                <span className="timer__descExcerpt" onClick={props.onDescEditOn.bind(this, props.id)}>{(props.description) ? props.description : 'Description'}</span>
+            </div>
+        );
     }
 };
 
@@ -22,7 +27,10 @@ TimerTitle.propTypes = {
     title:              PropTypes.string.isRequired,
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
+    onDescEditOn:       PropTypes.func.isRequired,
+    onDescEditOff:      PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
+    description:        PropTypes.string,
     editingTitle:       PropTypes.bool,
 };
 
