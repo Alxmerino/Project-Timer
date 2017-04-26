@@ -1,6 +1,10 @@
 import React, { PropTypes } from 'react';
 
 const TimerTitle = (props) => {
+    let descExcerpt = (props.description && props.description.length) ?
+        props.description.substr(0, 30) :
+        'Description';
+
     if (props.editingTitle) {
         return (
             <div className="input-group">
@@ -16,7 +20,8 @@ const TimerTitle = (props) => {
         return (
             <div className="timer__titleDesc">
                 <span className="timer__title" onClick={props.onTitleEditOn.bind(this, props.id)}>{props.title}</span>
-                <span className="timer__descExcerpt" onClick={props.onDescEditOn.bind(this, props.id)}>{(props.description) ? props.description : 'Description'}</span>
+                <div
+                    className="timer__descExcerpt" onClick={props.onDescEditOn.bind(this, props.id)}>{descExcerpt}</div>
             </div>
         );
     }

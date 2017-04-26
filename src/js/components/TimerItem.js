@@ -63,6 +63,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                 <TimerTitle
                     id={id}
                     title={title}
+                    description={description}
                     editingTitle={editingTitle}
                     onTitleUpdate={onTitleUpdate}
                     onTitleEditOn={onTitleEditOn}
