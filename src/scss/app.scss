@@ -70,13 +70,11 @@
     }
 
     &__descExcerpt {
-        display: inline-block;
         vertical-align: bottom;
         font-size: 80%;
-        margin-left: 15px;
         color: #acb6c0;
         cursor: pointer;
-        width: 150px;
+        width: 200px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
