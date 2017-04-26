@@ -44,7 +44,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         return (
             <div className="timer__descContainer">
                 <textarea className="form-control timer__description" defaultValue={description} maxLength="500"></textarea>
-                <button className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                <button onClick={onDescEditOff.bind(this, id)} className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
             </div>
         );
     };

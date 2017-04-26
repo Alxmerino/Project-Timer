@@ -28,7 +28,6 @@ TimerTitle.propTypes = {
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onDescEditOn:       PropTypes.func.isRequired,
-    onDescEditOff:      PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
     description:        PropTypes.string,
     editingTitle:       PropTypes.bool,
