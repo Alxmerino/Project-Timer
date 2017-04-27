@@ -11,7 +11,7 @@ const Events = require('./src/js/enums/events');
  * Get started with menubar
  */
 let mb = menubar({
-    // icon: icons.default,
+    icon: __dirname + '/src/img/app-icon.png',
     width: 650,
     height: 420
 });
