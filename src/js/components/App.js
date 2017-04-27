@@ -2,6 +2,8 @@ import React            from 'react';
 import AddTimer         from '../containers/AddTimer';
 import TimerList        from '../containers/TimerList';
 import Summary          from '../containers/Summary';
+const { ipcRenderer }   = window.require('electron');
+import Events           from '../enums/events';
 
 let App = () => {
 
@@ -11,8 +13,8 @@ let App = () => {
      *
      */
     let onQuit = () => {
-        // ipcRenderer.send('async-message', 'quit');
-    }
+        ipcRenderer.send('async-message', Events.QUIT);
+    };
 
     return (
         <div className="main-wrapper">
