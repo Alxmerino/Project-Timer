@@ -1,6 +1,6 @@
 {
   "name": "project-timer",
-  "productName": "Project Time",
+  "productName": "Project Timer",
   "version": "0.1.5",
   "description": "A small timer app that can add timers for multiple projects.",
   "main": "index.js",
@@ -12,8 +12,7 @@
     "precommit": "npm run lint",
     "prepush": "npm test",
     "dev": "./node_modules/.bin/electron .",
-    "build": "./node_modules/.bin/electron-packager ./ ProjectTimer --platform=darwin --arch=x64 --ignore=node_modules --overwrite",
-    "package": "./node_modules/.bin/electron-packager ./ ProjectTimer --platform=darwin --arch=x64 --ignore=node_modules --asar --overwrite",
+    "package": "./node_modules/.bin/electron-packager ./ --platform=darwin --arch=x64 --ignore=node_modules --asar=true --overwrite --app-version=1 --icon=./app-icon.icns",
     "postbuild": "echo 'add postbuild command here'",
     "test": "./node_modules/.bin/jest --verbose --notify",
     "test:watch": "npm test -- --watch"
