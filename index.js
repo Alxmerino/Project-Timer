@@ -8,21 +8,42 @@ const url = require('url');
 const Events = require('./src/js/enums/events');
 
 /**
+ *
+ * Icons Map
+ *
+ */
+const icons = {
+    default: __dirname + '/src/img/app-icon.png',
+    active: __dirname + '/src/img/app-icon-active.png',
+    hover: __dirname + '/src/img/app-icon-hover.png'
+}
+
+/**
+ *
  * Get started with menubar
+ *
  */
 let mb = menubar({
-    icon: __dirname + '/src/img/app-icon.png',
+    icon: icons.default,
     width: 650,
     height: 420
 });
 
 /**
- * Start the app
+ *
+ * Listen for App events
+ *
  */
 mb.on('ready', () => {});
 
+mb.on('show', () => mb.tray.setImage(icons.hover));
+
+mb.on('hide', () => mb.tray.setImage(icons.default));
+
 /**
+ *
  * Listen for events from the renderer process
+ *
  */
 ipcMain.on('async-message', (event, arg) => {
     switch(arg) {
