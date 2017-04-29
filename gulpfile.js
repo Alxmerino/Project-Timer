@@ -55,6 +55,10 @@ gulp.task('connect', function() {
     connect.server();
 });
 
+gulp.task('apply-prod-environment', function() {
+    process.env.NODE_ENV = 'production';
+});
+
 gulp.task('build', function() { return compile(); });
 gulp.task('watch', function() { return watch(); });
 
@@ -63,7 +67,5 @@ gulp.task('watch', function() { return watch(); });
  */
 gulp.task('dev', ['connect', 'watch']);
 
-gulp.task('default', ['build'], function() {
-    // @TODO: Look up why build process is not exiting
-    process.exit(0);
+gulp.task('default', ['apply-prod-environment', 'build'], function() {
 });
