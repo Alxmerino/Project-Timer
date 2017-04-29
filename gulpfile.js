@@ -30,7 +30,10 @@ function compile(watch) {
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(gulpif(env !== 'dev', uglify()))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(paths.dest.js));
+        .pipe(gulp.dest(paths.dest.js))
+        .once('end', function() {
+            process.exit();
+        });
     }
 
     if (watch) {
@@ -67,5 +70,4 @@ gulp.task('watch', function() { return watch(); });
  */
 gulp.task('dev', ['connect', 'watch']);
 
-gulp.task('default', ['apply-prod-environment', 'build'], function() {
-});
+gulp.task('default', ['apply-prod-environment', 'build']);
