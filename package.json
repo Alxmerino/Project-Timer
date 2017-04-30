@@ -34,16 +34,6 @@
     "url": "https://github.com/Alxmerino/Project-Timer/issues"
   },
   "dependencies": {
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-react": "^6.23.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.1.0",
-    "gulp": "^3.9.1",
-    "gulp-generic-build": "git+ssh://git@github.com/Alxmerino/Gulp-Generic-Build.git",
-    "gulp-if": "^2.0.2",
-    "gulp-sourcemaps": "^2.4.1",
-    "gulp-uglify": "^2.0.1",
-    "gulp-util": "^3.0.8",
     "menubar": "^5.2.3",
     "moment": "^2.17.1",
     "moment-duration-format": "^1.3.0",
@@ -56,22 +46,32 @@
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
     "underscore": "^1.8.3",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0",
     "xStore": "^2.0.3"
   },
   "devDependencies": {
     "babel-jest": "^19.0.0",
     "electron": "^1.6.2",
     "electron-packager": "^8.6.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
     "eslint": "^3.17.1",
     "eslint-config-standard": "^7.0.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^6.10.0",
     "eslint-plugin-standard": "^2.1.1",
+    "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
+    "gulp-generic-build": "https://git@github.com/Alxmerino/Gulp-Generic-Build.git",
+    "gulp-if": "^2.0.2",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-uglify": "^2.0.1",
+    "gulp-util": "^3.0.8",
     "husky": "^0.13.2",
-    "jest": "^19.0.2"
+    "jest": "^19.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
   }
 }
