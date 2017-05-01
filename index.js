@@ -1,62 +1,54 @@
-const { app, BrowserWindow } = require('electron');
+const {
+    app,
+    ipcMain,
+    BrowserWindow } = require('electron');
+const menubar = require('menubar');
 const path = require('path');
 const url = require('url');
+const Events = require('./src/js/enums/events');
 
 /**
- * Keep a global reference of the window object, if we don't the window will
- * be closed automatically when the JavaScript object is garbage collected
+ *
+ * Icons Map
+ *
  */
-let win;
-
-function createWindow () {
-    // Create the browser window.
-    win = new BrowserWindow({width: 750, height: 465});
-
-    // and load the index.html of the app
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
-
-    // Open dev tools
-    // win.webContents.openDevTools();
-
-    // Emitted when the window is closed.
-    win.on('closed', () => {
-        /**
-         * Dereference the window object, usually you would store windows in an
-         * array if your app supports multi windows, this is the time when
-         * you should delete the corresponding element.
-         */
-        win = null;
-    });
+const icons = {
+    default: __dirname + '/src/img/app-icon.png',
+    active: __dirname + '/src/img/app-icon-active.png',
+    hover: __dirname + '/src/img/app-icon-hover.png'
 }
 
 /**
- * This method will be called when Electron has finished
- * initialization and is ready to create browser windows.
- * Some APIs can only be used after this event occurs.
+ *
+ * Get started with menubar
+ *
  */
-app.on('ready', createWindow);
+let mb = menubar({
+    icon: icons.default,
+    width: 650,
+    height: 420
+});
 
-// Quit when all windoes are closed.
-app.on('window-all-closed', () => {
-    /**
-     * On macOS it is common for applications and their menu bar
-     * to stay active until the user quits explicitly with Cmd + Q
-     */
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+/**
+ *
+ * Listen for App events
+ *
+ */
+mb.on('ready', () => {});
 
-    app.on('activate', () => {
-        /**
-         * On macOS it's common to re-create a window in the app when the
-         * dock icon is clicked and there are no other windows open.
-         */
-        if (win === null) {
-            createWindow()
+mb.on('show', () => mb.tray.setImage(icons.hover));
+
+mb.on('hide', () => mb.tray.setImage(icons.default));
+
+/**
+ *
+ * Listen for events from the renderer process
+ *
+ */
+ipcMain.on('async-message', (event, arg) => {
+    switch(arg) {
+        case Events.QUIT: {
+            mb.app.quit();
         }
-    });
+    }
 });
