@@ -32,7 +32,10 @@ function compile(watch) {
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(paths.dest.js))
         .once('end', function() {
-            process.exit();
+            // End process if not watching
+            if (!watch) {
+                process.exit();
+            }
         });
     }
 
