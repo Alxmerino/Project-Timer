@@ -14,7 +14,7 @@
     "dev": "./node_modules/.bin/electron .",
     "prebuild": "mkdir -p ./build/node_modules && echo 'Created build directory!'",
     "build": "cp index.js index.html package.json ./build && echo 'Copied app files'",
-    "postbuild": "cp -r ./node_modules/{menubar,electron-positioner} ./build/node_modules && echo 'Copied node modules'",
+    "postbuild": "cp -r ./node_modules/{menubar,electron-positioner,extend} ./build/node_modules && echo 'Copied node modules'",
     "prepackage": "cp -r ./dist ./build/dist && cp -r ./src ./build && echo 'Copy dist and source files'",
     "package": "./node_modules/.bin/electron-packager ./build --asar=true --platform=darwin --arch=x64 --overwrite --app-version=1 --icon=./app-icon.icns --prune=false",
     "predist": "npm run build",
