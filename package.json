@@ -1,6 +1,6 @@
 {
   "name": "project-timer",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "productName": "Project Timer",
   "description": "A small timer app that can add timers for multiple projects.",
   "main": "app.js",
@@ -16,7 +16,7 @@
     "build": "cp index.js index.html package.json ./build && echo 'Copied app files'",
     "postbuild": "cp -r ./node_modules/{menubar,electron-positioner} ./build/node_modules && echo 'Copied node modules'",
     "prepackage": "cp -r ./dist ./build/dist && cp -r ./src ./build && echo 'Copy dist and source files'",
-    "package": "./node_modules/.bin/electron-packager ./build --asar=true --platform=darwin --arch=x64 --overwrite --app-version=1 --icon=./app-icon.icns --prune=false",
+    "package": "./node_modules/.bin/electron-packager ./build --asar=true --platform=darwin --arch=x64 --overwrite --app-version=1.2.0 --icon=./app-icon.icns --prune=false",
     "predist": "npm run build",
     "dist": "npm run package",
     "postdist": "rm -rf ./build && echo 'Remove build files'",
