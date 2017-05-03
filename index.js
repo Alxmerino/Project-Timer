@@ -20,11 +20,21 @@ const icons = {
 
 /**
  *
+ * Icon state
+ *
+ */
+const iconState = {
+    active: false
+}
+
+/**
+ *
  * Get started with menubar
  *
  */
 let mb = menubar({
     icon: icons.default,
+    preloadWindow: true,
     width: 650,
     height: 420
 });
@@ -36,9 +46,17 @@ let mb = menubar({
  */
 mb.on('ready', () => {});
 
-mb.on('show', () => mb.tray.setImage(icons.hover));
+mb.on('show', () => {
+    if (!iconState.active) {
+        mb.tray.setImage(icons.hover)
+    }
+});
 
-mb.on('hide', () => mb.tray.setImage(icons.default));
+mb.on('hide', () => {
+    if (!iconState.active) {
+        mb.tray.setImage(icons.default)
+    }
+});
 
 /**
  *
@@ -47,8 +65,18 @@ mb.on('hide', () => mb.tray.setImage(icons.default));
  */
 ipcMain.on('async-message', (event, arg) => {
     switch(arg) {
-        case Events.QUIT: {
+        case Events.QUIT:
             mb.app.quit();
-        }
+            break;
+
+        case Events.TIMER_START:
+            iconState.active = true;
+            mb.tray.setImage(icons.active);
+            break;
+
+        case Events.TIMER_STOP:
+            iconState.active = false;
+            mb.tray.setImage(icons.hover);
+            break;
     }
 });
