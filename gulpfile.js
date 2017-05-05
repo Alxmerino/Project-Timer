@@ -32,7 +32,11 @@ function compile(watch) {
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(paths.dest.js))
         .once('end', function() {
-            process.exit();
+            var date = new Date();
+            console.log('-> build! ' + date.toJSON());
+            if (!watch) {
+                process.exit();
+            }
         });
     }
 
