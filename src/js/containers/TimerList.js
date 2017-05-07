@@ -90,7 +90,7 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state.timers, (timer) => {
+    let timers = _.map(state.TimerReducer.timers, (timer) => {
         return timer;
     });
 

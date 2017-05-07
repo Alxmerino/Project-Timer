@@ -17,12 +17,14 @@ const Debug = new Logger('Store');
 /* eslint-enable no-unused-vars */
 
 // Default state
-const preloadedState = {};
+const preloadedState = {
+    TimerReducer: {}
+};
 
 const persistState = (() => {
     let timers = Storage.all();
 
-    preloadedState.timers = _.toArray(timers);
+    preloadedState.TimerReducer.timers = _.toArray(timers);
 });
 
 persistState();
