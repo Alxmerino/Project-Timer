@@ -3,33 +3,17 @@ import React, { PropTypes } from 'react';
 import {
     formatTime,
     getTimeIn }             from '../helpers';
+import TimerTitle           from '../components/TimerTitle';
 import Logger               from '../components/Logger';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, editingDescription, description, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let timerStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
-
-    let renderTitleInput = () => {
-        if (editingTitle) {
-            return (
-                <div className="input-group">
-                    <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
-                    <span className="input-group-btn">
-                        <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >
-                            <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        </button>
-                    </span>
-                </div>
-            );
-        } else {
-            return (<span className="timer__title" onClick={onTitleEditOn.bind(this, id)}>{title}</span>);
-        }
-    };
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
         let timeInSeconds = getTimeIn(value, 'seconds');
@@ -52,6 +36,19 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         }
     };
 
+    let renderDescription = () => {
+        if (!editingDescription) {
+            return null;
+        }
+
+        return (
+            <div className="timer__descContainer">
+                <textarea className="form-control timer__description" defaultValue={description} maxLength="500"></textarea>
+                <button onClick={onDescEditOff.bind(this, id)} className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+            </div>
+        );
+    };
+
     return (
         <li className={`timer list-group-item ${active}`}>
             <a
@@ -62,7 +59,18 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
             <div className="list-group-item-heading timer__titleWrapper">
-                {renderTitleInput()}
+                {/* (editingTitle) ? renderTitleInput() : renderTitle() */}
+                <TimerTitle
+                    id={id}
+                    title={title}
+                    description={description}
+                    editingTitle={editingTitle}
+                    onTitleUpdate={onTitleUpdate}
+                    onTitleEditOn={onTitleEditOn}
+                    onTitleEditOff={onTitleEditOff}
+                    onDescEditOn={onDescEditOn}
+                    onDescEditOff={onDescEditOff}
+                />
             </div>
             <div className="timer__stats">
                 {renderDurationInput(
@@ -99,6 +107,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     </button>
                 </div>
             </div>
+            {renderDescription()}
         </li>
     );
 };
@@ -123,13 +132,17 @@ TimerItem.propTypes = {
     onPlannedEditOn:    PropTypes.func.isRequired,
     onPlannedEditOff:   PropTypes.func.isRequired,
     onPlannedUpdate:    PropTypes.func.isRequired,
+    onDescEditOn:       PropTypes.func.isRequired,
+    onDescEditOff:      PropTypes.func.isRequired,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     duration:           PropTypes.number.isRequired,
     plannedTime:        PropTypes.number.isRequired,
+    description:        PropTypes.string,
     editingTitle:       PropTypes.bool,
     editingDuration:    PropTypes.bool,
     editingPlannedTime: PropTypes.bool,
+    editingDescription: PropTypes.bool,
     started:            PropTypes.bool,
 };
 

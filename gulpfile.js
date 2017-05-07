@@ -63,7 +63,14 @@ gulp.task('apply-prod-environment', function() {
 });
 
 gulp.task('build', function() { return compile(); });
-gulp.task('watch', function() { return watch(); });
+
+/**
+ * Watch task
+ */
+gulp.task('watch', function () {
+    gulp.watch(paths.source.scss + '/**/*.scss', ['scss']);
+    gulp.watch(paths.source.js + '/**/*.js', watch);
+});
 
 /**
  * Local dev env

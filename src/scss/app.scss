@@ -38,6 +38,7 @@ $titleBreak: 510px;
 .timer {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     &__stats {
         flex-grow: 1;
@@ -87,6 +88,36 @@ $titleBreak: 510px;
     &__inputGroup {
       max-width: 115px;
       cursor: pointer;
+    }
+
+    &__descContainer {
+        width: 100%;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    &__descExcerpt {
+        vertical-align: bottom;
+        font-size: 80%;
+        color: #acb6c0;
+        cursor: pointer;
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__description {
+        padding-right: 45px;
+    }
+
+    &__descConfirm {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        top: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }
 
