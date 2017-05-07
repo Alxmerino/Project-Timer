@@ -2,7 +2,7 @@ import React                from 'react';
 import AddTimer             from '../containers/AddTimer';
 import TimerList            from '../containers/TimerList';
 import Summary              from '../containers/Summary';
-import Events               from '../enums/events';
+import AppEvents            from '../enums/AppEvents';
 import AppIcon              from '../components/AppIcon';
 import Options              from '../components/Options';
 import { isElectronApp }    from '../utils/utils';
@@ -18,7 +18,7 @@ let App = () => {
      *
      */
     let onQuit = () => {
-        ipcRenderer.send('async-message', Events.QUIT);
+        ipcRenderer.send('async-message', AppEvents.QUIT);
     };
 
     let renderQuitButton = () => {

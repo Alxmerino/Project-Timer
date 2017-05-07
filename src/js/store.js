@@ -1,12 +1,15 @@
 'use strict';
 
-import { applyMiddleware, createStore } from 'redux';
-import logger                           from 'redux-logger';
-import _                                from 'underscore';
+import {
+    createStore,
+    combineReducers,
+    applyMiddleware }   from 'redux';
+import logger           from 'redux-logger';
+import _                from 'underscore';
 
-import Storage                          from './helpers/Storage';
-import Logger                           from './components/Logger';
-import reducer                          from './reducers';
+import Storage          from './helpers/Storage';
+import Logger           from './components/Logger';
+import TimerReducer     from './reducers/TimerReducer';
 
 /* eslint-disable no-unused-vars */
 const Debug = new Logger('Store');

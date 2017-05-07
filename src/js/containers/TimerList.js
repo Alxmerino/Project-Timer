@@ -20,7 +20,7 @@ import {
     updateTitle,
     toggleDescInputOn,
     toggleDescInputOff,
-    updateTimeDescription }         from '../actions';
+    updateTimeDescription }         from '../actions/TimerActions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');

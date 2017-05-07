@@ -22,7 +22,7 @@ export default function reducer(state={
             let { focused } = action.payload;
             let newState = Object.assign({}, state);
 
-            newState.focused = focused
+            newState.focused = focused;
 
             return newState;
         }
