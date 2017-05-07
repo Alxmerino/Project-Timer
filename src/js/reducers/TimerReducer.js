@@ -2,7 +2,7 @@ import _                    from 'underscore';
 import moment               from 'moment';
 import Storage              from '../helpers/Storage';
 import Logger               from '../components/Logger';
-import Events               from '../enums/events';
+import TimerEvents               from '../enums/TimerEvents';
 import { isElectronApp }    from '../utils/utils';
 
 // Require ipcRenderer only in electron app
@@ -16,7 +16,7 @@ export default function reducer(state={
 }, action) {
 
     switch(action.type) {
-        case 'TIMER_ADD': {
+        case TimerEvents.TIMER_ADD: {
             let newTimer = action.payload;
             let id = newTimer.id;
             let newState = _.assign({}, state);
@@ -29,7 +29,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DESTROY': {
+        case TimerEvents.TIMER_DESTROY: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -53,7 +53,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TOGGLE': {
+        case TimerEvents.TIMER_TOGGLE: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -83,7 +83,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_START': {
+        case TimerEvents.TIMER_START: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -97,7 +97,7 @@ export default function reducer(state={
                     timer.timeTracker.start();
 
                     if (isElectronApp()) {
-                        ipcRenderer.send('async-message', Events.TIMER_START);
+                        ipcRenderer.send('async-message', TimerEvents.TIMER_START);
                     }
 
                     // Update local storage
@@ -110,7 +110,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_STOP': {
+        case TimerEvents.TIMER_STOP: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -126,7 +126,7 @@ export default function reducer(state={
                     timer.timeTracker.stop();
 
                     if (isElectronApp()) {
-                        ipcRenderer.send('async-message', Events.TIMER_STOP);
+                        ipcRenderer.send('async-message', TimerEvents.TIMER_STOP);
                     }
 
                     // Update local storage
@@ -139,7 +139,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_RESET': {
+        case TimerEvents.TIMER_RESET: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -161,7 +161,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_UPDATE': {
+        case TimerEvents.TIMER_UPDATE: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -188,7 +188,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TITLE_CHANGE_ON': {
+        case TimerEvents.TIMER_TITLE_CHANGE_ON: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -205,7 +205,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TITLE_CHANGE_OFF': {
+        case TimerEvents.TIMER_TITLE_CHANGE_OFF: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -222,7 +222,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TITLE_UPDATE': {
+        case TimerEvents.TIMER_TITLE_UPDATE: {
             let id = action.payload.id;
             let title = action.payload.title;
             let newState = _.assign({}, state);
@@ -243,7 +243,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DURATION_ON': {
+        case TimerEvents.TIMER_DURATION_ON: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -265,7 +265,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DURATION_OFF': {
+        case TimerEvents.TIMER_DURATION_OFF: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -281,7 +281,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DURATION_UPDATE': {
+        case TimerEvents.TIMER_DURATION_UPDATE: {
             let { id, timeStr } = action.payload;
             let newState = _.assign({}, state);
 
@@ -310,7 +310,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_PLANNED_ON': {
+        case TimerEvents.TIMER_PLANNED_ON: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -332,7 +332,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_PLANNED_OFF': {
+        case TimerEvents.TIMER_PLANNED_OFF: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -348,7 +348,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_PLANNED_UPDATE': {
+        case TimerEvents.TIMER_PLANNED_UPDATE: {
             let { id, timeStr } = action.payload;
             let newState = _.assign({}, state);
 
@@ -374,7 +374,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DESCRIPTION_ON': {
+        case TimerEvents.TIMER_DESCRIPTION_ON: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -396,7 +396,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DESCRIPTION_OFF': {
+        case TimerEvents.TIMER_DESCRIPTION_OFF: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -412,7 +412,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DESCRIPTION_UPDATE': {
+        case TimerEvents.TIMER_DESCRIPTION_UPDATE: {
             let { id, desc } = action.payload;
             let newState = _.assign({}, state);
 

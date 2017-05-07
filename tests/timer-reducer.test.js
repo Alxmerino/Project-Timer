@@ -1,5 +1,6 @@
 import moment       from 'moment';
-import reducer      from '../src/js/reducers/timer';
+import TimerEvents  from '../src/js/enums/TimerEvents';
+import reducer      from '../src/js/reducers/TimerReducer';
 import TimeTracker  from '../src/js/containers/TimeTracker'
 
 // Defaults
@@ -28,7 +29,7 @@ describe('Timer reducer', () => {
     /** TIMER_ADD */
     it('should handle TIMER_ADD', () => {
         let action = {
-            type: 'TIMER_ADD',
+            type: TimerEvents.TIMER_ADD,
             payload: timer
         };
 
@@ -42,7 +43,7 @@ describe('Timer reducer', () => {
     /** TIMER_DESTROY */
     it('should handle TIMER_DESTROY', () => {
         let action = {
-            type: 'TIMER_DESTROY',
+            type: TimerEvents.TIMER_DESTROY,
             payload: id
         };
 
@@ -58,7 +59,7 @@ describe('Timer reducer', () => {
     /** TIMER_START */
     it('should handle TIMER_START', () => {
         let action = {
-            type: 'TIMER_START',
+            type: TimerEvents.TIMER_START,
             payload: id
         };
 
@@ -78,7 +79,7 @@ describe('Timer reducer', () => {
     /** TIMER_STOP */
     it('should handle TIMER_STOP', () => {
         let action = {
-            type: 'TIMER_STOP',
+            type: TimerEvents.TIMER_STOP,
             payload: id
         };
 
@@ -101,7 +102,7 @@ describe('Timer reducer', () => {
     /** TIMER_RESET */
     it('should handle TIMER_RESET', () => {
         let action = {
-            type: 'TIMER_RESET',
+            type: TimerEvents.TIMER_RESET,
             payload: id
         };
 
@@ -125,7 +126,7 @@ describe('Timer reducer', () => {
     /** TIMER_UPDATE */
     it('should handle TIMER_UPDATE', () => {
         let action = {
-            type: 'TIMER_UPDATE',
+            type: TimerEvents.TIMER_UPDATE,
             payload: id
         };
 
@@ -145,7 +146,7 @@ describe('Timer reducer', () => {
     /** TIMER_TITLE_CHANGE_ON */
     it('should handle TIMER_TITLE_CHANGE_ON', () => {
         let action = {
-            type: 'TIMER_TITLE_CHANGE_ON',
+            type: TimerEvents.TIMER_TITLE_CHANGE_ON,
             payload: id
         };
 
@@ -165,7 +166,7 @@ describe('Timer reducer', () => {
     /** TIMER_TITLE_CHANGE_OFF */
     it('should handle TIMER_TITLE_CHANGE_OFF', () => {
         let action = {
-            type: 'TIMER_TITLE_CHANGE_OFF',
+            type: TimerEvents.TIMER_TITLE_CHANGE_OFF,
             payload: id
         };
 
@@ -185,7 +186,7 @@ describe('Timer reducer', () => {
     /** TIMER_TITLE_UPDATE */
     it('should handle TIMER_TITLE_UPDATE', () => {
         let action = {
-            type: 'TIMER_TITLE_UPDATE',
+            type: TimerEvents.TIMER_TITLE_UPDATE,
             payload: {id, title: 'New timer title'}
         };
 
@@ -219,7 +220,7 @@ describe('Timer reducer', () => {
     /** TIMER_DURATION_ON */
     it('should handle TIMER_DURATION_ON', () => {
         let action = {
-            type: 'TIMER_DURATION_ON',
+            type: TimerEvents.TIMER_DURATION_ON,
             payload: {id}
         };
 
@@ -239,7 +240,7 @@ describe('Timer reducer', () => {
     /** TIMER_DURATION_OFF */
     it('should handle TIMER_DURATION_OFF', () => {
         let action = {
-            type: 'TIMER_DURATION_OFF',
+            type: TimerEvents.TIMER_DURATION_OFF,
             payload: {id}
         };
 
@@ -259,7 +260,7 @@ describe('Timer reducer', () => {
     /** TIMER_DURATION_UPDATE */
     it('should handle TIMER_DURATION_UPDATE', () => {
         let action = {
-            type: 'TIMER_DURATION_UPDATE',
+            type: TimerEvents.TIMER_DURATION_UPDATE,
             payload: {id, timeStr: '2:37:33'}
         };
 
@@ -280,7 +281,7 @@ describe('Timer reducer', () => {
     /** TIMER_PLANNED_ON */
     it('should handle TIMER_PLANNED_ON', () => {
         let action = {
-            type: 'TIMER_PLANNED_ON',
+            type: TimerEvents.TIMER_PLANNED_ON,
             payload: {id}
         };
 
@@ -300,7 +301,7 @@ describe('Timer reducer', () => {
     /** TIMER_PLANNED_OFF */
     it('should handle TIMER_PLANNED_OFF', () => {
         let action = {
-            type: 'TIMER_PLANNED_OFF',
+            type: TimerEvents.TIMER_PLANNED_OFF,
             payload: {id}
         };
 
@@ -320,7 +321,7 @@ describe('Timer reducer', () => {
     /** TIMER_PLANNED_UPDATE */
     it('should handle TIMER_PLANNED_UPDATE', () => {
         let action = {
-            type: 'TIMER_PLANNED_UPDATE',
+            type: TimerEvents.TIMER_PLANNED_UPDATE,
             payload: {id, timeStr: '23:09:01'}
         };
 
