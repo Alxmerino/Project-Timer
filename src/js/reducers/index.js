@@ -1,8 +1,12 @@
-import _        from 'underscore';
-import moment   from 'moment';
-import Storage  from '../helpers/Storage';
-import Logger   from '../components/Logger';
+import _                    from 'underscore';
+import moment               from 'moment';
+import Storage              from '../helpers/Storage';
+import Logger               from '../components/Logger';
+import Events               from '../enums/events';
+import { isElectronApp }    from '../utils/utils';
 
+// Require ipcRenderer only in electron app
+const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
 /* eslint-enable no-unused-vars */
@@ -92,6 +96,10 @@ export default function reducer(state={
                     // Start time tracker
                     timer.timeTracker.start();
 
+                    if (isElectronApp()) {
+                        ipcRenderer.send('async-message', Events.TIMER_START);
+                    }
+
                     // Update local storage
                     Storage.set(id, timer);
                 }
@@ -116,6 +124,10 @@ export default function reducer(state={
 
                     // Stop time tracker
                     timer.timeTracker.stop();
+
+                    if (isElectronApp()) {
+                        ipcRenderer.send('async-message', Events.TIMER_STOP);
+                    }
 
                     // Update local storage
                     Storage.set(id, timer);
