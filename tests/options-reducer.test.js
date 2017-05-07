@@ -1,5 +1,5 @@
 import OptionEvents  from '../src/js/enums/OptionEvents';
-import reducer  from '../src/js/reducers/options';
+import reducer  from '../src/js/reducers/OptionsReducer';
 /**
  *
  * Defaults
