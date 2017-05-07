@@ -1,4 +1,4 @@
-import OptionEvents         from '../enums/OptionEvents';
+import AppEvents            from '../enums/AppEvents';
 import { isElectronApp }    from '../utils/utils';
 // Require ipcRenderer only in electron app
 const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
@@ -9,7 +9,7 @@ export default function reducer(state={
 }, action) {
 
     switch(action.type) {
-        case OptionEvents.MENU_TOGGLE: {
+        case AppEvents.MENU_TOGGLE: {
             let { menuOpen } = action.payload;
             let newState = Object.assign({}, state);
 
@@ -18,7 +18,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case OptionEvents.FOCUSED: {
+        case AppEvents.FOCUSED: {
             let { focused } = action.payload;
             let newState = Object.assign({}, state);
 

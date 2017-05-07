@@ -7,9 +7,6 @@
  */
 /* eslint-disable no-undef */
 module.exports = {
-    QUIT:                   '__app_quit',
-
-    /** Timer Events */
     TIMER_ADD:                  '__timer_add',
     TIMER_DESTROY:              '__timer_destro',
     TIMER_START:                '__timer_start',

@@ -1,5 +1,5 @@
-import OptionEvents  from '../src/js/enums/OptionEvents';
-import reducer  from '../src/js/reducers/OptionsReducer';
+import AppEvents  from '../src/js/enums/AppEvents';
+import reducer  from '../src/js/reducers/AppReducer';
 /**
  *
  * Defaults
@@ -10,7 +10,7 @@ const defaultState = {
     focused: false
 }
 
-describe('OptionEvents reducer', () => {
+describe('AppEvents reducer', () => {
 
     // Initial state
     it('should return the initial state', () => {
@@ -19,9 +19,9 @@ describe('OptionEvents reducer', () => {
         ).toEqual(defaultState)
     });
 
-    it('should handle OptionEvents.MENU_TOGGLE', () => {
+    it('should handle AppEvents.MENU_TOGGLE', () => {
         let action = {
-            type: OptionEvents.MENU_TOGGLE,
+            type: AppEvents.MENU_TOGGLE,
             payload: {menuOpen: true}
         };
 
@@ -32,9 +32,9 @@ describe('OptionEvents reducer', () => {
         }));
     });
 
-    it('should handle OptionEvents.FOCUSED', () => {
+    it('should handle AppEvents.FOCUSED', () => {
         let action = {
-            type: OptionEvents.FOCUSED,
+            type: AppEvents.FOCUSED,
             payload: {focused: true}
         }
 
