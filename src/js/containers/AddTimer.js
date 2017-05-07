@@ -5,7 +5,7 @@ import _                        from 'underscore';
 
 import Logger                   from '../components/Logger';
 import TimeTracker              from '../containers/TimeTracker';
-import { addTimer, updateTimer} from '../actions/actions/TimerActions';
+import { addTimer, updateTimer} from '../actions/TimerActions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('AddTimer');
