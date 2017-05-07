@@ -4,6 +4,7 @@ import TimerList            from '../containers/TimerList';
 import Summary              from '../containers/Summary';
 import Events               from '../enums/events';
 import AppIcon              from '../components/AppIcon';
+import Options              from '../components/Options';
 import { isElectronApp }    from '../utils/utils';
 
 // Require ipcRenderer only in electron app
@@ -39,7 +40,7 @@ let App = () => {
                 <div className="header clearfix">
                     <div className="row">
                         <div className="col-xs-12">
-                            <h1 className="app__title"><AppIcon /> Project Timer</h1>
+                            <h1 className="app__title"><AppIcon /> Project Timer <Options /></h1>
                         </div>
                     </div>
                     <AddTimer />

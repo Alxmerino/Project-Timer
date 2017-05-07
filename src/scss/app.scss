@@ -143,3 +143,15 @@ $titleBreak: 510px;
         color: #95a5a6;
     }
 }
+
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+
+    &__menu {
+        right: 0;
+        left: auto;
+    }
+}
