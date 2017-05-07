@@ -1,5 +1,5 @@
 import moment       from 'moment';
-import reducer      from '../src/js/reducers';
+import reducer      from '../src/js/reducers/timer';
 import TimeTracker  from '../src/js/containers/TimeTracker'
 
 // Defaults
