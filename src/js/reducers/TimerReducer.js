@@ -182,6 +182,16 @@ export default function reducer(state={
                         (timeDiff + timer.durationCycle) :
                         timeDiff;
 
+                    // Check if duration has reached planned time
+                    if (timer.plannedTime > 0) {
+                        let durationAsSecs = Math.round(moment.duration(timer.duration).asSeconds());
+                        let plannedAsSecs = moment.duration(timer.plannedTime).asSeconds();
+
+                        if (durationAsSecs === plannedAsSecs) {
+                            timer.status = TimerEvents.TIMER_DONE;
+                        }
+                    }
+
                     // Update local storage entry
                     Storage.set(id, timer);
                 }
