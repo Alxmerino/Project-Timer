@@ -150,6 +150,11 @@ $titleBreak: 510px;
     justify-content: flex-end;
     flex-grow: 1;
 
+    &__toggle {
+        border-top-right-radius: 4px !important;
+        border-bottom-right-radius: 4px !important;
+    }
+
     &__menu {
         right: 0;
         left: auto;

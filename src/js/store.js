@@ -33,7 +33,7 @@ persistState();
 const rootReducer = combineReducers({
     TimerReducer,
     AppReducer
-})
+});
 
 // Apply middleware
 const middleware = applyMiddleware(logger());
