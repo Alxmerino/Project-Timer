@@ -2,7 +2,6 @@ import React                from 'react';
 import AddTimer             from '../containers/AddTimer';
 import TimerList            from '../containers/TimerList';
 import Summary              from '../containers/Summary';
-import AppEvents            from '../enums/AppEvents';
 import AppIcon              from '../components/AppIcon';
 import Options              from '../components/Options';
 

@@ -5,7 +5,7 @@ const {
 const menubar = require('menubar');
 const path = require('path');
 const url = require('url');
-const Events = require('./src/js/enums/events');
+const AppEvents = require('./src/js/enums/AppEvents');
 
 /**
  *
@@ -65,16 +65,16 @@ mb.on('hide', () => {
  */
 ipcMain.on('async-message', (event, arg) => {
     switch(arg) {
-        case Events.QUIT:
+        case AppEvents.QUIT:
             mb.app.quit();
             break;
 
-        case Events.TIMER_START:
+        case AppEvents.TIMER_START:
             iconState.active = true;
             mb.tray.setImage(icons.active);
             break;
 
-        case Events.TIMER_STOP:
+        case AppEvents.TIMER_STOP:
             iconState.active = false;
             mb.tray.setImage(icons.hover);
             break;

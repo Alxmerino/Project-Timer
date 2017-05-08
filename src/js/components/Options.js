@@ -3,15 +3,33 @@ import { connect }          from 'react-redux';
 
 import { isElectronApp }    from '../utils/utils';
 import { toggleAppMenu }    from '../actions/AppActions';
+import AppEvents            from '../enums/AppEvents';
 import Logger               from '../components/Logger';
+
+// Require ipcRenderer only in electron app
+const { ipcRenderer }   = (isElectronApp()) ? window.require('electron') : {};
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Options');
 /* eslint-enable no-unused-vars */
 
 let Options = ({ onMenuToggle, menuOpen }) => {
+    // Bail early if it's not an Electron app
+    if (!isElectronApp()) {
+        return null;
+    }
+
     let isMenuOpen = (menuOpen) ? 'open' : '';
     let activeBtnClass = (menuOpen) ? 'btn-primary' : '';
+
+    /**
+     *
+     * @desc Handle electron quit event for electron App
+     *
+     */
+    let onQuit = () => {
+        ipcRenderer.send('async-message', AppEvents.QUIT);
+    };
 
     return (
         <div className={`options btn-group ${isMenuOpen}`}>
@@ -25,7 +43,7 @@ let Options = ({ onMenuToggle, menuOpen }) => {
             <ul className="options__menu dropdown-menu">
                 <li><a href="#">Focus</a></li>
                 <li role="separator" className="divider"></li>
-                <li><a href="#">Quit</a></li>
+                <li><a onClick={onQuit}>Quit</a></li>
             </ul>
         </div>
     );
