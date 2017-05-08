@@ -2,10 +2,11 @@ const {
     app,
     ipcMain,
     BrowserWindow } = require('electron');
-const menubar = require('menubar');
-const path = require('path');
-const url = require('url');
-const AppEvents = require('./src/js/enums/AppEvents');
+const menubar       = require('menubar');
+const path          = require('path');
+const url           = require('url');
+const AppEvents     = require('./src/js/enums/AppEvents');
+const TimerEvents   = require('./src/js/enums/TimerEvents');
 
 /**
  *
@@ -69,12 +70,12 @@ ipcMain.on('async-message', (event, arg) => {
             mb.app.quit();
             break;
 
-        case AppEvents.TIMER_START:
+        case TimerEvents.TIMER_START:
             iconState.active = true;
             mb.tray.setImage(icons.active);
             break;
 
-        case AppEvents.TIMER_STOP:
+        case TimerEvents.TIMER_STOP:
             iconState.active = false;
             mb.tray.setImage(icons.hover);
             break;
