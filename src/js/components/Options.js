@@ -30,7 +30,9 @@ let Options = ({ onMenuToggle, onFocusApp, menuOpen, focused }) => {
      *
      */
     let onQuit = () => {
-        ipcRenderer.send('async-message', AppEvents.QUIT);
+        ipcRenderer.send('async-message', {
+            event: AppEvents.QUIT
+        });
     };
 
     return (
@@ -60,7 +62,7 @@ let Options = ({ onMenuToggle, onFocusApp, menuOpen, focused }) => {
 Options.propTypes = {
     onMenuToggle:   PropTypes.func.isRequired,
     onFocusApp:     PropTypes.func.isRequired,
-    menuOpen:       PropTypes.bool
+    menuOpen:       PropTypes.bool,
     focused:        PropTypes.bool
 };
 
@@ -95,6 +97,7 @@ const mapDispatchToProps = (dispatch) => {
             // Toggle the opposite of current focus app
             focused = !focused;
             dispatch(toggleAppFocus(focused));
+            dispatch(toggleAppMenu(false));
         }
     };
 };

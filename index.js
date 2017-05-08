@@ -64,7 +64,7 @@ mb.on('hide', () => {
  *
  */
 ipcMain.on('async-message', (event, arg) => {
-    switch(arg) {
+    switch(arg.event) {
         case AppEvents.QUIT:
             mb.app.quit();
             break;
@@ -77,6 +77,11 @@ ipcMain.on('async-message', (event, arg) => {
         case AppEvents.TIMER_STOP:
             iconState.active = false;
             mb.tray.setImage(icons.hover);
+            break;
+
+        case AppEvents.FOCUSED:
+            let { focused } = arg.payload;
+            mb.setOption('alwaysOnTop', focused);
             break;
     }
 });

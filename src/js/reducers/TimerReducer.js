@@ -97,7 +97,9 @@ export default function reducer(state={
                     timer.timeTracker.start();
 
                     if (isElectronApp()) {
-                        ipcRenderer.send('async-message', TimerEvents.TIMER_START);
+                        ipcRenderer.send('async-message', {
+                            event: TimerEvents.TIMER_START
+                        });
                     }
 
                     // Update local storage
@@ -126,7 +128,9 @@ export default function reducer(state={
                     timer.timeTracker.stop();
 
                     if (isElectronApp()) {
-                        ipcRenderer.send('async-message', TimerEvents.TIMER_STOP);
+                        ipcRenderer.send('async-message', {
+                            event: TimerEvents.TIMER_STOP
+                        });
                     }
 
                     // Update local storage

@@ -24,6 +24,13 @@ export default function reducer(state={
 
             newState.focused = focused;
 
+            if (isElectronApp()) {
+                ipcRenderer.send('async-message', {
+                    event: AppEvents.FOCUSED,
+                    payload: {focused: newState.focused}
+                });
+            }
+
             return newState;
         }
     }
