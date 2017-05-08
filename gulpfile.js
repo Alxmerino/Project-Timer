@@ -32,6 +32,7 @@ function compile(watch) {
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(paths.dest.js))
         .once('end', function() {
+            // End process if not watching
             var date = new Date();
             console.log('-> build! ' + date.toJSON());
             if (!watch) {
@@ -67,7 +68,14 @@ gulp.task('apply-prod-environment', function() {
 });
 
 gulp.task('build', function() { return compile(); });
-gulp.task('watch', function() { return watch(); });
+
+/**
+ * Watch task
+ */
+gulp.task('watch', function () {
+    gulp.watch(paths.source.scss + '/**/*.scss', ['scss']);
+    gulp.watch(paths.source.js + '/**/*.js', watch);
+});
 
 /**
  * Local dev env

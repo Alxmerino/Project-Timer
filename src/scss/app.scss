@@ -3,6 +3,7 @@
  */
 $fontFamily: 'Paytone One', sans-serif;
 $titleBreak: 510px;
+$primary: #2c3e50;
 
 /**
  * Bootstrap Overrides
@@ -38,6 +39,7 @@ $titleBreak: 510px;
 .timer {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     &__stats {
         flex-grow: 1;
@@ -51,7 +53,7 @@ $titleBreak: 510px;
         margin-right: 10px;
 
         &:hover {
-            color: #2c3e50;
+            color: $primary;
 
             .active & {
                 color: #ffffff;
@@ -88,6 +90,36 @@ $titleBreak: 510px;
       max-width: 115px;
       cursor: pointer;
     }
+
+    &__descContainer {
+        width: 100%;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    &__descExcerpt {
+        vertical-align: bottom;
+        font-size: 80%;
+        color: #acb6c0;
+        cursor: pointer;
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__description {
+        padding-right: 45px;
+    }
+
+    &__descConfirm {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        top: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 }
 
 .timerSumary {
@@ -110,5 +142,39 @@ $titleBreak: 510px;
 
     &__legend {
         color: #95a5a6;
+    }
+}
+
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+
+    &__toggle {
+        border-top-right-radius: 4px !important;
+        border-bottom-right-radius: 4px !important;
+    }
+
+    &__menu {
+        right: 0;
+        left: auto;
+    }
+
+    &__link {
+        &.active {
+            color: #ffffff;
+            background-color: $primary;
+
+            .options__focus-icon {
+                display: inline-block;
+            }
+        }
+    }
+
+    &__focus-icon {
+        display: none;
+        font-size: 12px;
+        margin-top: 2px;
     }
 }

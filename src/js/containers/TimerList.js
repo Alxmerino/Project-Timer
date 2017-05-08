@@ -17,13 +17,16 @@ import {
     updateTimePlanned,
     toggleTitleChangeOn,
     toggleTitleChangeOff,
-    updateTitle }                   from '../actions';
+    updateTitle,
+    toggleDescInputOn,
+    toggleDescInputOff,
+    updateTimeDescription }         from '../actions/TimerActions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff }) => {
 
     return (
         <ul className="list-group">
@@ -43,6 +46,8 @@ let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onT
                     onPlannedEditOn={onPlannedEditOn}
                     onPlannedEditOff={onPlannedEditOff}
                     onPlannedUpdate={onPlannedUpdate}
+                    onDescEditOn={onDescEditOn}
+                    onDescEditOff={onDescEditOff}
                     key={timer.id}
                 />
             )}
@@ -71,6 +76,8 @@ TimerList.propTypes = {
     onPlannedEditOn:    PropTypes.func.isRequired,
     onPlannedEditOff:   PropTypes.func.isRequired,
     onPlannedUpdate:    PropTypes.func.isRequired,
+    onDescEditOn:       PropTypes.func.isRequired,
+    onDescEditOff:      PropTypes.func.isRequired,
 };
 
 /**
@@ -83,7 +90,7 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state.timers, (timer) => {
+    let timers = _.map(state.TimerReducer.timers, (timer) => {
         return timer;
     });
 
@@ -170,6 +177,15 @@ const mapDispatchToProps = (dispatch) => {
                 }
             }
         },
+        onDescEditOn: (id) => {
+            dispatch(toggleDescInputOn(id));
+        },
+        onDescEditOff: (id, proxyData) => {
+            // get the input value
+            let desc = proxyData.currentTarget.previousSibling.value;
+            dispatch(updateTimeDescription(id, desc));
+            dispatch(toggleDescInputOff(id));
+        }
     };
 };
 

@@ -1,7 +1,7 @@
 import _                from 'underscore';
 
 import TimeTracker      from '../containers/TimeTracker';
-import { updateTimer}   from '../actions';
+import { updateTimer}   from '../actions/TimerActions';
 import store            from '../store';
 
 class PersistStore {
@@ -9,7 +9,7 @@ class PersistStore {
         let state = store.getState();
 
         // Build a time tracker on every timer
-        _.each(state.timers, (timer) => {
+        _.each(state.TimerReducer.timers, (timer) => {
             let start = timer.started;
 
             timer.timeTracker = new TimeTracker(
