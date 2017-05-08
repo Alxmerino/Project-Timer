@@ -50,7 +50,7 @@ const mapStateToProps = (state) => {
     let totalWorked = 0;
     let totalPlanned = 0;
 
-    _.each(state.timers, (timer) => {
+    _.each(state.TimerReducer.timers, (timer) => {
         totalPlanned += timer.plannedTime;
         totalWorked += timer.duration;
     });
