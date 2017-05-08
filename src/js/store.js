@@ -1,29 +1,41 @@
 'use strict';
 
-import { applyMiddleware, createStore } from 'redux';
-import logger                           from 'redux-logger';
-import _                                from 'underscore';
+import {
+    createStore,
+    combineReducers,
+    applyMiddleware }   from 'redux';
+import logger           from 'redux-logger';
+import _                from 'underscore';
 
-import Storage                          from './helpers/Storage';
-import Logger                           from './components/Logger';
-import reducer                          from './reducers';
+import Storage          from './helpers/Storage';
+import Logger           from './components/Logger';
+import TimerReducer     from './reducers/TimerReducer';
+import AppReducer       from './reducers/AppReducer';
 
 /* eslint-disable no-unused-vars */
 const Debug = new Logger('Store');
 /* eslint-enable no-unused-vars */
 
 // Default state
-const preloadedState = {};
+const preloadedState = {
+    TimerReducer: {}
+};
 
 const persistState = (() => {
     let timers = Storage.all();
 
-    preloadedState.timers = _.toArray(timers);
+    preloadedState.TimerReducer.timers = _.toArray(timers);
 });
 
 persistState();
 
+// Combine reducers
+const rootReducer = combineReducers({
+    TimerReducer,
+    AppReducer
+});
+
 // Apply middleware
 const middleware = applyMiddleware(logger());
 
-export default createStore(reducer, preloadedState, middleware);
+export default createStore(rootReducer, preloadedState, middleware);

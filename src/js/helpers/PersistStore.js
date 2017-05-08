@@ -1,7 +1,7 @@
 import _                from 'underscore';
 
 import TimeTracker      from '../containers/TimeTracker';
-import { updateTimer}   from '../actions';
+import { updateTimer}   from '../actions/TimerActions';
 import store            from '../store';
 
 class PersistStore {

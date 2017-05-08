@@ -20,7 +20,7 @@ import {
     updateTitle,
     toggleDescInputOn,
     toggleDescInputOff,
-    updateTimeDescription }         from '../actions';
+    updateTimeDescription }         from '../actions/TimerActions';
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
@@ -90,7 +90,7 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state.timers, (timer) => {
+    let timers = _.map(state.TimerReducer.timers, (timer) => {
         return timer;
     });
 

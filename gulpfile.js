@@ -33,6 +33,8 @@ function compile(watch) {
         .pipe(gulp.dest(paths.dest.js))
         .once('end', function() {
             // End process if not watching
+            var date = new Date();
+            console.log('-> build! ' + date.toJSON());
             if (!watch) {
                 process.exit();
             }
