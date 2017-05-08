@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect }          from 'react-redux';
 
 import { isElectronApp }    from '../utils/utils';
-import { toggleAppMenu }    from '../actions/AppActions';
+import { toggleAppMenu,
+    toggleAppFocus }        from '../actions/AppActions';
 import AppEvents            from '../enums/AppEvents';
 import Logger               from '../components/Logger';
 
@@ -13,7 +14,7 @@ const { ipcRenderer }   = (isElectronApp()) ? window.require('electron') : {};
 let Debug = new Logger('Options');
 /* eslint-enable no-unused-vars */
 
-let Options = ({ onMenuToggle, menuOpen }) => {
+let Options = ({ onMenuToggle, onFocusApp, menuOpen, focused }) => {
     // Bail early if it's not an Electron app
     if (!isElectronApp()) {
         return null;
@@ -21,6 +22,7 @@ let Options = ({ onMenuToggle, menuOpen }) => {
 
     let isMenuOpen = (menuOpen) ? 'open' : '';
     let activeBtnClass = (menuOpen) ? 'btn-primary' : '';
+    let activeLinkClass = (focused) ? 'active' : '';
 
     /**
      *
@@ -41,9 +43,9 @@ let Options = ({ onMenuToggle, menuOpen }) => {
                 <span className="glyphicon glyphicon-cog" />
             </button>
             <ul className="options__menu dropdown-menu">
-                <li><a href="#">Focus</a></li>
+                <li><a href="#" className={`options__link ${activeLinkClass}`} onClick={() => onFocusApp(focused)}>Focus <span className="options__focus-icon glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></a></li>
                 <li role="separator" className="divider"></li>
-                <li><a onClick={onQuit}>Quit</a></li>
+                <li><a href="#" className="options__link" onClick={onQuit}>Quit</a></li>
             </ul>
         </div>
     );
@@ -56,8 +58,10 @@ let Options = ({ onMenuToggle, menuOpen }) => {
  *
  */
 Options.propTypes = {
-    onMenuToggle: PropTypes.func.isRequired,
-    menuOpen: PropTypes.bool
+    onMenuToggle:   PropTypes.func.isRequired,
+    onFocusApp:     PropTypes.func.isRequired,
+    menuOpen:       PropTypes.bool
+    focused:        PropTypes.bool
 };
 
 /**
@@ -85,6 +89,12 @@ const mapDispatchToProps = (dispatch) => {
             // Toggle the opposite of current menu state
             isMenuOpen = !isMenuOpen;
             dispatch(toggleAppMenu(isMenuOpen));
+        },
+
+        onFocusApp: (focused) => {
+            // Toggle the opposite of current focus app
+            focused = !focused;
+            dispatch(toggleAppFocus(focused));
         }
     };
 };

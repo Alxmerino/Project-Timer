@@ -1,9 +1,9 @@
 import AppEvents   from '../enums/AppEvents';
 
-export const func = () => {
+export const toggleAppFocus = (focused) => {
     return {
         type: AppEvents.FOCUSED,
-        payload: {}
+        payload: {focused}
     };
 };
 
@@ -13,4 +13,3 @@ export const toggleAppMenu = (menuOpen) => {
         payload: {menuOpen}
     };
 };
-
