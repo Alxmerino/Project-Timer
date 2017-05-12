@@ -19,20 +19,16 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
 
     switch (status) {
         case TimerEvents.TIMER_DONE:
-            statusClass = 'list-group-item-info';
-            active = '';
+            statusClass = 'timer--done';
             break;
         case TimerEvents.TIMER_ERROR:
-            statusClass = 'list-group-item-warning';
-            active = '';
+            statusClass = 'timer--error';
             break;
         case TimerEvents.TIMER_OVERTIME:
-            statusClass = 'list-group-item-danger';
-            active = '';
+            statusClass = 'timer--overtime';
             break;
         case TimerEvents.TIMER_LOGGED:
-            statusClass = 'list-group-item-success';
-            active = '';
+            statusClass = 'timer--logged';
             break;
     }
 
