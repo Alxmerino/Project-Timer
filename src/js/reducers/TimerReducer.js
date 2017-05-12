@@ -188,8 +188,16 @@ export default function reducer(state={
                         let durationAsSecs = Math.round(moment.duration(timer.duration).asSeconds());
                         let plannedAsSecs = moment.duration(timer.plannedTime).asSeconds();
 
+                        // The timer has reached its planned time
+                        // @TODO Should the timer be paused here?
                         if (durationAsSecs === plannedAsSecs) {
                             timer.status = TimerEvents.TIMER_DONE;
+                            // Fire alert
+                        }
+
+                        // The timer is in overtime!
+                        if (durationAsSecs > plannedAsSecs) {
+                            timer.status = TimerEvents.TIMER_OVERTIME;
                         }
                     }
 
