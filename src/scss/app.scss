@@ -80,6 +80,8 @@ $error: #e74c3c;
         margin-right: 20px;
         flex-grow: 5;
         max-width: 350px;
+        position: relative;
+        z-index: 100;
     }
 
     &__title {
@@ -140,6 +142,7 @@ $error: #e74c3c;
             width: 8px;
             transition-duration: 0.25s;
             transition-property: width, opacity;
+            z-index: 0;
         }
         &:hover {
             &:before {
