@@ -70,16 +70,13 @@ gulp.task('apply-prod-environment', function() {
 gulp.task('build', function() { return compile(); });
 
 /**
- * Watch task
- */
-gulp.task('watch', function () {
-    gulp.watch(paths.source.scss + '/**/*.scss', ['scss']);
-    gulp.watch(paths.source.js + '/**/*.js', watch);
-});
-
-/**
  * Local dev env
  */
-gulp.task('dev', ['connect', 'watch']);
+// gulp.task('dev', ['connect', 'watch']);
+gulp.task('dev', () => {
+    connect.server();
+    gulp.watch(paths.source.scss + '/**/*.scss', ['scss']);
+    return watch();
+});
 
 gulp.task('default', ['apply-prod-environment', 'build']);
