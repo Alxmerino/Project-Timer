@@ -8,6 +8,7 @@ let gulpTasks   = require('gulp-generic-build')(gulp, configFile);
 let paths       = require(configFile);
 let sourcemaps  = require("gulp-sourcemaps");
 let connect     = require('gulp-connect');
+let notify      = require("gulp-notify");
 const env       = gutil.env._[0];
 
 // New ES6 project with Babel, Browserify & Gulp
@@ -38,7 +39,8 @@ function compile(watch) {
             if (!watch) {
                 process.exit();
             }
-        });
+        })
+        .pipe(notify("App - Build Complete!"));
     }
 
     if (watch) {
