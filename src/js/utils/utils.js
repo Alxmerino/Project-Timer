@@ -16,4 +16,4 @@ const isElectronApp = () => {
 
 module.exports = {
     isElectronApp
-}
+};

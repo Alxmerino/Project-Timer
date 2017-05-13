@@ -6,7 +6,8 @@ const menubar = require('menubar');
 const path = require('path');
 const url = require('url');
 const AppEvents = require('./src/js/enums/AppEvents');
-
+const TimerEvents = require('./src/js/enums/TimerEvents');
+const Notification = require('./src/js/utils/Notification');
 /**
  *
  * Icons Map
@@ -82,6 +83,15 @@ ipcMain.on('async-message', (event, arg) => {
         case AppEvents.FOCUSED:
             let { focused } = arg.payload;
             mb.setOption('alwaysOnTop', focused);
+            break;
+
+        case TimerEvents.TIMER_DONE:
+            let { timer } = arg.payload;
+
+            Notification(timer);
+            break;
+
+        case TimerEvents.TIMER_OVERTIME:
             break;
     }
 });
