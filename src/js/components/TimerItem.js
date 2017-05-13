@@ -1,11 +1,12 @@
-import React, { PropTypes } from 'react';
+const React                = require('react');
+const PropTypes            = React.PropTypes;
 
-import {
+const {
     formatTime,
-    getTimeIn }             from '../helpers';
-import TimerTitle           from '../components/TimerTitle';
-import Logger               from '../components/Logger';
-import TimerEvents          from '../enums/TimerEvents';
+    getTimeIn }            = require('../helpers');
+const TimerTitle           = require('../components/TimerTitle');
+const Logger               = require('../components/Logger');
+const TimerEvents          = require('../enums/TimerEvents');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerItem');
@@ -164,4 +165,4 @@ TimerItem.propTypes = {
     started:            PropTypes.bool,
 };
 
-export default TimerItem;
+module.exports = TimerItem;

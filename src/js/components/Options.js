@@ -1,11 +1,12 @@
-import React, { PropTypes } from 'react';
-import { connect }          from 'react-redux';
+const React                = require('react');
+const PropTypes            = React.PropTypes;
+const { connect }          = require('react-redux');
 
-import { isElectronApp }    from '../utils/utils';
-import { toggleAppMenu,
-    toggleAppFocus }        from '../actions/AppActions';
-import AppEvents            from '../enums/AppEvents';
-import Logger               from '../components/Logger';
+const { isElectronApp }    = require('../utils/utils');
+const { toggleAppMenu,
+    toggleAppFocus }       = require('../actions/AppActions');
+const AppEvents            = require('../enums/AppEvents');
+const Logger               = require('../components/Logger');
 
 // Require ipcRenderer only in electron app
 const { ipcRenderer }   = (isElectronApp()) ? window.require('electron') : {};
@@ -108,4 +109,4 @@ Options = connect(
     mapDispatchToProps
 )(Options);
 
-export default Options;
+module.exports = Options;

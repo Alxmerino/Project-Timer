@@ -1,5 +1,5 @@
-import moment from 'moment';
-import 'moment-duration-format';
+const moment = require('moment');
+require('moment-duration-format');
 
 /**
  * @desc Format duration time string
@@ -7,7 +7,7 @@ import 'moment-duration-format';
  * @param  {string} format
  * @return {String}
  */
-export const formatTime = (time, format) => {
+const formatTime = (time, format) => {
     format = (typeof(format) !== 'undefined') ? format : 'minutes';
 
     return moment.duration(time, format).format('h:mm:ss', { trim: false });
@@ -19,7 +19,7 @@ export const formatTime = (time, format) => {
  * @param  {String} format
  * @return {Number}
  */
-export const getTimeIn = (duration, format) => {
+const getTimeIn = (duration, format) => {
     if (!duration) {
         return 0;
     }
@@ -34,4 +34,9 @@ export const getTimeIn = (duration, format) => {
             return (duration/1000);
         }
     }
+};
+
+module.exports = {
+    getTimeIn,
+    formatTime
 };

@@ -1,9 +1,9 @@
-import AppEvents            from '../enums/AppEvents';
-import { isElectronApp }    from '../utils/utils';
+const AppEvents            = require('../enums/AppEvents');
+const { isElectronApp }    = require('../utils/utils');
 // Require ipcRenderer only in electron app
-const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
+const { ipcRenderer }      = (isElectronApp()) ? window.require('electron') : {};
 
-export default function reducer(state={
+module.exports = function reducer(state={
     menuOpen: false,
     focused: false
 }, action) {
@@ -36,4 +36,4 @@ export default function reducer(state={
     }
 
     return state;
-}
+};

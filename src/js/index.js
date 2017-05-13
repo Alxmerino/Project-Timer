@@ -1,13 +1,13 @@
 'use strict';
 
-import React            from 'react';
-import { render }       from 'react-dom';
-import { Provider }     from 'react-redux';
+const React            = require('react');
+const { render }       = require('react-dom');
+const { Provider }     = require('react-redux');
 
-import App              from './components/App';
-import Logger           from './components/Logger';
-import PersistStore     from './helpers/PersistStore';
-import store            from './store';
+const App              = require('./components/App');
+const Logger           = require('./components/Logger');
+const PersistStore     = require('./helpers/PersistStore');
+const store            = require('./store');
 
 const app = document.getElementById('app');
 /* eslint-disable no-unused-vars */

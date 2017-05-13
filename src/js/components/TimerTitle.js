@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+const React                = require('react');
+const PropTypes            = React.PropTypes;
 
 const TimerTitle = (props) => {
     let descExcerpt = (props.description && props.description.length) ?
@@ -38,4 +39,4 @@ TimerTitle.propTypes = {
     editingTitle:       PropTypes.bool,
 };
 
-export default TimerTitle;
+module.exports = TimerTitle;

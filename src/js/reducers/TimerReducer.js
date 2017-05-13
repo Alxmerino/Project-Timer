@@ -1,9 +1,9 @@
-import _                    from 'underscore';
-import moment               from 'moment';
-import Storage              from '../helpers/Storage';
-import Logger               from '../components/Logger';
-import TimerEvents               from '../enums/TimerEvents';
-import { isElectronApp }    from '../utils/utils';
+const _                    = require('underscore');
+const moment               = require('moment');
+const Storage              = require('../helpers/Storage');
+const Logger               = require('../components/Logger');
+const TimerEvents          = require('../enums/TimerEvents');
+const { isElectronApp }    = require('../utils/utils');
 
 // Require ipcRenderer only in electron app
 const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
@@ -11,7 +11,7 @@ const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {
 let Debug = new Logger('Reducer');
 /* eslint-enable no-unused-vars */
 
-export default function reducer(state={
+module.exports = function reducer(state={
     timers: []
 }, action) {
 
@@ -152,6 +152,7 @@ export default function reducer(state={
                     timer.duration = 0;
                     delete timer.durationCycle;
                     delete timer.status;
+                    delete timer.pingedIpc;
 
                     // Reset the start date so we can start again from 0
                     timer.startTime = moment.now();
@@ -192,12 +193,29 @@ export default function reducer(state={
                         // @TODO Should the timer be paused here?
                         if (durationAsSecs === plannedAsSecs) {
                             timer.status = TimerEvents.TIMER_DONE;
-                            // Fire alert
+
+                            // Electron alert
+                            if (isElectronApp()) {
+                                ipcRenderer.send('async-message', {
+                                    event: TimerEvents.TIMER_DONE,
+                                    payload: { timer }
+                                });
+                            }
                         }
 
                         // The timer is in overtime!
                         if (durationAsSecs > plannedAsSecs) {
                             timer.status = TimerEvents.TIMER_OVERTIME;
+                            timer.pingedIpc = timer.pingedIpc || false;
+
+                            // Electron alert
+                            if (isElectronApp() && !timer.pingedIpc) {
+                                ipcRenderer.send('async-message', {
+                                    event: TimerEvents.TIMER_OVERTIME
+                                });
+
+                                timer.pingedIpc = true;
+                            }
                         }
                     }
 
@@ -457,4 +475,4 @@ export default function reducer(state={
     }
 
     return state;
-}
+};

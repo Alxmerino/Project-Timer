@@ -1,9 +1,9 @@
-import React                from 'react';
-import AddTimer             from '../containers/AddTimer';
-import TimerList            from '../containers/TimerList';
-import Summary              from '../containers/Summary';
-import AppIcon              from '../components/AppIcon';
-import Options              from '../components/Options';
+const React      = require('react');
+const AddTimer   = require('../containers/AddTimer');
+const TimerList  = require('../containers/TimerList');
+const Summary    = require('../containers/Summary');
+const AppIcon    = require('../components/AppIcon');
+const Options    = require('../components/Options');
 
 let App = () => {
 
@@ -42,4 +42,4 @@ let App = () => {
     );
 };
 
-export default App;
+module.exports = App;

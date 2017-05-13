@@ -1,8 +1,8 @@
-import _                from 'underscore';
+const _                = require('underscore');
 
-import TimeTracker      from '../containers/TimeTracker';
-import { updateTimer}   from '../actions/TimerActions';
-import store            from '../store';
+const TimeTracker      = require('../containers/TimeTracker');
+const { updateTimer}   = require('../actions/TimerActions');
+const store            = require('../store');
 
 class PersistStore {
     constructor() {
@@ -20,4 +20,4 @@ class PersistStore {
     }
 }
 
-export default PersistStore;
+module.exports = PersistStore;

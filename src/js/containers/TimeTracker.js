@@ -1,7 +1,7 @@
-import _        from 'underscore';
-import moment   from 'moment';
-import Logger   from '../components/Logger';
-import          '../vendors/moment-timer';
+const _        = require('underscore');
+const moment   = require('moment');
+const Logger   = require('../components/Logger');
+require('../vendors/moment-timer');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimeTracker');
@@ -21,4 +21,4 @@ let TimeTracker = (callback, options) => {
 
 };
 
-export default TimeTracker;
+module.exports = TimeTracker;
