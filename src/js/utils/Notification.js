@@ -1,4 +1,3 @@
-const path = require('path');
 /**
  *
  * @desc Small wrapper to reuse notifications
@@ -6,22 +5,30 @@ const path = require('path');
  * @return {Object}
  *
  */
+const path = require('path');
 const notifier = require('node-notifier');
 const {
     getTimeIn,
     formatTime } = require('../helpers');
 
-const Notification = (timer) => {
+const Notification = (opts, callback) => {
+    let { timer, status } = opts;
     let durationInSeconds = getTimeIn(timer.duration, 'seconds');
     let plannedTimeInSeconds = getTimeIn(timer.plannedTime, 'seconds');
-    let iconPath = path.dirname(path.dirname(__dirname));
+    let srcPath = path.dirname(path.dirname(__dirname));
 
-    return notifier.notify({
+    notifier.notify({
         title: timer.title,
+        subtitle: status,
         message: `Worked/Planned - ${formatTime(durationInSeconds, 'seconds')}/${formatTime(plannedTimeInSeconds, 'seconds')}`,
-        sound: 'Sosumi',
-        icon: path.join(iconPath, 'img/app-notification-icon.png'),
-        timeout: 10
+        sound: 'Ping',
+        icon: path.join(srcPath, 'img/app-notification-icon.png'),
+        timeout: 60,
+        wait: true
+    });
+
+    notifier.on('click', (notifierObject, options) => {
+        callback(notifierObject, options);
     });
 };
 
