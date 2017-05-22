@@ -1,9 +1,12 @@
-const _                    = require('underscore');
-const moment               = require('moment');
-const Storage              = require('../helpers/Storage');
-const Logger               = require('../components/Logger');
-const TimerEvents          = require('../enums/TimerEvents');
-const { isElectronApp }    = require('../utils/utils');
+const _                         = require('underscore');
+const moment                    = require('moment');
+const Storage                   = require('../helpers/Storage');
+const Logger                    = require('../components/Logger');
+const TimerEvents               = require('../enums/TimerEvents');
+const {
+    getTimeIn,
+    getIpcPingInterval }        = require('../helpers');
+const { isElectronApp }         = require('../utils/utils');
 
 // Require ipcRenderer only in electron app
 const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
@@ -153,6 +156,7 @@ module.exports = function reducer(state={
                     delete timer.durationCycle;
                     delete timer.status;
                     delete timer.pingedIpc;
+                    delete timer.timeout;
 
                     // Reset the start date so we can start again from 0
                     timer.startTime = moment.now();
@@ -186,12 +190,14 @@ module.exports = function reducer(state={
 
                     // Check if duration has reached planned time
                     if (timer.plannedTime > 0) {
-                        let durationAsSecs = Math.round(moment.duration(timer.duration).asSeconds());
-                        let plannedAsSecs = moment.duration(timer.plannedTime).asSeconds();
+                        let actualDuration = moment.duration(timer.duration);
+                        let plannedDuration = moment.duration(timer.plannedTime);
+                        let actualAsSecs = Math.round(actualDuration.asSeconds());
+                        let plannedAsSecs = plannedDuration.asSeconds();
 
                         // The timer has reached its planned time
                         // @TODO Should the timer be paused here?
-                        if (durationAsSecs === plannedAsSecs) {
+                        if (actualAsSecs === plannedAsSecs) {
                             timer.status = TimerEvents.TIMER_DONE;
 
                             // Electron alert
@@ -204,17 +210,33 @@ module.exports = function reducer(state={
                         }
 
                         // The timer is in overtime!
-                        if (durationAsSecs > plannedAsSecs) {
+                        if (actualAsSecs > plannedAsSecs) {
                             timer.status = TimerEvents.TIMER_OVERTIME;
-                            timer.pingedIpc = timer.pingedIpc || false;
+                            timer.pingedIpc = timer.pingedIpc || getIpcPingInterval(null);
 
-                            // Electron alert
-                            if (isElectronApp() && !timer.pingedIpc) {
-                                ipcRenderer.send('async-message', {
-                                    event: TimerEvents.TIMER_OVERTIME
-                                });
+                            // Reached ping timeout, ping IPC
+                            if (actualAsSecs === timer.timeout) {
+                                // Get new interval
+                                timer.pingedIpc = getIpcPingInterval(timer.pingedIpc);
 
-                                timer.pingedIpc = true;
+                                // Electron alert
+                                if (isElectronApp()) {
+                                    ipcRenderer.send('async-message', {
+                                        event: TimerEvents.TIMER_OVERTIME,
+                                        payload: { timer }
+                                    });
+                                }
+
+                                // Clear timeout prop
+                                delete timer.timeout;
+                            }
+
+                            // Set timeout to ping the IPC
+                            if (typeof(timer.timeout) === 'undefined') {
+                                // ping time in minutes
+                                let pingIn = moment.duration(timer.pingedIpc, 'm');
+                                // Timeout as seconds because duration is in seconds
+                                timer.timeout = Math.round(actualDuration.add(pingIn).asSeconds());
                             }
                         }
                     }
