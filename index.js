@@ -65,17 +65,21 @@ mb.on('hide', () => {
  *
  */
 ipcMain.on('async-message', (event, arg) => {
+    let timer = null;
+    let status = '';
+    let notification = null;
+
     switch(arg.event) {
         case AppEvents.QUIT:
             mb.app.quit();
             break;
 
-        case AppEvents.TIMER_START:
+        case TimerEvents.TIMER_START:
             iconState.active = true;
             mb.tray.setImage(icons.active);
             break;
 
-        case AppEvents.TIMER_STOP:
+        case TimerEvents.TIMER_STOP:
             iconState.active = false;
             mb.tray.setImage(icons.hover);
             break;
@@ -86,12 +90,21 @@ ipcMain.on('async-message', (event, arg) => {
             break;
 
         case TimerEvents.TIMER_DONE:
-            let { timer } = arg.payload;
+            timer = arg.payload;
+            status = 'Timer done!';
 
-            Notification(timer);
+            notification = Notification({timer, status}, () => {
+                mb.showWindow();
+            });
             break;
 
         case TimerEvents.TIMER_OVERTIME:
+            timer = arg.payload;
+            status = 'Timer overtime!';
+
+            notification = Notification({timer, status}, () => {
+                mb.showWindow();
+            });
             break;
     }
 });
