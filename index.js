@@ -90,7 +90,7 @@ ipcMain.on('async-message', (event, arg) => {
             break;
 
         case TimerEvents.TIMER_DONE:
-            timer = arg.payload;
+            timer = arg.payload.timer;
             status = 'Timer done!';
 
             notification = Notification({timer, status}, () => {
@@ -99,7 +99,7 @@ ipcMain.on('async-message', (event, arg) => {
             break;
 
         case TimerEvents.TIMER_OVERTIME:
-            timer = arg.payload;
+            timer = arg.payload.timer;
             status = 'Timer overtime!';
 
             notification = Notification({timer, status}, () => {
