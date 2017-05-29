@@ -3,13 +3,14 @@ const moment                    = require('moment');
 const Storage                   = require('../helpers/Storage');
 const Logger                    = require('../components/Logger');
 const TimerEvents               = require('../enums/TimerEvents');
-const {
-    getTimeIn,
-    getIpcPingInterval }        = require('../helpers');
+const {getIpcPingInterval }     = require('../helpers');
 const { isElectronApp }         = require('../utils/utils');
+const { TimerNotify,
+    requestNotificationPermission } = require('../utils/Notification');
 
 // Require ipcRenderer only in electron app
 const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
+
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
 /* eslint-enable no-unused-vars */
@@ -23,6 +24,9 @@ module.exports = function reducer(state={
             let newTimer = action.payload;
             let id = newTimer.id;
             let newState = _.assign({}, state);
+
+            // Request Notification permissions
+            requestNotificationPermission();
 
             // Add local storage entry
             Storage.set(id, newTimer);
@@ -199,6 +203,9 @@ module.exports = function reducer(state={
                         // @TODO Should the timer be paused here?
                         if (actualAsSecs === plannedAsSecs) {
                             timer.status = TimerEvents.TIMER_DONE;
+
+                            // Fire notification
+                            timer.notification = TimerNotify({timer});
 
                             // Electron alert
                             if (isElectronApp()) {
