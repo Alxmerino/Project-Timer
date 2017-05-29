@@ -205,7 +205,7 @@ module.exports = function reducer(state={
                             timer.status = TimerEvents.TIMER_DONE;
 
                             // Fire notification
-                            timer.notification = TimerNotify({timer});
+                            TimerNotify({timer});
 
                             // Electron alert
                             if (isElectronApp()) {
@@ -221,10 +221,13 @@ module.exports = function reducer(state={
                             timer.status = TimerEvents.TIMER_OVERTIME;
                             timer.pingedIpc = timer.pingedIpc || getIpcPingInterval(null);
 
-                            // Reached ping timeout, ping IPC
+                            // Reached ping timeout
                             if (actualAsSecs === timer.timeout) {
                                 // Get new interval
                                 timer.pingedIpc = getIpcPingInterval(timer.pingedIpc);
+
+                                // Fire notification
+                                TimerNotify({timer});
 
                                 // Electron alert
                                 if (isElectronApp()) {
