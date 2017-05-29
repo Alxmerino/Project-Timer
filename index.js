@@ -7,7 +7,7 @@ const path = require('path');
 const url = require('url');
 const AppEvents = require('./src/js/enums/AppEvents');
 const TimerEvents = require('./src/js/enums/TimerEvents');
-const Notification = require('./src/js/utils/Notification');
+
 /**
  *
  * Icons Map
@@ -90,21 +90,9 @@ ipcMain.on('async-message', (event, arg) => {
             break;
 
         case TimerEvents.TIMER_DONE:
-            timer = arg.payload.timer;
-            status = 'Timer done!';
-
-            notification = Notification({timer, status}, () => {
-                mb.showWindow();
-            });
             break;
 
         case TimerEvents.TIMER_OVERTIME:
-            timer = arg.payload.timer;
-            status = 'Timer overtime!';
-
-            notification = Notification({timer, status}, () => {
-                mb.showWindow();
-            });
             break;
     }
 });
