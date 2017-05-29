@@ -1,134 +1,157 @@
-import TimerEvents from '../enums/TimerEvents';
+const TimerEvents = require('../enums/TimerEvents');
 
-export const addTimer = (timer) => {
+const addTimer = (timer) => {
     return {
         type: TimerEvents.TIMER_ADD,
         payload: timer
     };
 };
 
-export const destroyTimer = (id) => {
+const destroyTimer = (id) => {
     return {
         type: TimerEvents.TIMER_DESTROY,
         payload: id
     };
 };
 
-export const startTimer = (id) => {
+const startTimer = (id) => {
     return {
         type: TimerEvents.TIMER_START,
         payload: id
     };
 };
 
-export const stopTimer = (id) => {
+const stopTimer = (id) => {
     return {
         type: TimerEvents.TIMER_STOP,
         payload: id
     };
 };
 
-export const toggleTimer = (id) => {
+const toggleTimer = (id) => {
     return {
         type: TimerEvents.TIMER_TOGGLE,
         payload: id
     };
 };
 
-export const updateTimer = (id) => {
+const updateTimer = (id) => {
     return {
         type: TimerEvents.TIMER_UPDATE,
         payload: id
     };
 };
 
-export const toggleTitleChangeOn = (id) => {
+const toggleTitleChangeOn = (id) => {
     return {
         type: TimerEvents.TIMER_TITLE_CHANGE_ON,
         payload: id
     };
 };
 
-export const toggleTitleChangeOff = (id) => {
+const toggleTitleChangeOff = (id) => {
     return {
         type: TimerEvents.TIMER_TITLE_CHANGE_OFF,
         payload: id
     };
 };
 
-export const updateTitle = (id, title) => {
+const updateTitle = (id, title) => {
     return {
         type: TimerEvents.TIMER_TITLE_UPDATE,
         payload: {id, title}
     };
 };
 
-export const toggleDurationInputOn = (id) => {
+const toggleDurationInputOn = (id) => {
     return {
         type: TimerEvents.TIMER_DURATION_ON,
         payload: {id}
     };
 };
 
-export const toggleDurationInputOff = (id) => {
+const toggleDurationInputOff = (id) => {
     return {
         type: TimerEvents.TIMER_DURATION_OFF,
         payload: {id}
     };
 };
 
-export const updateTimeDuration = (id, timeStr) => {
+const updateTimeDuration = (id, timeStr) => {
     return {
         type: TimerEvents.TIMER_DURATION_UPDATE,
         payload: {id, timeStr}
     };
 };
 
-export const togglePlannedInputOn = (id) => {
+const togglePlannedInputOn = (id) => {
     return {
         type: TimerEvents.TIMER_PLANNED_ON,
         payload: {id}
     };
 };
 
-export const togglePlannedInputOff = (id) => {
+const togglePlannedInputOff = (id) => {
     return {
         type: TimerEvents.TIMER_PLANNED_OFF,
         payload: {id}
     };
 };
 
-export const updateTimePlanned = (id, timeStr) => {
+const updateTimePlanned = (id, timeStr) => {
     return {
         type: TimerEvents.TIMER_PLANNED_UPDATE,
         payload: {id, timeStr}
     };
 };
 
-export const toggleDescInputOn = (id) => {
+const toggleDescInputOn = (id) => {
     return {
         type: TimerEvents.TIMER_DESCRIPTION_ON,
         payload: {id}
     };
 };
 
-export const toggleDescInputOff = (id) => {
+const toggleDescInputOff = (id) => {
     return {
         type: TimerEvents.TIMER_DESCRIPTION_OFF,
         payload: {id}
     };
 };
 
-export const updateTimeDescription = (id, desc) => {
+const updateTimeDescription = (id, desc) => {
     return {
         type: TimerEvents.TIMER_DESCRIPTION_UPDATE,
         payload: {id, desc}
     };
 };
 
-export const resetTimer = (id) => {
+const resetTimer = (id) => {
     return {
         type: TimerEvents.TIMER_RESET,
         payload: id
     };
+};
+
+module.exports = {
+    TimerEvents,
+    addTimer,
+    destroyTimer,
+    startTimer,
+    stopTimer,
+    toggleTimer,
+    updateTimer,
+    toggleTitleChangeOn,
+    toggleTitleChangeOff,
+    updateTitle,
+    toggleDurationInputOn,
+    toggleDurationInputOff,
+    updateTimeDuration,
+    togglePlannedInputOn,
+    togglePlannedInputOff,
+    updateTimePlanned,
+    toggleDescInputOn,
+    toggleDescInputOff,
+    updateTimeDescription,
+    resetTimer
 };

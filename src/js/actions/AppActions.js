@@ -1,15 +1,20 @@
-import AppEvents   from '../enums/AppEvents';
+const AppEvents = require('../enums/AppEvents');
 
-export const toggleAppFocus = (focused) => {
+const toggleAppFocus = (focused) => {
     return {
         type: AppEvents.FOCUSED,
         payload: {focused}
     };
 };
 
-export const toggleAppMenu = (menuOpen) => {
+const toggleAppMenu = (menuOpen) => {
     return {
         type: AppEvents.MENU_TOGGLE,
         payload: {menuOpen}
     };
+};
+
+module.exports = {
+    toggleAppFocus,
+    toggleAppMenu
 };

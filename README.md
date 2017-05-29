@@ -60,5 +60,8 @@ When adding planned time (How long?) field, you can add time in any of the follo
 - [ ] Integrate Per-day project hours (calendar?)
 - [x] test!!!
 
+## Known issues
+- Notification sound not working on desktop app
+
 ## Special Thanks
 - [Nick](https://twitter.com/ncsfoo) For creating such amazing app icon!

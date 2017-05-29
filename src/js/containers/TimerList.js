@@ -1,10 +1,11 @@
-import React, { PropTypes }         from 'react';
-import { connect }                  from 'react-redux';
-import _                            from 'underscore';
+const React                        = require('react');
+const PropTypes                    = React.PropTypes;
+const { connect }                  = require('react-redux');
+const _                            = require('underscore');
 
-import TimerItem                    from '../components/TimerItem';
-import Logger                       from '../components/Logger';
-import {
+const TimerItem                    = require('../components/TimerItem');
+const Logger                       = require('../components/Logger');
+const {
     stopTimer,
     startTimer,
     resetTimer,
@@ -20,7 +21,7 @@ import {
     updateTitle,
     toggleDescInputOn,
     toggleDescInputOff,
-    updateTimeDescription }         from '../actions/TimerActions';
+    updateTimeDescription }         = require('../actions/TimerActions');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
@@ -194,4 +195,4 @@ TimerList = connect(
     mapDispatchToProps
 )(TimerList);
 
-export default TimerList;
+module.exports = TimerList;

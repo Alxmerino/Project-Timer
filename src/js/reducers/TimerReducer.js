@@ -1,17 +1,21 @@
-import _                    from 'underscore';
-import moment               from 'moment';
-import Storage              from '../helpers/Storage';
-import Logger               from '../components/Logger';
-import TimerEvents               from '../enums/TimerEvents';
-import { isElectronApp }    from '../utils/utils';
+const _                         = require('underscore');
+const moment                    = require('moment');
+const Storage                   = require('../helpers/Storage');
+const Logger                    = require('../components/Logger');
+const TimerEvents               = require('../enums/TimerEvents');
+const {getIpcPingInterval }     = require('../helpers');
+const { isElectronApp }         = require('../utils/utils');
+const { TimerNotify,
+    requestNotificationPermission } = require('../utils/Notification');
 
 // Require ipcRenderer only in electron app
 const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
+
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
 /* eslint-enable no-unused-vars */
 
-export default function reducer(state={
+module.exports = function reducer(state={
     timers: []
 }, action) {
 
@@ -20,6 +24,9 @@ export default function reducer(state={
             let newTimer = action.payload;
             let id = newTimer.id;
             let newState = _.assign({}, state);
+
+            // Request Notification permissions
+            requestNotificationPermission();
 
             // Add local storage entry
             Storage.set(id, newTimer);
@@ -151,6 +158,9 @@ export default function reducer(state={
                 if (timer.id === id) {
                     timer.duration = 0;
                     delete timer.durationCycle;
+                    delete timer.status;
+                    delete timer.pingedIpc;
+                    delete timer.timeout;
 
                     // Reset the start date so we can start again from 0
                     timer.startTime = moment.now();
@@ -181,6 +191,65 @@ export default function reducer(state={
                     timer.duration = (timer.durationCycle) ?
                         (timeDiff + timer.durationCycle) :
                         timeDiff;
+
+                    // Check if duration has reached planned time
+                    if (timer.plannedTime > 0) {
+                        let actualDuration = moment.duration(timer.duration);
+                        let plannedDuration = moment.duration(timer.plannedTime);
+                        let actualAsSecs = Math.round(actualDuration.asSeconds());
+                        let plannedAsSecs = plannedDuration.asSeconds();
+
+                        // The timer has reached its planned time
+                        // @TODO Should the timer be paused here?
+                        if (actualAsSecs === plannedAsSecs) {
+                            timer.status = TimerEvents.TIMER_DONE;
+
+                            // Fire notification
+                            TimerNotify({timer});
+
+                            // Electron alert
+                            if (isElectronApp()) {
+                                ipcRenderer.send('async-message', {
+                                    event: TimerEvents.TIMER_DONE,
+                                    payload: { timer }
+                                });
+                            }
+                        }
+
+                        // The timer is in overtime!
+                        if (actualAsSecs > plannedAsSecs) {
+                            timer.status = TimerEvents.TIMER_OVERTIME;
+                            timer.pingedIpc = timer.pingedIpc || getIpcPingInterval(null);
+
+                            // Reached ping timeout
+                            if (actualAsSecs === timer.timeout) {
+                                // Get new interval
+                                timer.pingedIpc = getIpcPingInterval(timer.pingedIpc);
+
+                                // Fire notification
+                                TimerNotify({timer});
+
+                                // Electron alert
+                                if (isElectronApp()) {
+                                    ipcRenderer.send('async-message', {
+                                        event: TimerEvents.TIMER_OVERTIME,
+                                        payload: { timer }
+                                    });
+                                }
+
+                                // Clear timeout prop
+                                delete timer.timeout;
+                            }
+
+                            // Set timeout to ping the IPC
+                            if (typeof(timer.timeout) === 'undefined') {
+                                // ping time in minutes
+                                let pingIn = moment.duration(timer.pingedIpc, 'm');
+                                // Timeout as seconds because duration is in seconds
+                                timer.timeout = Math.round(actualDuration.add(pingIn).asSeconds());
+                            }
+                        }
+                    }
 
                     // Update local storage entry
                     Storage.set(id, timer);
@@ -438,4 +507,4 @@ export default function reducer(state={
     }
 
     return state;
-}
+};

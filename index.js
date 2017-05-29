@@ -65,6 +65,10 @@ mb.on('hide', () => {
  *
  */
 ipcMain.on('async-message', (event, arg) => {
+    let timer = null;
+    let status = '';
+    let notification = null;
+
     switch(arg.event) {
         case AppEvents.QUIT:
             mb.app.quit();
@@ -83,6 +87,12 @@ ipcMain.on('async-message', (event, arg) => {
         case AppEvents.FOCUSED:
             let { focused } = arg.payload;
             mb.setOption('alwaysOnTop', focused);
+            break;
+
+        case TimerEvents.TIMER_DONE:
+            break;
+
+        case TimerEvents.TIMER_OVERTIME:
             break;
     }
 });

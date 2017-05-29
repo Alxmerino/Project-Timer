@@ -8,6 +8,7 @@ let gulpTasks   = require('gulp-generic-build')(gulp, configFile);
 let paths       = require(configFile);
 let sourcemaps  = require("gulp-sourcemaps");
 let connect     = require('gulp-connect');
+let notify      = require("gulp-notify");
 const env       = gutil.env._[0];
 
 // New ES6 project with Babel, Browserify & Gulp
@@ -38,7 +39,8 @@ function compile(watch) {
             if (!watch) {
                 process.exit();
             }
-        });
+        })
+        .pipe(notify("App - Build Complete!"));
     }
 
     if (watch) {
@@ -70,16 +72,13 @@ gulp.task('apply-prod-environment', function() {
 gulp.task('build', function() { return compile(); });
 
 /**
- * Watch task
- */
-gulp.task('watch', function () {
-    gulp.watch(paths.source.scss + '/**/*.scss', ['scss']);
-    gulp.watch(paths.source.js + '/**/*.js', watch);
-});
-
-/**
  * Local dev env
  */
-gulp.task('dev', ['connect', 'watch']);
+// gulp.task('dev', ['connect', 'watch']);
+gulp.task('dev', () => {
+    connect.server();
+    gulp.watch(paths.source.scss + '/**/*.scss', ['scss']);
+    return watch();
+});
 
 gulp.task('default', ['apply-prod-environment', 'build']);

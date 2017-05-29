@@ -1,19 +1,37 @@
-import React, { PropTypes } from 'react';
+const React                = require('react');
+const PropTypes            = React.PropTypes;
 
-import {
+const {
     formatTime,
-    getTimeIn }             from '../helpers';
-import TimerTitle           from '../components/TimerTitle';
-import Logger               from '../components/Logger';
+    getTimeIn }            = require('../helpers');
+const TimerTitle           = require('../components/TimerTitle');
+const Logger               = require('../components/Logger');
+const TimerEvents          = require('../enums/TimerEvents');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, editingDescription, description, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, editingDescription, description, status, id}) => {
     let active = (started) ? 'active' : 'inactive';
-    let timerStatus = (started) ? 'pause' : 'play';
+    let playingStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
+    let statusClass = '';
+
+    switch (status) {
+        case TimerEvents.TIMER_DONE:
+            statusClass = 'timer--done';
+            break;
+        case TimerEvents.TIMER_ERROR:
+            statusClass = 'timer--error';
+            break;
+        case TimerEvents.TIMER_OVERTIME:
+            statusClass = 'timer--overtime';
+            break;
+        case TimerEvents.TIMER_LOGGED:
+            statusClass = 'timer--logged';
+            break;
+    }
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
         let timeInSeconds = getTimeIn(value, 'seconds');
@@ -50,7 +68,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
     };
 
     return (
-        <li className={`timer list-group-item ${active}`}>
+        <li className={`timer list-group-item ${active} ${statusClass}`}>
             <a
                 href="#"
                 className="timer__close"
@@ -94,9 +112,9 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     <button
                         type="button"
                         onClick={clickAction}
-                        className={`timer__${timerStatus} btn btn-info btn-sm`}
+                        className={`timer__${playingStatus} btn btn-info btn-sm`}
                     >
-                        <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
+                        <span className={`glyphicon glyphicon-${playingStatus}`} aria-hidden="true"></span>
                     </button>
                     <button
                         type="button"
@@ -139,6 +157,7 @@ TimerItem.propTypes = {
     duration:           PropTypes.number.isRequired,
     plannedTime:        PropTypes.number.isRequired,
     description:        PropTypes.string,
+    status:             PropTypes.string,
     editingTitle:       PropTypes.bool,
     editingDuration:    PropTypes.bool,
     editingPlannedTime: PropTypes.bool,
@@ -146,4 +165,4 @@ TimerItem.propTypes = {
     started:            PropTypes.bool,
 };
 
-export default TimerItem;
+module.exports = TimerItem;

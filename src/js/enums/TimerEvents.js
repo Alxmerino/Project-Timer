@@ -1,7 +1,7 @@
 /**
  *
  * @desc List of enums used throughout the app. It's in CommonJS-like
- * format as some of these are used in the electron side of the app
+ *       format as some of these are used in the electron side of the app
  * @type {Object}
  *
  */
@@ -25,5 +25,9 @@ module.exports = {
     TIMER_DESCRIPTION_ON:       '__timer_description_on',
     TIMER_DESCRIPTION_OFF:      '__timer_description_off',
     TIMER_DESCRIPTION_UPDATE:   '__timer_description_update',
-    TIMER_RESET:                '__timer_reset'
+    TIMER_RESET:                '__timer_reset',
+    TIMER_DONE:                 '__timer_done',
+    TIMER_LOGGED:               '__timer_logged',
+    TIMER_ERROR:                '__timer_error',
+    TIMER_OVERTIME:             '__timer_overtime'
 };

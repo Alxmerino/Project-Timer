@@ -1,11 +1,12 @@
-import React, { PropTypes }     from 'react';
-import { connect }              from 'react-redux';
-import moment                   from 'moment';
-import _                        from 'underscore';
+const React                    = require('react');
+const PropTypes                = React.PropTypes;
+const { connect }              = require('react-redux');
+const moment                   = require('moment');
+const _                        = require('underscore');
 
-import Logger                   from '../components/Logger';
-import TimeTracker              from '../containers/TimeTracker';
-import { addTimer, updateTimer} from '../actions/TimerActions';
+const Logger                   = require('../components/Logger');
+const TimeTracker              = require('../containers/TimeTracker');
+const { addTimer, updateTimer} = require('../actions/TimerActions');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('AddTimer');
@@ -166,4 +167,4 @@ AddTimer.propTypes = {
 
 AddTimer = connect()(AddTimer);
 
-export default AddTimer;
+module.exports = AddTimer;
