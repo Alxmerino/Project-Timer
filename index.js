@@ -1,6 +1,7 @@
 const {
     app,
     ipcMain,
+    Menu,
     BrowserWindow } = require('electron');
 const menubar       = require('menubar');
 const path          = require('path');
@@ -27,6 +28,28 @@ const icons = {
 const iconState = {
     active: false
 }
+
+/**
+ *
+ * Context Menu
+ *
+ */
+const selectionMenu = Menu.buildFromTemplate([
+    {role: 'copy'},
+    {type: 'separator'},
+    {role: 'selectall'}
+]);
+
+const inputMenu = Menu.buildFromTemplate([
+    {role: 'undo'},
+    {role: 'redo'},
+    {type: 'separator'},
+    {role: 'cut'},
+    {role: 'copy'},
+    {role: 'paste'},
+    {type: 'separator'},
+    {role: 'selectall'}
+]);
 
 /**
  *
@@ -57,6 +80,19 @@ mb.on('hide', () => {
     if (!iconState.active) {
         mb.tray.setImage(icons.default)
     }
+});
+
+/** Contect menu */
+mb.app.on('browser-window-created', (event, win) => {
+    win.webContents.on('context-menu', (e, params) => {
+        const { selectionText, isEditable } = params;
+
+        if (isEditable) {
+            inputMenu.popup(win);
+        } else if (selectionText && selectionText.trim() !== '') {
+            selectionMenu.popup(win);
+        }
+    });
 });
 
 /**
