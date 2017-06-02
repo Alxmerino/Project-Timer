@@ -243,8 +243,8 @@ module.exports = function reducer(state={
 
                             // Set timeout to ping the IPC
                             if (typeof(timer.timeout) === 'undefined') {
-                                // ping time in minutes
-                                let pingIn = moment.duration(timer.pingedIpc, 'm');
+                                let pingIn = moment.duration(timer.pingedIpc, 's');
+
                                 // Timeout as seconds because duration is in seconds
                                 timer.timeout = Math.round(actualDuration.add(pingIn).asSeconds());
                             }

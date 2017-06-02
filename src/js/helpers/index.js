@@ -55,8 +55,10 @@ const getTimeIn = (duration, format) => {
  */
 const getIpcPingInterval = (ping) => {
     // @TODO Hacky way so it keeps returning last interval
-    let lastPingInterval = 35;
-    let pingIntervalArray = [5, 15, 30];
+    // 35 minutes
+    let lastPingInterval = 2100;
+    // 5, 15, 30, minutes
+    let pingIntervalArray = [300, 900, 1800];
     let pingIndex = _.indexOf(pingIntervalArray, ping);
 
     // We just started pinging
