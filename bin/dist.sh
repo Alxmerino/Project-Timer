@@ -34,7 +34,7 @@ cp -r ./src ./build
 echo 'Copied dist and source files'
 echo ''
 
-./node_modules/.bin/electron-packager ./build  --platform=darwin --asar=true --arch=x64 --overwrite --app-version=1.3.0 --icon=./app-icon.icns
+./node_modules/.bin/electron-packager ./build  --platform=darwin --asar=true --arch=x64 --overwrite --app-version=1.3.1 --icon=./app-icon.icns
 echo ''
 echo 'Packaged electron app'
 echo ''
