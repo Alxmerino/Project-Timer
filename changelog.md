@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [v1.3.0] - 2017-05-05
+## [v1.3.1] - 2017-05-05
 ### Fixed
     - Use correct "main" file in package.json
 
