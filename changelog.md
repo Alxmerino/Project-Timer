@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [v1.3.0] - 2017-05-05
+### Fixed
+    - Use correct "main" file in package.json
+
+## [v1.3.0] - 2017-05-05
 ### Added
     - Added menu to hold "quit" and "focus" options
     - Added descriptions to timer
