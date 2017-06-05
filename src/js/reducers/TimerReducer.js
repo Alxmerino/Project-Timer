@@ -54,8 +54,7 @@ module.exports = function reducer(state={
             });
 
             // Remove from localStorage
-            // TODO find way to add prefix
-            Storage.remove(['projectTimer:'+id]);
+            Storage.remove(id);
 
             return newState;
         }

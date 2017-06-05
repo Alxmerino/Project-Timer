@@ -8,7 +8,7 @@
 /* eslint-disable no-undef */
 module.exports = {
     TIMER_ADD:                  '__timer_add',
-    TIMER_DESTROY:              '__timer_destro',
+    TIMER_DESTROY:              '__timer_destroy',
     TIMER_START:                '__timer_start',
     TIMER_STOP:                 '__timer_stop',
     TIMER_TOGGLE:               '__timer_toggle',
