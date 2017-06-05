@@ -1,36 +1,11 @@
-import React                from 'react';
-import AddTimer             from '../containers/AddTimer';
-import TimerList            from '../containers/TimerList';
-import Summary              from '../containers/Summary';
-import Events               from '../enums/events';
-import AppIcon              from '../components/AppIcon';
-import { isElectronApp }    from '../utils/utils';
-
-// Require ipcRenderer only in electron app
-const { ipcRenderer }   = (isElectronApp()) ? window.require('electron') : {};
+const React      = require('react');
+const AddTimer   = require('../containers/AddTimer');
+const TimerList  = require('../containers/TimerList');
+const Summary    = require('../containers/Summary');
+const AppIcon    = require('../components/AppIcon');
+const Options    = require('../components/Options');
 
 let App = () => {
-
-    /**
-     *
-     * @desc Handle electron quit event for electron App
-     *
-     */
-    let onQuit = () => {
-        ipcRenderer.send('async-message', Events.QUIT);
-    };
-
-    let renderQuitButton = () => {
-        if (isElectronApp()) {
-            return (
-                <p className="col-xs-12">
-                    <button onClick={onQuit} className="btn btn-success">Quit</button>
-                </p>
-            );
-        } else {
-            return null;
-        }
-    };
 
     return (
         <div className="main-wrapper">
@@ -39,7 +14,7 @@ let App = () => {
                 <div className="header clearfix">
                     <div className="row">
                         <div className="col-xs-12">
-                            <h1 className="app__title"><AppIcon /> Project Timer</h1>
+                            <h1 className="app__title"><AppIcon /> Project Timer <Options /></h1>
                         </div>
                     </div>
                     <AddTimer />
@@ -59,7 +34,6 @@ let App = () => {
 
             <footer className="container footer">
                 <div className="row">
-                    {renderQuitButton()}
                     <p className="col-xs-12">&copy; 2017 <a href="https://www.amayamedia.com" target="_blank">Amaya Media</a></p>
                 </div>
             </footer>
@@ -68,4 +42,4 @@ let App = () => {
     );
 };
 
-export default App;
+module.exports = App;

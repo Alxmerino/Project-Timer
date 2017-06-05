@@ -1,21 +1,32 @@
-import _        from 'underscore';
-import moment   from 'moment';
-import Storage  from '../helpers/Storage';
-import Logger   from '../components/Logger';
+const _                         = require('underscore');
+const moment                    = require('moment');
+const Storage                   = require('../helpers/Storage');
+const Logger                    = require('../components/Logger');
+const TimerEvents               = require('../enums/TimerEvents');
+const {getIpcPingInterval }     = require('../helpers');
+const { isElectronApp }         = require('../utils/utils');
+const { TimerNotify,
+    requestNotificationPermission } = require('../utils/Notification');
+
+// Require ipcRenderer only in electron app
+const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
 /* eslint-enable no-unused-vars */
 
-export default function reducer(state={
+module.exports = function reducer(state={
     timers: []
 }, action) {
 
     switch(action.type) {
-        case 'TIMER_ADD': {
+        case TimerEvents.TIMER_ADD: {
             let newTimer = action.payload;
             let id = newTimer.id;
             let newState = _.assign({}, state);
+
+            // Request Notification permissions
+            requestNotificationPermission();
 
             // Add local storage entry
             Storage.set(id, newTimer);
@@ -25,7 +36,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DESTROY': {
+        case TimerEvents.TIMER_DESTROY: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -43,13 +54,12 @@ export default function reducer(state={
             });
 
             // Remove from localStorage
-            // TODO find way to add prefix
-            Storage.remove(['projectTimer:'+id]);
+            Storage.remove(id);
 
             return newState;
         }
 
-        case 'TIMER_TOGGLE': {
+        case TimerEvents.TIMER_TOGGLE: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -79,7 +89,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_START': {
+        case TimerEvents.TIMER_START: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -92,6 +102,12 @@ export default function reducer(state={
                     // Start time tracker
                     timer.timeTracker.start();
 
+                    if (isElectronApp()) {
+                        ipcRenderer.send('async-message', {
+                            event: TimerEvents.TIMER_START
+                        });
+                    }
+
                     // Update local storage
                     Storage.set(id, timer);
                 }
@@ -102,7 +118,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_STOP': {
+        case TimerEvents.TIMER_STOP: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -117,6 +133,12 @@ export default function reducer(state={
                     // Stop time tracker
                     timer.timeTracker.stop();
 
+                    if (isElectronApp()) {
+                        ipcRenderer.send('async-message', {
+                            event: TimerEvents.TIMER_STOP
+                        });
+                    }
+
                     // Update local storage
                     Storage.set(id, timer);
                 }
@@ -127,7 +149,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_RESET': {
+        case TimerEvents.TIMER_RESET: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -135,6 +157,9 @@ export default function reducer(state={
                 if (timer.id === id) {
                     timer.duration = 0;
                     delete timer.durationCycle;
+                    delete timer.status;
+                    delete timer.pingedIpc;
+                    delete timer.timeout;
 
                     // Reset the start date so we can start again from 0
                     timer.startTime = moment.now();
@@ -149,7 +174,7 @@ export default function reducer(state={
             return _.assign({}, state, newState);
         }
 
-        case 'TIMER_UPDATE': {
+        case TimerEvents.TIMER_UPDATE: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -166,6 +191,65 @@ export default function reducer(state={
                         (timeDiff + timer.durationCycle) :
                         timeDiff;
 
+                    // Check if duration has reached planned time
+                    if (timer.plannedTime > 0) {
+                        let actualDuration = moment.duration(timer.duration);
+                        let plannedDuration = moment.duration(timer.plannedTime);
+                        let actualAsSecs = Math.round(actualDuration.asSeconds());
+                        let plannedAsSecs = plannedDuration.asSeconds();
+
+                        // The timer has reached its planned time
+                        // @TODO Should the timer be paused here?
+                        if (actualAsSecs === plannedAsSecs) {
+                            timer.status = TimerEvents.TIMER_DONE;
+
+                            // Fire notification
+                            TimerNotify({timer});
+
+                            // Electron alert
+                            if (isElectronApp()) {
+                                ipcRenderer.send('async-message', {
+                                    event: TimerEvents.TIMER_DONE,
+                                    payload: { timer }
+                                });
+                            }
+                        }
+
+                        // The timer is in overtime!
+                        if (actualAsSecs > plannedAsSecs) {
+                            timer.status = TimerEvents.TIMER_OVERTIME;
+                            timer.pingedIpc = timer.pingedIpc || getIpcPingInterval(null);
+
+                            // Reached ping timeout
+                            if (actualAsSecs === timer.timeout) {
+                                // Get new interval
+                                timer.pingedIpc = getIpcPingInterval(timer.pingedIpc);
+
+                                // Fire notification
+                                TimerNotify({timer});
+
+                                // Electron alert
+                                if (isElectronApp()) {
+                                    ipcRenderer.send('async-message', {
+                                        event: TimerEvents.TIMER_OVERTIME,
+                                        payload: { timer }
+                                    });
+                                }
+
+                                // Clear timeout prop
+                                delete timer.timeout;
+                            }
+
+                            // Set timeout to ping the IPC
+                            if (typeof(timer.timeout) === 'undefined') {
+                                let pingIn = moment.duration(timer.pingedIpc, 's');
+
+                                // Timeout as seconds because duration is in seconds
+                                timer.timeout = Math.round(actualDuration.add(pingIn).asSeconds());
+                            }
+                        }
+                    }
+
                     // Update local storage entry
                     Storage.set(id, timer);
                 }
@@ -176,7 +260,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TITLE_CHANGE_ON': {
+        case TimerEvents.TIMER_TITLE_CHANGE_ON: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -193,7 +277,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TITLE_CHANGE_OFF': {
+        case TimerEvents.TIMER_TITLE_CHANGE_OFF: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
@@ -210,7 +294,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_TITLE_UPDATE': {
+        case TimerEvents.TIMER_TITLE_UPDATE: {
             let id = action.payload.id;
             let title = action.payload.title;
             let newState = _.assign({}, state);
@@ -231,7 +315,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DURATION_ON': {
+        case TimerEvents.TIMER_DURATION_ON: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -253,7 +337,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DURATION_OFF': {
+        case TimerEvents.TIMER_DURATION_OFF: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -269,7 +353,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_DURATION_UPDATE': {
+        case TimerEvents.TIMER_DURATION_UPDATE: {
             let { id, timeStr } = action.payload;
             let newState = _.assign({}, state);
 
@@ -298,7 +382,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_PLANNED_ON': {
+        case TimerEvents.TIMER_PLANNED_ON: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -320,7 +404,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_PLANNED_OFF': {
+        case TimerEvents.TIMER_PLANNED_OFF: {
             let id = action.payload.id;
             let newState = _.assign({}, state);
 
@@ -336,7 +420,7 @@ export default function reducer(state={
             return newState;
         }
 
-        case 'TIMER_PLANNED_UPDATE': {
+        case TimerEvents.TIMER_PLANNED_UPDATE: {
             let { id, timeStr } = action.payload;
             let newState = _.assign({}, state);
 
@@ -362,7 +446,64 @@ export default function reducer(state={
             return newState;
         }
 
+        case TimerEvents.TIMER_DESCRIPTION_ON: {
+            let id = action.payload.id;
+            let newState = _.assign({}, state);
+
+            // Set `editingDescription` as true
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.editingDescription = true;
+
+                    // Stop the timer if is running
+                    if (timer.started) {
+                        timer.timeTracker.stop();
+                        timer.started = false;
+                    }
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_DESCRIPTION_OFF: {
+            let id = action.payload.id;
+            let newState = _.assign({}, state);
+
+            // Delete `editingDescription` prop
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    delete timer.editingDescription;
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_DESCRIPTION_UPDATE: {
+            let { id, desc } = action.payload;
+            let newState = _.assign({}, state);
+
+            newState.timers = _.map(newState.timers, (timer) => {
+                if (timer.id === id) {
+                    timer.description = desc;
+                    delete timer.editingDescription;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
+                }
+
+                return timer;
+            });
+
+            return newState;
+        }
+
     }
 
     return state;
-}
+};

@@ -1,11 +1,12 @@
-import React, { PropTypes } from 'react';
-import { connect }          from 'react-redux';
-import _                    from 'underscore';
+const React                = require('react');
+const PropTypes            = React.PropTypes;
+const { connect }          = require('react-redux');
+const _                    = require('underscore');
 
-import {
+const {
     getTimeIn,
-    formatTime }            from '../helpers';
-import Logger               from '../components/Logger';
+    formatTime }           = require('../helpers');
+const Logger               = require('../components/Logger');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Summary');
@@ -50,7 +51,7 @@ const mapStateToProps = (state) => {
     let totalWorked = 0;
     let totalPlanned = 0;
 
-    _.each(state.timers, (timer) => {
+    _.each(state.TimerReducer.timers, (timer) => {
         totalPlanned += timer.plannedTime;
         totalWorked += timer.duration;
     });
@@ -60,4 +61,4 @@ const mapStateToProps = (state) => {
 
 Summary = connect(mapStateToProps)(Summary);
 
-export default Summary;
+module.exports = Summary;

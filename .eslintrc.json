@@ -1,7 +1,11 @@
 {
     "env": {
         "browser": true,
+        "commonjs": true,
         "es6": true
+    },
+    "globals": {
+        "__dirname": false
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parserOptions": {

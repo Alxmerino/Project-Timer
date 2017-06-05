@@ -64,4 +64,4 @@ Logger.prototype = Object.assign(Logger.prototype, {
     }
 });
 
-export default Logger;
+module.exports = Logger;

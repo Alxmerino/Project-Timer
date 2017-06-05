@@ -1,35 +1,37 @@
-import React, { PropTypes } from 'react';
+const React                = require('react');
+const PropTypes            = React.PropTypes;
 
-import {
+const {
     formatTime,
-    getTimeIn }             from '../helpers';
-import Logger               from '../components/Logger';
+    getTimeIn }            = require('../helpers');
+const TimerTitle           = require('../components/TimerTitle');
+const Logger               = require('../components/Logger');
+const TimerEvents          = require('../enums/TimerEvents');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, editingDescription, description, status, id}) => {
     let active = (started) ? 'active' : 'inactive';
-    let timerStatus = (started) ? 'pause' : 'play';
+    let playingStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
+    let statusClass = '';
 
-    let renderTitleInput = () => {
-        if (editingTitle) {
-            return (
-                <div className="input-group">
-                    <input onKeyUp={onTitleUpdate.bind(this, id)} type="text" autoFocus defaultValue={title} className="timer__titleInput form-control input-sm" />
-                    <span className="input-group-btn">
-                        <button className="btn btn-sm btn-success" onClick={onTitleEditOff.bind(this, id)} >
-                            <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        </button>
-                    </span>
-                </div>
-            );
-        } else {
-            return (<span className="timer__title" onClick={onTitleEditOn.bind(this, id)}>{title}</span>);
-        }
-    };
+    switch (status) {
+        case TimerEvents.TIMER_DONE:
+            statusClass = 'timer--done';
+            break;
+        case TimerEvents.TIMER_ERROR:
+            statusClass = 'timer--error';
+            break;
+        case TimerEvents.TIMER_OVERTIME:
+            statusClass = 'timer--overtime';
+            break;
+        case TimerEvents.TIMER_LOGGED:
+            statusClass = 'timer--logged';
+            break;
+    }
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
         let timeInSeconds = getTimeIn(value, 'seconds');
@@ -52,8 +54,21 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         }
     };
 
+    let renderDescription = () => {
+        if (!editingDescription) {
+            return null;
+        }
+
+        return (
+            <div className="timer__descContainer">
+                <textarea className="form-control timer__description" defaultValue={description} maxLength="500"></textarea>
+                <button onClick={onDescEditOff.bind(this, id)} className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+            </div>
+        );
+    };
+
     return (
-        <li className={`timer list-group-item ${active}`}>
+        <li className={`timer list-group-item ${active} ${statusClass}`}>
             <a
                 href="#"
                 className="timer__close"
@@ -62,7 +77,18 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                 <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </a>
             <div className="list-group-item-heading timer__titleWrapper">
-                {renderTitleInput()}
+                {/* (editingTitle) ? renderTitleInput() : renderTitle() */}
+                <TimerTitle
+                    id={id}
+                    title={title}
+                    description={description}
+                    editingTitle={editingTitle}
+                    onTitleUpdate={onTitleUpdate}
+                    onTitleEditOn={onTitleEditOn}
+                    onTitleEditOff={onTitleEditOff}
+                    onDescEditOn={onDescEditOn}
+                    onDescEditOff={onDescEditOff}
+                />
             </div>
             <div className="timer__stats">
                 {renderDurationInput(
@@ -86,9 +112,9 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     <button
                         type="button"
                         onClick={clickAction}
-                        className={`timer__${timerStatus} btn btn-info btn-sm`}
+                        className={`timer__${playingStatus} btn btn-info btn-sm`}
                     >
-                        <span className={`glyphicon glyphicon-${timerStatus}`} aria-hidden="true"></span>
+                        <span className={`glyphicon glyphicon-${playingStatus}`} aria-hidden="true"></span>
                     </button>
                     <button
                         type="button"
@@ -99,6 +125,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     </button>
                 </div>
             </div>
+            {renderDescription()}
         </li>
     );
 };
@@ -123,14 +150,19 @@ TimerItem.propTypes = {
     onPlannedEditOn:    PropTypes.func.isRequired,
     onPlannedEditOff:   PropTypes.func.isRequired,
     onPlannedUpdate:    PropTypes.func.isRequired,
+    onDescEditOn:       PropTypes.func.isRequired,
+    onDescEditOff:      PropTypes.func.isRequired,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     duration:           PropTypes.number.isRequired,
     plannedTime:        PropTypes.number.isRequired,
+    description:        PropTypes.string,
+    status:             PropTypes.string,
     editingTitle:       PropTypes.bool,
     editingDuration:    PropTypes.bool,
     editingPlannedTime: PropTypes.bool,
+    editingDescription: PropTypes.bool,
     started:            PropTypes.bool,
 };
 
-export default TimerItem;
+module.exports = TimerItem;

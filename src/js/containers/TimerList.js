@@ -1,10 +1,11 @@
-import React, { PropTypes }         from 'react';
-import { connect }                  from 'react-redux';
-import _                            from 'underscore';
+const React                        = require('react');
+const PropTypes                    = React.PropTypes;
+const { connect }                  = require('react-redux');
+const _                            = require('underscore');
 
-import TimerItem                    from '../components/TimerItem';
-import Logger                       from '../components/Logger';
-import {
+const TimerItem                    = require('../components/TimerItem');
+const Logger                       = require('../components/Logger');
+const {
     stopTimer,
     startTimer,
     resetTimer,
@@ -17,13 +18,16 @@ import {
     updateTimePlanned,
     toggleTitleChangeOn,
     toggleTitleChangeOff,
-    updateTitle }                   from '../actions';
+    updateTitle,
+    toggleDescInputOn,
+    toggleDescInputOff,
+    updateTimeDescription }         = require('../actions/TimerActions');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff }) => {
 
     return (
         <ul className="list-group">
@@ -43,6 +47,8 @@ let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onT
                     onPlannedEditOn={onPlannedEditOn}
                     onPlannedEditOff={onPlannedEditOff}
                     onPlannedUpdate={onPlannedUpdate}
+                    onDescEditOn={onDescEditOn}
+                    onDescEditOff={onDescEditOff}
                     key={timer.id}
                 />
             )}
@@ -71,6 +77,8 @@ TimerList.propTypes = {
     onPlannedEditOn:    PropTypes.func.isRequired,
     onPlannedEditOff:   PropTypes.func.isRequired,
     onPlannedUpdate:    PropTypes.func.isRequired,
+    onDescEditOn:       PropTypes.func.isRequired,
+    onDescEditOff:      PropTypes.func.isRequired,
 };
 
 /**
@@ -83,7 +91,7 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state.timers, (timer) => {
+    let timers = _.map(state.TimerReducer.timers, (timer) => {
         return timer;
     });
 
@@ -170,6 +178,15 @@ const mapDispatchToProps = (dispatch) => {
                 }
             }
         },
+        onDescEditOn: (id) => {
+            dispatch(toggleDescInputOn(id));
+        },
+        onDescEditOff: (id, proxyData) => {
+            // get the input value
+            let desc = proxyData.currentTarget.previousSibling.value;
+            dispatch(updateTimeDescription(id, desc));
+            dispatch(toggleDescInputOff(id));
+        }
     };
 };
 
@@ -178,4 +195,4 @@ TimerList = connect(
     mapDispatchToProps
 )(TimerList);
 
-export default TimerList;
+module.exports = TimerList;

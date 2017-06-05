@@ -1,6 +1,7 @@
 import moment from 'moment';
 
-import * as actions from '../src/js/actions'
+import TimerEvents  from '../src/js/enums/TimerEvents'
+import * as actions from '../src/js/actions/TimerActions'
 
 /** Test Actions */
 describe('actions', () => {
@@ -18,7 +19,7 @@ describe('actions', () => {
         };
 
         const expectedAction = {
-            type: 'TIMER_ADD',
+            type: TimerEvents.TIMER_ADD,
             payload: timer
         };
 
@@ -30,7 +31,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_DESTROY',
+            type: TimerEvents.TIMER_DESTROY,
             payload: id
         };
 
@@ -42,7 +43,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_START',
+            type: TimerEvents.TIMER_START,
             payload: id
         };
 
@@ -54,7 +55,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_STOP',
+            type: TimerEvents.TIMER_STOP,
             payload: id
         };
 
@@ -66,7 +67,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_TOGGLE',
+            type: TimerEvents.TIMER_TOGGLE,
             payload: id
         };
 
@@ -78,7 +79,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_TITLE_CHANGE_ON',
+            type: TimerEvents.TIMER_TITLE_CHANGE_ON,
             payload: id
         };
 
@@ -90,7 +91,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_TITLE_CHANGE_OFF',
+            type: TimerEvents.TIMER_TITLE_CHANGE_OFF,
             payload: id
         };
 
@@ -103,7 +104,7 @@ describe('actions', () => {
         let title = 'Timer title';
 
         const expectedAction = {
-            type: 'TIMER_TITLE_UPDATE',
+            type: TimerEvents.TIMER_TITLE_UPDATE,
             payload: {id, title}
         };
 
@@ -115,7 +116,7 @@ describe('actions', () => {
       let id = moment.now();
 
       const expectedAction = {
-          type: 'TIMER_DURATION_ON',
+          type: TimerEvents.TIMER_DURATION_ON,
           payload: {id}
       };
 
@@ -127,7 +128,7 @@ describe('actions', () => {
       let id = moment.now();
 
       const expectedAction = {
-          type: 'TIMER_DURATION_OFF',
+          type: TimerEvents.TIMER_DURATION_OFF,
           payload: {id}
       };
 
@@ -140,7 +141,7 @@ describe('actions', () => {
       let timeStr = '2:37:33';
 
       const expectedAction = {
-          type: 'TIMER_DURATION_UPDATE',
+          type: TimerEvents.TIMER_DURATION_UPDATE,
           payload: {id, timeStr}
       };
 
@@ -152,7 +153,7 @@ describe('actions', () => {
       let id = moment.now();
 
       const expectedAction = {
-          type: 'TIMER_PLANNED_ON',
+          type: TimerEvents.TIMER_PLANNED_ON,
           payload: {id}
       };
 
@@ -164,7 +165,7 @@ describe('actions', () => {
       let id = moment.now();
 
       const expectedAction = {
-          type: 'TIMER_PLANNED_OFF',
+          type: TimerEvents.TIMER_PLANNED_OFF,
           payload: {id}
       };
 
@@ -177,7 +178,7 @@ describe('actions', () => {
       let timeStr = '2:37:33';
 
       const expectedAction = {
-          type: 'TIMER_PLANNED_UPDATE',
+          type: TimerEvents.TIMER_PLANNED_UPDATE,
           payload: {id, timeStr}
       };
 
@@ -188,7 +189,7 @@ describe('actions', () => {
         let id = moment.now();
 
         const expectedAction = {
-            type: 'TIMER_RESET',
+            type: TimerEvents.TIMER_RESET,
             payload: id
         };
 

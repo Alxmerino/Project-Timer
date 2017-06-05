@@ -1,4 +1,4 @@
-import React from 'react';
+const React = require('react');
 
 let AppIcon = () => {
     return (
@@ -8,4 +8,4 @@ let AppIcon = () => {
     );
 };
 
-export default AppIcon;
+module.exports = AppIcon;

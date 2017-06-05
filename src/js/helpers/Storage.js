@@ -1,4 +1,4 @@
-import xStore from 'xStore';
+const xStore = require('xStore');
 
 let Storage = (function() {
     let store = new xStore('projectTimer:', window.localStorage);
@@ -6,4 +6,4 @@ let Storage = (function() {
     return store;
 })();
 
-export default Storage;
+module.exports = Storage;

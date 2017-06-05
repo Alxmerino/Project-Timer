@@ -1,15 +1,15 @@
-import _                from 'underscore';
+const _                = require('underscore');
 
-import TimeTracker      from '../containers/TimeTracker';
-import { updateTimer}   from '../actions';
-import store            from '../store';
+const TimeTracker      = require('../containers/TimeTracker');
+const { updateTimer}   = require('../actions/TimerActions');
+const store            = require('../store');
 
 class PersistStore {
     constructor() {
         let state = store.getState();
 
         // Build a time tracker on every timer
-        _.each(state.timers, (timer) => {
+        _.each(state.TimerReducer.timers, (timer) => {
             let start = timer.started;
 
             timer.timeTracker = new TimeTracker(
@@ -20,4 +20,4 @@ class PersistStore {
     }
 }
 
-export default PersistStore;
+module.exports = PersistStore;
