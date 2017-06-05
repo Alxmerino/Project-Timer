@@ -21,6 +21,12 @@ cp -r ./node_modules/{menubar,electron-positioner,extend,underscore,moment,momen
 echo 'Copied node modules'
 echo ''
 
+echo 'Gulping...'
+echo ''
+gulp
+echo ''
+echo 'Gulp build'
+
 echo 'Copying dist and source files...'
 echo ''
 cp -r ./dist ./build/dist
