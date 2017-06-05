@@ -36,6 +36,6 @@ const rootReducer = combineReducers({
 });
 
 // Apply middleware
-const middleware = applyMiddleware(logger());
+const middleware = applyMiddleware();
 
 module.exports = createStore(rootReducer, preloadedState, middleware);

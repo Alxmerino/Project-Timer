@@ -1,9 +1,9 @@
 {
   "name": "project-timer",
+  "version": "1.2.0",
   "productName": "Project Timer",
-  "version": "0.1.5",
   "description": "A small timer app that can add timers for multiple projects.",
-  "main": "index.js",
+  "main": "app.js",
   "author": "Rene Merino <rmerino@amayamedia.com>",
   "license": "GPL-3.0",
   "homepage": "https://github.com/Alxmerino/Project-Timer#readme",
