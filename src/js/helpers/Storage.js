@@ -1,4 +1,4 @@
-const xStore = require('xStore');
+const { xStore } = require('xStore');
 
 let Storage = (function() {
     let store = new xStore('projectTimer:', window.localStorage);
