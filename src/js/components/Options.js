@@ -46,9 +46,9 @@ let Options = ({ onMenuToggle, onFocusApp, menuOpen, focused }) => {
                 <span className="glyphicon glyphicon-cog" />
             </button>
             <ul className="options__menu dropdown-menu">
-                <li><a href="#" className={`options__link ${activeLinkClass}`} onClick={() => onFocusApp(focused)}>Focus <span className="options__focus-icon glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></a></li>
+                <li><a href="#focus" className={`options__link ${activeLinkClass}`} onClick={() => onFocusApp(focused)}>Focus <span className="options__focus-icon glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></a></li>
                 <li role="separator" className="divider"></li>
-                <li><a href="#" className="options__link" onClick={onQuit}>Quit</a></li>
+                <li><a href="#quit" className="options__link" onClick={onQuit}>Quit</a></li>
             </ul>
         </div>
     );

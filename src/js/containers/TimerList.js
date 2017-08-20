@@ -149,7 +149,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTimeDuration(id, newDuration));
             dispatch(toggleDurationInputOff(id));
         },
-        onDurationUpdate: (id, proxyData) => {
+        onDurationUpdate: (id, proxyData, event) => {
             if (event.type === 'react-keyup') {
                 // Save duration when enter key is pressed (13)
                 if (proxyData.keyCode === 13) {
@@ -168,7 +168,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTimePlanned(id, newPlannedTime));
             dispatch(togglePlannedInputOff(id));
         },
-        onPlannedUpdate: (id, proxyData) => {
+        onPlannedUpdate: (id, proxyData, event) => {
             if (event.type === 'react-keyup') {
                 // Save planned time when enter key is pressed (13)
                 if (proxyData.keyCode === 13) {

@@ -6,9 +6,9 @@ function Timer(duration, attributes, callback) {
     this.loop = attributes.loop;
     this.started = false;
     this.stopped = false;       // If stop() is called this variable will be used to finish the paused duration once it's started again.
-    this.timer;
-    this.startTick;
-    this.endTick;
+    this.timer = null;
+    this.startTick = null;
+    this.endTick = null;
 
     if (attributes.start) {
         if (attributes.wait > 0) {
@@ -127,7 +127,7 @@ Timer.prototype.isStopped = function () {
 };
 
 if (!moment) {
-    throw 'Moment Timer cannot find Moment.js';
+    throw new Error('Moment Timer cannot find Moment.js');
 }
 
 moment.duration.fn.timer = function (attributes, callback) {

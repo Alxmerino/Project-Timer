@@ -33,6 +33,8 @@ module.exports = function reducer(state={
 
             return newState;
         }
+
+        default:
     }
 
     return state;
