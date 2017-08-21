@@ -20,9 +20,6 @@ class Logger {
         this.log('Initialized');
     }
 
-}
-
-Logger.prototype = Object.assign(Logger.prototype, {
     log() {
         if (!this.debugMode) {
             return;
@@ -31,7 +28,7 @@ Logger.prototype = Object.assign(Logger.prototype, {
         var args = Array.prototype.slice.call(arguments);
         args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.log.apply(console, args);
-    },
+    }
 
     debug() {
         if (!this.debugMode) {
@@ -41,7 +38,7 @@ Logger.prototype = Object.assign(Logger.prototype, {
         var args = Array.prototype.slice.call(arguments);
         args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.debug.apply(console, args);
-    },
+    }
 
     warn() {
         if (!this.debugMode) {
@@ -51,7 +48,7 @@ Logger.prototype = Object.assign(Logger.prototype, {
         var args = Array.prototype.slice.call(arguments);
         args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.warn.apply(console, args);
-    },
+    }
 
     error() {
         if (!this.debugMode) {
@@ -62,6 +59,6 @@ Logger.prototype = Object.assign(Logger.prototype, {
         args.unshift('%c['+ this.name +']', 'background: #222; color: #e3e3e3');
         console.error.apply(console, args);
     }
-});
+}
 
 module.exports = Logger;

@@ -3,7 +3,7 @@ import TimeTracker from '../js/containers/TimeTracker'
 describe('Time tracker', () => {
 
     it('should be instantiated with Timer props', () => {
-        let timeTracker = new TimeTracker(() => {});
+        let timeTracker = TimeTracker(() => {});
 
         expect(timeTracker).toEqual(
             expect.objectContaining({
