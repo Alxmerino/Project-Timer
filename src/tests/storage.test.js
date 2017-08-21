@@ -1,5 +1,5 @@
-import Storage from '../src/js/helpers/Storage';
-import xStore from 'xStore';
+import Storage from '../js/helpers/Storage';
+import { xStore } from 'xStore';
 
 describe('Local Storage', () => {
     it('should be an instance of xStore', () => {

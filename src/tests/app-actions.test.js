@@ -1,5 +1,5 @@
-import AppEvents    from '../src/js/enums/AppEvents';
-import * as act     from '../src/js/actions/AppActions';
+import AppEvents    from '../js/enums/AppEvents';
+import * as act     from '../js/actions/AppActions';
 
 describe('App actions', () => {
 

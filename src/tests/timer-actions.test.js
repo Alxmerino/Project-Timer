@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-import TimerEvents  from '../src/js/enums/TimerEvents'
-import * as actions from '../src/js/actions/TimerActions'
+import TimerEvents  from '../js/enums/TimerEvents'
+import * as actions from '../js/actions/TimerActions'
 
 /** Test Actions */
 describe('actions', () => {
