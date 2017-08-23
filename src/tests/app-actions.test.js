@@ -13,4 +13,13 @@ describe('App actions', () => {
         expect(act.toggleAppMenu(true)).toEqual(expectedAction);
     });
 
+    it('should create an action to focus the app', () => {
+        const expectedAction = {
+            type: AppEvents.FOCUSED,
+            payload: {focused: true}
+        }
+
+        expect(act.toggleAppFocus(true)).toEqual(expectedAction);
+    });
+
 });

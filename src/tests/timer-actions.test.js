@@ -74,6 +74,18 @@ describe('actions', () => {
         expect(actions.toggleTimer(id)).toEqual(expectedAction);
     });
 
+    /** TIMER_UPDATE */
+    it('should create an action to update the timer', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: TimerEvents.TIMER_UPDATE,
+            payload: id
+        }
+
+        expect(actions.updateTimer(id)).toEqual(expectedAction);
+    });
+
     /** TIMER_TITLE_CHANGE_OFF */
     it('should create an action to change a timer\'s title on', () => {
         let id = moment.now();
@@ -183,6 +195,38 @@ describe('actions', () => {
       };
 
       expect(actions.updateTimePlanned(id, timeStr)).toEqual(expectedAction);
+    });
+
+    it('should create an action to update a timer\'s description input on', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: TimerEvents.TIMER_DESCRIPTION_ON,
+            payload: {id}
+        }
+
+        expect(actions.toggleDescInputOn(id)).toEqual(expectedAction);
+    });
+    it('should create an action to update a timer\'s description input off', () => {
+        let id = moment.now();
+
+        const expectedAction = {
+            type: TimerEvents.TIMER_DESCRIPTION_OFF,
+            payload: {id}
+        }
+
+        expect(actions.toggleDescInputOff(id)).toEqual(expectedAction);
+    });
+    it('should create an action to update a timer\'s description input text', () => {
+        let id = moment.now();
+        let desc: 'This is a description';
+
+        const expectedAction = {
+            type: TimerEvents.TIMER_DESCRIPTION_UPDATE,
+            payload: {id, desc}
+        }
+
+        expect(actions.updateTimeDescription(id, desc)).toEqual(expectedAction);
     });
 
     it('should create an action to reset the timer', () => {
