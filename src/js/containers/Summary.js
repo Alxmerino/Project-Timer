@@ -1,5 +1,5 @@
 const React                = require('react');
-const PropTypes            = React.PropTypes;
+const PropTypes            = require('prop-types');
 const { connect }          = require('react-redux');
 const _                    = require('underscore');
 
