@@ -6,7 +6,7 @@
   "main": "index.js",
   "author": "Rene Merino <rmerino@amayamedia.com>",
   "license": "GPL-3.0",
-  "homepage": "https://github.com/Alxmerino/Project-Timer#readme",
+  "homepage": "./",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src",
     "dev": "./node_modules/.bin/electron .",
@@ -30,22 +30,23 @@
     "moment-timer": "^1.1.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-scripts": "1.0.10",
     "react-redux": "^5.0.3",
+    "react-scripts": "1.0.10",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.2",
     "underscore": "^1.8.3",
     "xStore": "^2.0.3"
   },
   "devDependencies": {
-    "electron": "^1.6.2",
-    "electron-packager": "^8.6.0",
+    "electron": "^1.7.5",
+    "electron-packager": "^9.0.0",
     "gulp": "^3.9.1",
     "gulp-generic-build": "https://git@github.com/Alxmerino/Gulp-Generic-Build.git",
     "gulp-if": "^2.0.2",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
+    "prop-types": "^15.5.10",
     "watchify": "^3.9.0"
   }
 }
