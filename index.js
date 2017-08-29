@@ -1,13 +1,7 @@
-const {
-    app,
-    ipcMain,
-    Menu,
-    BrowserWindow } = require('electron');
-const menubar       = require('menubar');
-const path          = require('path');
-const url           = require('url');
-const AppEvents     = require('./src/js/enums/AppEvents');
-const TimerEvents   = require('./src/js/enums/TimerEvents');
+const { ipcMain, Menu } = require('electron');
+const menubar           = require('menubar');
+const AppEvents         = require('./src/js/enums/AppEvents');
+const TimerEvents       = require('./src/js/enums/TimerEvents');
 
 /**
  *
