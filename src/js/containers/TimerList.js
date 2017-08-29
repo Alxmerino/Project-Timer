@@ -130,8 +130,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTitle(id, title));
             dispatch(toggleTitleChangeOff(id));
         },
-        onTitleUpdate: (id, proxyData, event) => {
-            if (event.type === 'react-keyup') {
+        onTitleUpdate: (id, proxyData) => {
+            if (proxyData.type === 'keyup') {
                 // Save title when enter key is presses (13)
                 if (proxyData.keyCode === 13) {
                     let title = proxyData.target.value;
@@ -149,8 +149,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTimeDuration(id, newDuration));
             dispatch(toggleDurationInputOff(id));
         },
-        onDurationUpdate: (id, proxyData, event) => {
-            if (event.type === 'react-keyup') {
+        onDurationUpdate: (id, proxyData) => {
+            if (proxyData.type === 'keyup') {
                 // Save duration when enter key is pressed (13)
                 if (proxyData.keyCode === 13) {
                     let newDuration = proxyData.target.value;
@@ -168,8 +168,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTimePlanned(id, newPlannedTime));
             dispatch(togglePlannedInputOff(id));
         },
-        onPlannedUpdate: (id, proxyData, event) => {
-            if (event.type === 'react-keyup') {
+        onPlannedUpdate: (id, proxyData) => {
+            if (proxyData.type === 'keyup') {
                 // Save planned time when enter key is pressed (13)
                 if (proxyData.keyCode === 13) {
                     let newPlannedTime = proxyData.target.value;
