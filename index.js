@@ -1,7 +1,9 @@
 const { ipcMain, Menu } = require('electron');
+const path              = require('path');
 const menubar           = require('menubar');
 const AppEvents         = require('./src/js/enums/AppEvents');
 const TimerEvents       = require('./src/js/enums/TimerEvents');
+const { isDev }         = require('./src/js/utils/utils');
 
 /**
  *
@@ -50,12 +52,18 @@ const inputMenu = Menu.buildFromTemplate([
  * Get started with menubar
  *
  */
-let mb = menubar({
+let mbOptions = {
     icon: icons.default,
     preloadWindow: true,
     width: 650,
     height: 420
-});
+}
+
+if (isDev()) {
+    mbOptions.index = 'file://' + path.join(__dirname, 'build/index.html');
+}
+
+let mb = menubar(mbOptions);
 
 /**
  *
