@@ -8,8 +8,7 @@
   "license": "GPL-3.0",
   "homepage": "./",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ./src",
-    "dev": "./node_modules/.bin/electron .",
+    "dev": "ELECTRON_IS_DEV=1 electron ./",
     "dist": "./bin/dist.sh",
     "start": "react-scripts start",
     "build": "react-scripts build",
