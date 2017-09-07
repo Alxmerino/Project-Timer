@@ -1,8 +1,5 @@
 #! /usr/bin/env bash
 
-# Bash script to package electron app
-APP_RESOURCES_PATH='Project Timer-darwin-x64/Project Timer.app/Contents/Resources'
-
 # Start building React app
 printf '\nStart building React app...\n'
 yarn run build
