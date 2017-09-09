@@ -2,7 +2,8 @@
  * Variables
  */
 $fontFamily: 'Paytone One', sans-serif;
-$titleBreak: 510px;
+$mobile: 375px;
+$titleBreak: 515px;
 $primary: #2c3e50;
 $info: #3498db;
 $success: #18bc9c;
@@ -33,10 +34,19 @@ $error: #e74c3c;
     }
 
     &__icon {
-        width: 65px;
+        display: none;
+        width: 50px;
         position: relative;
         bottom: -5px;
         margin-right: 20px;
+
+        @media only screen and (min-width: $mobile) {
+            display: block;
+        }
+
+        @media only screen and (min-width: $titleBreak) {
+            width: 65px;
+        }
     }
 }
 
