@@ -4,13 +4,16 @@ const TimerList  = require('../containers/TimerList');
 const Summary    = require('../containers/Summary');
 const AppIcon    = require('../components/AppIcon');
 const Options    = require('../components/Options');
+const Toolbar    = require('../components/Toolbar');
 
 let App = () => {
 
     return (
         <div className="main-wrapper">
 
-            <div className="container">
+            <Toolbar />
+
+            <div className="container container--app">
                 <div className="header clearfix">
                     <div className="row">
                         <div className="col-xs-12">
@@ -21,7 +24,7 @@ let App = () => {
                 </div>
             </div>
 
-            <div className="container">
+            <div className="container container--app">
                 <div className="row">
                     <div className="col-xs-12">
                         <div className="panel panel-default">
