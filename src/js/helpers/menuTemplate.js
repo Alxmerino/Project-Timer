@@ -53,7 +53,7 @@ const windowMenu = {
     }]
 }
 
-exports = {
+module.exports = {
     getMenuTemplate: (app) => {
         const name = app.getName();
 

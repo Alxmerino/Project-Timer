@@ -7,7 +7,7 @@ const {
     } = require('electron');
 const { isDev } = require('./src/js/utils/utils');
 const AppEvents = require('./src/js/enums/AppEvents');
-const { getMenuTemplate } = require('./src/js/helpers/menuTemplate');
+const menuTmpl = require('./src/js/helpers/menuTemplate');
 const events = require('events');
 const path = require('path');
 const url = require('url');
@@ -112,7 +112,7 @@ class App {
      * @return {void}
      */
     createMenu() {
-        const menuTemplate = getMenuTemplate(app);
+        const menuTemplate = menuTmpl.getMenuTemplate(app);
         const menu = Menu.buildFromTemplate(menuTemplate);
         Menu.setApplicationMenu(menu)
     }
