@@ -15,6 +15,10 @@ $error: #e74c3c;
  */
 .container {
     max-width: 730px;
+
+    &--app {
+        -webkit-app-region: no-drag;
+    }
 }
 
 /**
@@ -251,4 +255,55 @@ $error: #e74c3c;
         font-size: 12px;
         margin-top: 2px;
     }
+}
+
+.toolbar {
+   padding-top: 13px;
+   padding-left: 13px;
+
+    &__icon {
+        width: 13px;
+        height: 13px;
+        font-size: 12px;
+        text-align: center;
+        line-height: 10px;
+        border-radius: 50%;
+        font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-weight: bold;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 7px;
+        cursor: auto;
+        text-indent: -9999px;
+
+        &:hover {
+            text-decoration: none;
+            text-indent: 0;
+        }
+
+        &--close {
+            background: #f72c2c;
+            color: #812215;
+            border: 1px solid #E14637;
+
+            &:hover {
+                color: #812215;
+            }
+        }
+
+        &--minimize {
+            background: #F9BF32;
+            color: #99571B;
+            border: 1px solid #E0A132;
+            font-size: 13px;
+
+            &:hover {
+                color: #99571B;
+            }
+        }
+    }
+}
+
+.main-wrapper {
+    -webkit-app-region: drag;
 }
