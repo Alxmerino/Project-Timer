@@ -7,6 +7,7 @@ const {
     } = require('electron');
 const { isDev } = require('./src/js/utils/utils');
 const AppEvents = require('./src/js/enums/AppEvents');
+const { getMenuTemplate } = require('./src/js/helpers/menuTemplate');
 const events = require('events');
 const path = require('path');
 const url = require('url');
@@ -62,6 +63,8 @@ class App {
         this.initAppTray();
         // Create app window
         this.createWindow();
+        // Create app menu
+        this.createMenu();
     }
 
     /**
@@ -91,9 +94,9 @@ class App {
         });
 
         // Load the index.html of the app
-        // let indexPath = (isDev()) ? 'build/index.html' : 'index.html';
+        let indexPath = (isDev()) ? 'build/index.html' : 'index.html';
         this.win.loadURL(url.format({
-            pathname: path.join(__dirname, 'build/index.html'),
+            pathname: path.join(__dirname, indexPath),
             protocol: 'file:',
             slashes: true
         }));
@@ -102,6 +105,16 @@ class App {
         this.win.on('closed', () => {
             this.win = null;
         });
+    }
+
+    /**
+     * Creates application menu
+     * @return {void}
+     */
+    createMenu() {
+        const menuTemplate = getMenuTemplate(app);
+        const menu = Menu.buildFromTemplate(menuTemplate);
+        Menu.setApplicationMenu(menu)
     }
 
     /**
