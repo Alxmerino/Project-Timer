@@ -19,10 +19,10 @@ class App {
         this.cachedBounds
         this.event = new events.EventEmitter();
         this.opts = {
-            state: {
+            iconState: {
                 active: false,
             },
-            icons: {
+            icon: {
                 default: __dirname + '/src/img/app-icon.png',
                 active: __dirname + '/src/img/app-icon-active.png',
                 hover: __dirname + '/src/img/app-icon-hover.png'
@@ -53,6 +53,8 @@ class App {
 
         // When tray icon is clicked
         this.event.on(AppEvents.TRAY_CLICKED, this.onTrayClicked.bind(this));
+        this.event.on(AppEvents.SHOW, this.toggleTrayIcon.bind(this, true));
+        this.event.on(AppEvents.HIDE, this.toggleTrayIcon.bind(this, false));
     }
 
     /**
@@ -72,7 +74,7 @@ class App {
      * @return {void}
      */
     initAppTray() {
-        let { default: iconPath } = this.opts.icons;
+        let { default: iconPath } = this.opts.icon;
         this.tray = new Tray(iconPath);
 
         // Tray listeners
@@ -131,6 +133,23 @@ class App {
         // Cache tray position
         this.cachedBounds = bounds;
         this.showWindow(this.cachedBounds);
+    }
+
+    toggleTrayIcon(show) {
+        let { iconState, icon } = this.opts;
+
+        // Bail if timer is running
+        if (iconState.active) {
+            return;
+        }
+
+        if (show) {
+            this.tray.setImage(icon.hover);
+            this.tray.setHighlightMode('always');
+        } else {
+            this.tray.setImage(icon.default);
+            this.tray.setHighlightMode('never');
+        }
     }
 
     /**
