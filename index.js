@@ -25,8 +25,9 @@ class App {
         this.timers = {};
         this.event = new events.EventEmitter();
         this.opts = {
-            iconState: {
-                active: false,
+            state: {
+                iconActive: false,
+                alwaysOnTop: false
             },
             icon: {
                 default: __dirname + '/src/img/app-icon.png',
@@ -60,6 +61,9 @@ class App {
         ipcMain.on(AppEvents.CLOSE, this.hideWindow.bind(this));
         ipcMain.on(AppEvents.MINIMIZE, this.minimizeWindow.bind(this));
         ipcMain.on(AppEvents.QUIT, this.onQuit.bind(this));
+        ipcMain.on(AppEvents.FOCUSED, this.onAppFocused.bind(this));
+
+        /** Timer events */
         ipcMain.on(TimerEvents.TIMER_START, this.onTimerStart.bind(this));
         ipcMain.on(TimerEvents.TIMER_STOP, this.onTimerStop.bind(this));
 
@@ -122,6 +126,15 @@ class App {
         this.win.on('closed', () => {
             this.win = null;
         });
+
+        /** Emmited when window focus is lost */
+        this.win.on(AppEvents.BLUR, () => {
+            if (this.opts.state.alwaysOnTop) {
+                return;
+            }
+
+            this.hideWindow();
+        });
     }
 
     /**
@@ -158,12 +171,12 @@ class App {
     }
 
     toggleTrayIcon(show) {
-        let { iconState, icon } = this.opts;
+        let { state, icon } = this.opts;
         /** Remove highlight mode by default */
         this.tray.setHighlightMode('never');
 
         // Bail if timer is running
-        if (iconState.active) {
+        if (state.iconActive) {
             return;
         }
 
@@ -212,13 +225,23 @@ class App {
     }
 
     /**
+     * Set on/off always on top
+     * @param  {Object} event
+     * @param  {Boolean} focus
+     * @return {void}
+     */
+    onAppFocused(event, focus) {
+        this.opts.state.alwaysOnTop = focus;
+    }
+
+    /**
      * On timer start change tray icon and update app timers object
      * @return {void}
      */
     onTimerStart(event, timer) {
         const { icon } = this.opts;
 
-        this.opts.iconState.active = true;
+        this.opts.state.iconActive = true;
         this.tray.setHighlightMode('never');
         this.tray.setImage(icon.active);
         this.timers[timer.id] = timer;
@@ -230,7 +253,7 @@ class App {
     onTimerStop(event, timer) {
         const { icon } = this.opts;
 
-        this.opts.iconState.active = false;
+        this.opts.state.iconActive = false;
 
         /** Remove timer from list */
         if (timer.id in this.timers) {

@@ -13,6 +13,7 @@ module.exports = {
     HIDE:           'hide',
     WINDOW_CREATED: 'browser-window-created',
     CONTEXT_MENU:   'context-menu',
+    BLUR:           'blur',
 
     TRAY_CLICKED:   '__app_tray_clicked',
 
