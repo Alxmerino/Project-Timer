@@ -25,10 +25,7 @@ module.exports = function reducer(state={
             newState.focused = focused;
 
             if (isElectronApp()) {
-                ipcRenderer.send('async-message', {
-                    event: AppEvents.FOCUSED,
-                    payload: {focused: newState.focused}
-                });
+                ipcRenderer.send(AppEvents.FOCUSED, newState.focused);
             }
 
             return newState;

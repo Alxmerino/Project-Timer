@@ -31,9 +31,7 @@ let Options = ({ onMenuToggle, onFocusApp, menuOpen, focused }) => {
      *
      */
     let onQuit = () => {
-        ipcRenderer.send('async-message', {
-            event: AppEvents.QUIT
-        });
+        ipcRenderer.send(AppEvents.QUIT);
     };
 
     return (
