@@ -7,6 +7,7 @@ const {
     } = require('electron');
 const { isDev } = require('./src/js/utils/utils');
 const AppEvents = require('./src/js/enums/AppEvents');
+const TimerEvents = require('./src/js/enums/TimerEvents');
 const menuTmpl = require('./src/js/helpers/menuTemplate');
 const events = require('events');
 const path = require('path');
@@ -16,7 +17,12 @@ class App {
 
     constructor() {
         this.win = null;
-        this.cachedBounds
+        this.cachedBounds = null;
+        this.menu = {
+            selectionMenu: null,
+            inputMenu: null
+        }
+        this.timers = {};
         this.event = new events.EventEmitter();
         this.opts = {
             iconState: {
@@ -47,14 +53,23 @@ class App {
             }
         });
 
+        /** Window Created */
+        app.on(AppEvents.WINDOW_CREATED, this.onWindowCreated.bind(this));
+
         /** App Events */
         ipcMain.on(AppEvents.CLOSE, this.hideWindow.bind(this));
         ipcMain.on(AppEvents.MINIMIZE, this.minimizeWindow.bind(this));
+        ipcMain.on(AppEvents.QUIT, this.onQuit.bind(this));
+        ipcMain.on(TimerEvents.TIMER_START, this.onTimerStart.bind(this));
+        ipcMain.on(TimerEvents.TIMER_STOP, this.onTimerStop.bind(this));
 
         // When tray icon is clicked
         this.event.on(AppEvents.TRAY_CLICKED, this.onTrayClicked.bind(this));
         this.event.on(AppEvents.SHOW, this.toggleTrayIcon.bind(this, true));
         this.event.on(AppEvents.HIDE, this.toggleTrayIcon.bind(this, false));
+
+        /** Context menu */
+        this.event.on(AppEvents.CONTEXT_MENU, this.onContextMenu.bind(this));
     }
 
     /**
@@ -116,7 +131,14 @@ class App {
     createMenu() {
         const menuTemplate = menuTmpl.getMenuTemplate(app);
         const menu = Menu.buildFromTemplate(menuTemplate);
-        Menu.setApplicationMenu(menu)
+        const editMenu = menuTmpl.editMenu.submenu;
+        const selectionMenu = menuTmpl.selectionMenu;
+
+        // Add context menus
+        this.menu.inputMenu = Menu.buildFromTemplate(editMenu);
+        this.menu.selectionMenu = Menu.buildFromTemplate(selectionMenu);
+
+        Menu.setApplicationMenu(menu);
     }
 
     /**
@@ -137,6 +159,8 @@ class App {
 
     toggleTrayIcon(show) {
         let { iconState, icon } = this.opts;
+        /** Remove highlight mode by default */
+        this.tray.setHighlightMode('never');
 
         // Bail if timer is running
         if (iconState.active) {
@@ -149,6 +173,76 @@ class App {
         } else {
             this.tray.setImage(icon.default);
             this.tray.setHighlightMode('never');
+        }
+    }
+
+    /**
+     * Emit context menu event when the browser window is created
+     * @param  {Object} event
+     * @param  {Object} win
+     * @return {void}
+     */
+    onWindowCreated(event, win) {
+        // Fire context menu event
+        win.webContents.on(AppEvents.CONTEXT_MENU, (e, params) => {
+            this.event.emit(AppEvents.CONTEXT_MENU, params, win);
+        });
+    }
+
+    /**
+     * Fire context menu
+     * @param  {Object} event
+     * @param  {Object} params
+     * @return {void}
+     */
+    onContextMenu(params, win) {
+        const { selectionText, isEditable } = params;
+
+        if (isEditable) {
+            this.menu.inputMenu.popup(win)
+        }
+    }
+
+    /**
+     * Quit the app
+     * @return {void}
+     */
+    onQuit() {
+        app.quit();
+    }
+
+    /**
+     * On timer start change tray icon and update app timers object
+     * @return {void}
+     */
+    onTimerStart(event, timer) {
+        const { icon } = this.opts;
+
+        this.opts.iconState.active = true;
+        this.tray.setHighlightMode('never');
+        this.tray.setImage(icon.active);
+        this.timers[timer.id] = timer;
+    }
+
+    /**
+     * On timer stop change tray icon and update timers object
+     */
+    onTimerStop(event, timer) {
+        const { icon } = this.opts;
+
+        this.opts.iconState.active = false;
+
+        /** Remove timer from list */
+        if (timer.id in this.timers) {
+            delete this.timers[timer.id];
+        }
+
+        /** Only change icon if no timers are active */
+        if (Object.keys(this.timers).length === 0) {
+            this.tray.setHighlightMode('always');
+            this.tray.setImage(icon.hover);
+        } else {
+            this.tray.setImage(icon.active);
         }
     }
 

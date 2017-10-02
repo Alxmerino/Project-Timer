@@ -11,6 +11,8 @@ module.exports = {
     ACTIVATE:       'activate',
     SHOW:           'show',
     HIDE:           'hide',
+    WINDOW_CREATED: 'browser-window-created',
+    CONTEXT_MENU:   'context-menu',
 
     TRAY_CLICKED:   '__app_tray_clicked',
 
