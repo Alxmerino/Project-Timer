@@ -213,6 +213,8 @@ class App {
 
         if (isEditable) {
             this.menu.inputMenu.popup(win)
+        } else if (selectionText && selectionText.trim() !== '') {
+            this.menu.selectionMenu.popup(win);
         }
     }
 

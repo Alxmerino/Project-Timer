@@ -29,6 +29,12 @@ const editMenu = {
     }]
 }
 
+const selectionMenu = [
+    {role: 'copy', accelerator: 'Cmd+C'},
+    {type: 'separator'},
+    {role: 'selectall', accelerator: 'Cmd+A'}
+];
+
 const windowMenu = {
     label: 'Window',
     role: 'window',
@@ -110,5 +116,6 @@ module.exports = {
         // Help/version/update
         ];
     },
-    editMenu
+    editMenu,
+    selectionMenu
 }
