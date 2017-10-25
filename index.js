@@ -255,8 +255,6 @@ class App {
     onTimerStop(event, timer) {
         const { icon } = this.opts;
 
-        this.opts.state.iconActive = false;
-
         /** Remove timer from list */
         if (timer.id in this.timers) {
             delete this.timers[timer.id];
@@ -264,6 +262,8 @@ class App {
 
         /** Only change icon if no timers are active */
         if (Object.keys(this.timers).length === 0) {
+            this.opts.state.iconActive = false;
+
             this.tray.setHighlightMode('always');
             this.tray.setImage(icon.hover);
         } else {
