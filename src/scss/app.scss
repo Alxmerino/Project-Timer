@@ -2,8 +2,9 @@
  * Variables
  */
 $fontFamily: 'Paytone One', sans-serif;
-$mobile: 375px;
+$mobile: 425px;
 $titleBreak: 515px;
+$titleBreak2: 570px;
 $primary: #2c3e50;
 $info: #3498db;
 $success: #18bc9c;
@@ -31,8 +32,13 @@ $error: #e74c3c;
         align-items: center;
         margin-bottom: 25px;
         font-family: $fontFamily;
+        transition: font-size 0.25s ease;
 
         @media only screen and (min-width: $titleBreak) {
+            font-size: 50px;
+        }
+
+        @media only screen and (min-width: $titleBreak2) {
             font-size: 60px;
         }
     }
@@ -43,6 +49,7 @@ $error: #e74c3c;
         position: relative;
         bottom: -5px;
         margin-right: 20px;
+        transition: width 0.25s ease;
 
         @media only screen and (min-width: $mobile) {
             display: block;
