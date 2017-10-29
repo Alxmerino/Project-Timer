@@ -1,3 +1,5 @@
+const AppEvents = require('../enums/AppEvents');
+
 const editMenu = {
     label: 'Edit',
     submenu: [{
@@ -35,28 +37,33 @@ const selectionMenu = [
     {role: 'selectall', accelerator: 'Cmd+A'}
 ];
 
-const windowMenu = {
-    label: 'Window',
-    role: 'window',
-    submenu: [{
-        label: 'Minimize',
-        accelerator: 'Cmd+M',
-        role: 'minimize'
-    }, {
-        label: 'Close',
-        accelerator: 'Cmd+W',
-        role: 'close'
-    }, {
-        type: 'separator'
-    }, {
-        label: 'Reopen Window',
-        accelerator: 'Cmd+Shift+T',
-        enabled: false,
-        key: 'reopenMenuItem',
-        // click: function () {
-        //     app.emit('activate')
-        // }
-    }]
+const windowMenu = (app) => {
+
+    return {
+        label: 'Window',
+        role: 'window',
+        submenu: [{
+            label: 'Minimize',
+            accelerator: 'Cmd+M',
+            role: 'minimize'
+        }, {
+            label: 'Close',
+            accelerator: 'Cmd+W',
+            key: 'hideWindow',
+            click: () => {
+                app.emit(AppEvents.CLOSE);
+            }
+        }, {
+            type: 'separator'
+        }, {
+            label: 'Show Window',
+            accelerator: 'Cmd+0',
+            key: 'showWindow',
+            click: () => {
+                app.emit(AppEvents.ACTIVATE);
+            }
+        }]
+    }
 }
 
 module.exports = {
@@ -113,6 +120,7 @@ module.exports = {
         //     ]
         // },
         editMenu,
+        windowMenu(app),
         // Help/version/update
         ];
     },

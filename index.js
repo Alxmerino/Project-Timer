@@ -56,8 +56,9 @@ class App {
             }
         });
 
-        /** Window Created */
+        /** App Ecents */
         app.on(AppEvents.WINDOW_CREATED, this.onWindowCreated.bind(this));
+        app.on(AppEvents.CLOSE, this.hideWindow.bind(this));
 
         /** App Events */
         ipcMain.on(AppEvents.CLOSE, this.hideWindow.bind(this));
