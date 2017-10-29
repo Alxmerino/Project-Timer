@@ -4,6 +4,9 @@
 # Production
 /build
 
+# Build files
+/public/css/app.*
+
 # Dependency directories
 /node_modules
 jspm_packages
