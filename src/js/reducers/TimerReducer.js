@@ -447,8 +447,21 @@ module.exports = function reducer(state={
 
                     // Stop the timer if is running
                     if (timer.started) {
-                        timer.timeTracker.stop();
                         timer.started = false;
+                        timer.endTime = moment.now();
+
+                        // Save duration in case we want to start again
+                        timer.durationCycle = timer.duration;
+
+                        // Stop time tracker
+                        timer.timeTracker.stop();
+
+                        if (isElectronApp()) {
+                            ipcRenderer.send(TimerEvents.TIMER_STOP, timer);
+                        }
+
+                        // Update local storage
+                        Storage.set(id, timer);
                     }
                 }
 
