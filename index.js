@@ -1,134 +1,323 @@
 const {
     app,
-    ipcMain,
+    BrowserWindow,
+    Tray,
     Menu,
-    BrowserWindow } = require('electron');
-const menubar       = require('menubar');
-const path          = require('path');
-const url           = require('url');
-const AppEvents     = require('./src/js/enums/AppEvents');
-const TimerEvents   = require('./src/js/enums/TimerEvents');
+    ipcMain
+    } = require('electron');
+const { isDev } = require('./src/js/utils/utils');
+const AppEvents = require('./src/js/enums/AppEvents');
+const TimerEvents = require('./src/js/enums/TimerEvents');
+const menuTmpl = require('./src/js/helpers/menuTemplate');
+const path = require('path');
+const url = require('url');
 
-/**
- *
- * Icons Map
- *
- */
-const icons = {
-    default: __dirname + '/src/img/app-icon.png',
-    active: __dirname + '/src/img/app-icon-active.png',
-    hover: __dirname + '/src/img/app-icon-hover.png'
-}
+class App {
 
-/**
- *
- * Icon state
- *
- */
-const iconState = {
-    active: false
-}
+    constructor() {
+        this.win = null;
+        this.cachedBounds = null;
+        this.menu = {
+            selectionMenu: null,
+            inputMenu: null
+        }
+        this.timers = {};
+        this.opts = {
+            state: {
+                iconActive: false,
+                alwaysOnTop: false
+            },
+            icon: {
+                default: __dirname + '/src/img/app-icon.png',
+                active: __dirname + '/src/img/app-icon-active.png',
+                hover: __dirname + '/src/img/app-icon-hover.png'
+            }
+        }
 
-/**
- *
- * Context Menu
- *
- */
-const selectionMenu = Menu.buildFromTemplate([
-    {role: 'copy', accelerator: 'CmdOrCtrl+C'},
-    {type: 'separator'},
-    {role: 'selectall', accelerator: 'CmdOrCtrl+A'}
-]);
-
-const inputMenu = Menu.buildFromTemplate([
-    {role: 'undo', accelerator: 'CmdOrCtrl+Z'},
-    {role: 'redo', accelerator: 'Shift+CmdOrCtrl+Z'},
-    {type: 'separator'},
-    {role: 'cut', accelerator: 'CmdOrCtrl+X'},
-    {role: 'copy', accelerator: 'CmdOrCtrl+C'},
-    {role: 'paste', accelerator: 'CmdOrCtrl+V'},
-    {type: 'separator'},
-    {role: 'selectall', accelerator: 'CmdOrCtrl+A'}
-]);
-
-/**
- *
- * Get started with menubar
- *
- */
-let mb = menubar({
-    icon: icons.default,
-    preloadWindow: true,
-    width: 650,
-    height: 420
-});
-
-/**
- *
- * Listen for App events
- *
- */
-mb.on('ready', () => {});
-
-mb.on('show', () => {
-    if (!iconState.active) {
-        mb.tray.setImage(icons.hover)
+        this.initListeners();
     }
-});
 
-mb.on('hide', () => {
-    if (!iconState.active) {
-        mb.tray.setImage(icons.default)
+    /**
+     * Initialize app listeners
+     * @return {void}
+     */
+    initListeners() {
+        /** On App Ready */
+        app.on(AppEvents.READY, this.appReady.bind(this));
+
+        /** On App Activate*/
+        app.on(AppEvents.ACTIVATE, () => {
+            if (this.win === null) {
+                this.createWindow();
+            } else {
+                this.showWindow();
+            }
+        });
+
+        /** Window Ecents */
+        app.on(AppEvents.WINDOW_CREATED, this.onWindowCreated.bind(this));
+        app.on(AppEvents.CLOSE, this.hideWindow.bind(this));
+
+        /** App Events */
+        ipcMain.on(AppEvents.CLOSE, this.hideWindow.bind(this));
+        ipcMain.on(AppEvents.MINIMIZE, this.minimizeWindow.bind(this));
+        ipcMain.on(AppEvents.QUIT, this.onQuit.bind(this));
+        ipcMain.on(AppEvents.FOCUSED, this.onAppFocused.bind(this));
+
+        /** Timer events */
+        ipcMain.on(TimerEvents.TIMER_START, this.onTimerStart.bind(this));
+        ipcMain.on(TimerEvents.TIMER_STOP, this.onTimerStop.bind(this));
+
+        // When tray icon is clicked
+        app.on(AppEvents.TRAY_CLICKED, this.onTrayClicked.bind(this));
+        app.on(AppEvents.SHOW, this.toggleTrayIcon.bind(this, true));
+        app.on(AppEvents.HIDE, this.toggleTrayIcon.bind(this, false));
+
+        /** Context menu */
+        app.on(AppEvents.CONTEXT_MENU, this.onContextMenu.bind(this));
     }
-});
 
-/** Contect menu */
-mb.app.on('browser-window-created', (event, win) => {
-    win.webContents.on('context-menu', (e, params) => {
+    /**
+     * When the app is ready to run
+     * @return {void}
+     */
+    appReady() {
+        this.initAppTray();
+        // Create app window
+        this.createWindow();
+        // Create app menu
+        this.createMenu();
+    }
+
+    /**
+     * Initialize menu bar tray icon
+     * @return {void}
+     */
+    initAppTray() {
+        let { default: iconPath } = this.opts.icon;
+        this.tray = new Tray(iconPath);
+
+        // Tray listeners
+        this.tray.on('click', (e, bounds) => {
+            app.emit(AppEvents.TRAY_CLICKED, e, bounds);
+        });
+    }
+
+    /**
+     * Create a new browser window
+     * @return {void}
+     */
+    createWindow() {
+        // Create the browser
+        this.win = new BrowserWindow({
+            width: 650,
+            height: 420,
+            minWidth: 400,
+            minHeight: 365,
+            frame: false
+        });
+
+        // Load the index.html of the app
+        let indexPath = (isDev()) ? 'build/index.html' : 'index.html';
+        this.win.loadURL(url.format({
+            pathname: path.join(__dirname, indexPath),
+            protocol: 'file:',
+            slashes: true
+        }));
+
+        // Emmited when the window is closed.
+        this.win.on('closed', () => {
+            this.win = null;
+        });
+
+        /** Emmited when window focus is lost */
+        this.win.on(AppEvents.BLUR, () => {
+            if (this.opts.state.alwaysOnTop) {
+                return;
+            }
+
+            this.hideWindow();
+        });
+    }
+
+    /**
+     * Creates application menu
+     * @return {void}
+     */
+    createMenu() {
+        const menuTemplate = menuTmpl.getMenuTemplate(app);
+        const menu = Menu.buildFromTemplate(menuTemplate);
+        const editMenu = menuTmpl.editMenu.submenu;
+        const selectionMenu = menuTmpl.selectionMenu;
+
+        // Add context menus
+        this.menu.inputMenu = Menu.buildFromTemplate(editMenu);
+        this.menu.selectionMenu = Menu.buildFromTemplate(selectionMenu);
+
+        Menu.setApplicationMenu(menu);
+    }
+
+    /**
+     * On menu bar tray icon click
+     * @param  {object} e
+     * @param  {object} bounds
+     * @return {void}
+     */
+    onTrayClicked(e, bounds) {
+        if (this.win && this.win.isVisible()) {
+            return this.hideWindow();
+        }
+
+        // Cache tray position
+        this.cachedBounds = bounds;
+        this.showWindow(this.cachedBounds);
+    }
+
+    toggleTrayIcon(show) {
+        let { state, icon } = this.opts;
+        /** Remove highlight mode by default */
+        this.tray.setHighlightMode('never');
+
+        // Bail if timer is running
+        if (state.iconActive) {
+            return;
+        }
+
+        if (show) {
+            this.tray.setImage(icon.hover);
+            this.tray.setHighlightMode('always');
+        } else {
+            this.tray.setImage(icon.default);
+            this.tray.setHighlightMode('never');
+        }
+    }
+
+    /**
+     * Emit context menu event when the browser window is created
+     * @param  {Object} event
+     * @param  {Object} win
+     * @return {void}
+     */
+    onWindowCreated(event, win) {
+        // Fire context menu event
+        win.webContents.on(AppEvents.CONTEXT_MENU, (e, params) => {
+            app.emit(AppEvents.CONTEXT_MENU, params, win);
+        });
+    }
+
+    /**
+     * Fire context menu
+     * @param  {Object} event
+     * @param  {Object} params
+     * @return {void}
+     */
+    onContextMenu(params, win) {
         const { selectionText, isEditable } = params;
 
         if (isEditable) {
-            inputMenu.popup(win);
+            this.menu.inputMenu.popup(win)
         } else if (selectionText && selectionText.trim() !== '') {
-            selectionMenu.popup(win);
+            this.menu.selectionMenu.popup(win);
         }
-    });
-});
+    }
+
+    /**
+     * Quit the app
+     * @return {void}
+     */
+    onQuit() {
+        app.quit();
+    }
+
+    /**
+     * Set on/off always on top
+     * @param  {Object} event
+     * @param  {Boolean} focus
+     * @return {void}
+     */
+    onAppFocused(event, focus) {
+        this.opts.state.alwaysOnTop = focus;
+    }
+
+    /**
+     * On timer start change tray icon and update app timers object
+     * @return {void}
+     */
+    onTimerStart(event, timer) {
+        const { icon } = this.opts;
+
+        this.opts.state.iconActive = true;
+        this.tray.setHighlightMode('never');
+        this.tray.setImage(icon.active);
+        this.timers[timer.id] = timer;
+    }
+
+    /**
+     * On timer stop change tray icon and update timers object
+     */
+    onTimerStop(event, timer) {
+        const { icon } = this.opts;
+
+        /** Remove timer from list */
+        if (timer.id in this.timers) {
+            delete this.timers[timer.id];
+        }
+
+        /** Only change icon if no timers are active */
+        if (Object.keys(this.timers).length === 0) {
+            this.opts.state.iconActive = false;
+
+            this.tray.setHighlightMode('always');
+            this.tray.setImage(icon.hover);
+        } else {
+            this.tray.setImage(icon.active);
+        }
+    }
+
+    /**
+     * Show broswer window
+     * @return {void}
+     */
+    showWindow(trayPos) {
+        if (!this.win) {
+            this.createWindow();
+        }
+
+        app.emit(AppEvents.SHOW);
+
+        this.win.show();
+    }
+
+    /**
+     * Hide browser window
+     * @return {void}
+     */
+    hideWindow() {
+        if (!this.win) {
+            return;
+        }
+
+        // Hide window
+        app.emit(AppEvents.HIDE);
+        this.win.hide();
+    }
+
+    /**
+     * Minimize browser window
+     * @return {void}
+     */
+    minimizeWindow() {
+        if (!this.win) {
+            return;
+        }
+
+        // Minimize window
+        app.emit(AppEvents.MINIMIZE);
+        this.win.minimize();
+    }
+}
 
 /**
- *
- * Listen for events from the renderer process
- *
+ * Fire up the app
  */
-ipcMain.on('async-message', (event, arg) => {
-    let timer = null;
-    let status = '';
-    let notification = null;
-
-    switch(arg.event) {
-        case AppEvents.QUIT:
-            mb.app.quit();
-            break;
-
-        case TimerEvents.TIMER_START:
-            iconState.active = true;
-            mb.tray.setImage(icons.active);
-            break;
-
-        case TimerEvents.TIMER_STOP:
-            iconState.active = false;
-            mb.tray.setImage(icons.hover);
-            break;
-
-        case AppEvents.FOCUSED:
-            let { focused } = arg.payload;
-            mb.setOption('alwaysOnTop', focused);
-            break;
-
-        case TimerEvents.TIMER_DONE:
-            break;
-
-        case TimerEvents.TIMER_OVERTIME:
-            break;
-    }
-});
+new App();

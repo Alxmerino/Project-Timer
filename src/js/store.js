@@ -1,10 +1,7 @@
-'use strict';
-
 const {
     createStore,
     combineReducers,
     applyMiddleware }   = require('redux');
-const logger            = require('redux-logger');
 const _                 = require('underscore');
 
 const Storage           = require('./helpers/Storage');

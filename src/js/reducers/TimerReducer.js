@@ -3,7 +3,7 @@ const moment                    = require('moment');
 const Storage                   = require('../helpers/Storage');
 const Logger                    = require('../components/Logger');
 const TimerEvents               = require('../enums/TimerEvents');
-const {getIpcPingInterval }     = require('../helpers');
+const { getIpcPingInterval }     = require('../helpers');
 const { isElectronApp }         = require('../utils/utils');
 const { TimerNotify,
     requestNotificationPermission } = require('../utils/Notification');
@@ -103,9 +103,7 @@ module.exports = function reducer(state={
                     timer.timeTracker.start();
 
                     if (isElectronApp()) {
-                        ipcRenderer.send('async-message', {
-                            event: TimerEvents.TIMER_START
-                        });
+                        ipcRenderer.send(TimerEvents.TIMER_START, timer);
                     }
 
                     // Update local storage
@@ -134,9 +132,7 @@ module.exports = function reducer(state={
                     timer.timeTracker.stop();
 
                     if (isElectronApp()) {
-                        ipcRenderer.send('async-message', {
-                            event: TimerEvents.TIMER_STOP
-                        });
+                        ipcRenderer.send(TimerEvents.TIMER_STOP, timer);
                     }
 
                     // Update local storage
@@ -208,10 +204,7 @@ module.exports = function reducer(state={
 
                             // Electron alert
                             if (isElectronApp()) {
-                                ipcRenderer.send('async-message', {
-                                    event: TimerEvents.TIMER_DONE,
-                                    payload: { timer }
-                                });
+                                ipcRenderer.send(TimerEvents.TIMER_DONE, timer);
                             }
                         }
 
@@ -230,10 +223,7 @@ module.exports = function reducer(state={
 
                                 // Electron alert
                                 if (isElectronApp()) {
-                                    ipcRenderer.send('async-message', {
-                                        event: TimerEvents.TIMER_OVERTIME,
-                                        payload: { timer }
-                                    });
+                                    ipcRenderer.send(TimerEvents.TIMER_OVERTIME, timer);
                                 }
 
                                 // Clear timeout prop
@@ -457,8 +447,21 @@ module.exports = function reducer(state={
 
                     // Stop the timer if is running
                     if (timer.started) {
-                        timer.timeTracker.stop();
                         timer.started = false;
+                        timer.endTime = moment.now();
+
+                        // Save duration in case we want to start again
+                        timer.durationCycle = timer.duration;
+
+                        // Stop time tracker
+                        timer.timeTracker.stop();
+
+                        if (isElectronApp()) {
+                            ipcRenderer.send(TimerEvents.TIMER_STOP, timer);
+                        }
+
+                        // Update local storage
+                        Storage.set(id, timer);
                     }
                 }
 
@@ -502,6 +505,8 @@ module.exports = function reducer(state={
 
             return newState;
         }
+
+        default:
 
     }
 

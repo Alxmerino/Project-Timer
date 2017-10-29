@@ -1,7 +1,8 @@
 import moment       from 'moment';
-import TimerEvents  from '../src/js/enums/TimerEvents';
-import reducer      from '../src/js/reducers/TimerReducer';
-import TimeTracker  from '../src/js/containers/TimeTracker'
+import TimerEvents  from '../js/enums/TimerEvents';
+import reducer      from '../js/reducers/TimerReducer';
+import TimeTracker  from '../js/containers/TimeTracker'
+
 
 // Defaults
 const defaultState = {timers: []};
@@ -12,7 +13,7 @@ const timer = {
     createdTime: id,
     started: false,
     duration: 0,
-    timeTracker: new TimeTracker(() => {})
+    timeTracker: TimeTracker(() => {})
 };
 
 describe('Timer reducer', () => {

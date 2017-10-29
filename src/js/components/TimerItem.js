@@ -1,5 +1,5 @@
 const React                = require('react');
-const PropTypes            = React.PropTypes;
+const PropTypes            = require('prop-types');
 
 const {
     formatTime,
@@ -31,6 +31,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         case TimerEvents.TIMER_LOGGED:
             statusClass = 'timer--logged';
             break;
+        default:
     }
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
@@ -70,7 +71,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
     return (
         <li className={`timer list-group-item ${active} ${statusClass}`}>
             <a
-                href="#"
+                href="#timer__close"
                 className="timer__close"
                 onClick={onClose}
             >

@@ -1,46 +1,31 @@
 #! /usr/bin/env bash
 
-# Bash script to package electron app
-APP_RESOURCES_PATH='Project Timer-darwin-x64/Project Timer.app/Contents/Resources'
+# Start building React app
+printf '\nStart building React app...\n\n'
+yarn run build
+printf '\nFinished building React app\n'
 
-echo 'Creating build directory...'
-echo ''
-mkdir -p ./build/node_modules
-echo 'Created build directory'
-echo ''
 
-echo 'Copying app files...'
-echo ''
-cp index.js index.html package.json ./build
-echo 'Copied app files'
-echo ''
+# Copy necessary files for electron
+printf '\nStart copying app files...\n'
+cp index.js package.json ./build
+printf '\nFinished copying app files\n'
 
-echo 'Copying node modules...'
-echo ''
-cp -r ./node_modules/{menubar,electron-positioner,extend,underscore,moment,moment-duration-format} ./build/node_modules
-echo 'Copied node modules'
-echo ''
+# Copy source files for electron app
+printf '\nStart copying source files...\n'
+mkdir -p ./build/src/js ./build/src/img
+cp -r ./src/js/enums ./build/src/js
+cp -r ./src/js/utils ./build/src/js
+cp -r ./src/js/helpers ./build/src/js
+cp -r ./src/img/* ./build/src/img
+printf '\nFinished copying source files\n\n'
 
-echo 'Gulping...'
-echo ''
-gulp
-echo ''
-echo 'Gulp build'
+# Copy node_modules directory
+# printf '\nStart copying node modules...\n'
+# mkdir -p ./build/node_modules
+# cp -r ./node_modules/{menubar,electron-positioner,extend} ./build/node_modules
+# printf '\nFinished copying node modules\n\n'
 
-echo 'Copying dist and source files...'
-echo ''
-cp -r ./dist ./build/dist
-cp -r ./src ./build
-echo 'Copied dist and source files'
-echo ''
-
-./node_modules/.bin/electron-packager ./build  --platform=darwin --asar=true --arch=x64 --overwrite --app-version=1.3.1 --icon=./app-icon.icns
-echo ''
-echo 'Packaged electron app'
-echo ''
-
-echo 'Clean up build files...'
-echo ''
-rm -rf ./build
-echo 'Cleaned up build files'
-echo ''
+# Build electron app
+electron-packager ./build --platform=darwin  --arch=x64 --overwrite --app-version=1.3.1 --icon=./app-icon.icns --no-prune
+printf '\nFinished building electron app\n'

@@ -1,5 +1,5 @@
 const React                = require('react');
-const PropTypes            = React.PropTypes;
+const PropTypes            = require('prop-types');
 
 const TimerTitle = (props) => {
     let descExcerpt = (props.description && props.description.length) ?

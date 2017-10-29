@@ -7,7 +7,20 @@
  */
 /* eslint-disable no-undef */
 module.exports = {
+    READY:          'ready',
+    ACTIVATE:       'activate',
+    SHOW:           'show',
+    HIDE:           'hide',
+    WINDOW_CREATED: 'browser-window-created',
+    CONTEXT_MENU:   'context-menu',
+    BLUR:           'blur',
+
+    TRAY_CLICKED:   '__app_tray_clicked',
+
     QUIT:           '__app_quit',
     FOCUSED:        '__app_focused',
     MENU_TOGGLE:    '__app_menu_open',
+
+    CLOSE:          '__app_close',
+    MINIMIZE:       '__app_minimize',
 };

@@ -1,5 +1,5 @@
 const React                        = require('react');
-const PropTypes                    = React.PropTypes;
+const PropTypes                    = require('prop-types');
 const { connect }                  = require('react-redux');
 const _                            = require('underscore');
 
@@ -130,8 +130,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTitle(id, title));
             dispatch(toggleTitleChangeOff(id));
         },
-        onTitleUpdate: (id, proxyData, event) => {
-            if (event.type === 'react-keyup') {
+        onTitleUpdate: (id, proxyData) => {
+            if (proxyData.type === 'keyup') {
                 // Save title when enter key is presses (13)
                 if (proxyData.keyCode === 13) {
                     let title = proxyData.target.value;
@@ -150,7 +150,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleDurationInputOff(id));
         },
         onDurationUpdate: (id, proxyData) => {
-            if (event.type === 'react-keyup') {
+            if (proxyData.type === 'keyup') {
                 // Save duration when enter key is pressed (13)
                 if (proxyData.keyCode === 13) {
                     let newDuration = proxyData.target.value;
@@ -169,7 +169,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(togglePlannedInputOff(id));
         },
         onPlannedUpdate: (id, proxyData) => {
-            if (event.type === 'react-keyup') {
+            if (proxyData.type === 'keyup') {
                 // Save planned time when enter key is pressed (13)
                 if (proxyData.keyCode === 13) {
                     let newPlannedTime = proxyData.target.value;

@@ -1,5 +1,5 @@
-import AppEvents  from '../src/js/enums/AppEvents';
-import reducer  from '../src/js/reducers/AppReducer';
+import AppEvents  from '../js/enums/AppEvents';
+import reducer  from '../js/reducers/AppReducer';
 /**
  *
  * Defaults
