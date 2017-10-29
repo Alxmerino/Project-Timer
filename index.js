@@ -51,6 +51,8 @@ class App {
         app.on(AppEvents.ACTIVATE, () => {
             if (this.win === null) {
                 this.createWindow();
+            } else {
+                this.showWindow();
             }
         });
 
