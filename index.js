@@ -112,6 +112,8 @@ class App {
         this.win = new BrowserWindow({
             width: 650,
             height: 420,
+            minWidth: 400,
+            minHeight: 365,
             frame: false
         });
 
