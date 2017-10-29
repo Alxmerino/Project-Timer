@@ -42,6 +42,7 @@
     "electron": "^1.7.5",
     "electron-packager": "^9.0.0",
     "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
     "gulp-generic-build": "https://git@github.com/Alxmerino/Gulp-Generic-Build.git",
     "gulp-if": "^2.0.2",
     "gulp-sourcemaps": "^2.4.1",
