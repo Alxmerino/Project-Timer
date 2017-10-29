@@ -9,7 +9,6 @@ const { isDev } = require('./src/js/utils/utils');
 const AppEvents = require('./src/js/enums/AppEvents');
 const TimerEvents = require('./src/js/enums/TimerEvents');
 const menuTmpl = require('./src/js/helpers/menuTemplate');
-const events = require('events');
 const path = require('path');
 const url = require('url');
 
@@ -23,7 +22,6 @@ class App {
             inputMenu: null
         }
         this.timers = {};
-        this.event = new events.EventEmitter();
         this.opts = {
             state: {
                 iconActive: false,
@@ -56,7 +54,7 @@ class App {
             }
         });
 
-        /** App Ecents */
+        /** Window Ecents */
         app.on(AppEvents.WINDOW_CREATED, this.onWindowCreated.bind(this));
         app.on(AppEvents.CLOSE, this.hideWindow.bind(this));
 
@@ -71,12 +69,12 @@ class App {
         ipcMain.on(TimerEvents.TIMER_STOP, this.onTimerStop.bind(this));
 
         // When tray icon is clicked
-        this.event.on(AppEvents.TRAY_CLICKED, this.onTrayClicked.bind(this));
-        this.event.on(AppEvents.SHOW, this.toggleTrayIcon.bind(this, true));
-        this.event.on(AppEvents.HIDE, this.toggleTrayIcon.bind(this, false));
+        app.on(AppEvents.TRAY_CLICKED, this.onTrayClicked.bind(this));
+        app.on(AppEvents.SHOW, this.toggleTrayIcon.bind(this, true));
+        app.on(AppEvents.HIDE, this.toggleTrayIcon.bind(this, false));
 
         /** Context menu */
-        this.event.on(AppEvents.CONTEXT_MENU, this.onContextMenu.bind(this));
+        app.on(AppEvents.CONTEXT_MENU, this.onContextMenu.bind(this));
     }
 
     /**
@@ -101,7 +99,7 @@ class App {
 
         // Tray listeners
         this.tray.on('click', (e, bounds) => {
-            this.event.emit(AppEvents.TRAY_CLICKED, e, bounds);
+            app.emit(AppEvents.TRAY_CLICKED, e, bounds);
         });
     }
 
@@ -201,7 +199,7 @@ class App {
     onWindowCreated(event, win) {
         // Fire context menu event
         win.webContents.on(AppEvents.CONTEXT_MENU, (e, params) => {
-            this.event.emit(AppEvents.CONTEXT_MENU, params, win);
+            app.emit(AppEvents.CONTEXT_MENU, params, win);
         });
     }
 
@@ -283,7 +281,7 @@ class App {
             this.createWindow();
         }
 
-        this.event.emit(AppEvents.SHOW);
+        app.emit(AppEvents.SHOW);
 
         this.win.show();
     }
@@ -298,7 +296,7 @@ class App {
         }
 
         // Hide window
-        this.event.emit(AppEvents.HIDE);
+        app.emit(AppEvents.HIDE);
         this.win.hide();
     }
 
@@ -312,7 +310,7 @@ class App {
         }
 
         // Minimize window
-        this.event.emit(AppEvents.MINIMIZE);
+        app.emit(AppEvents.MINIMIZE);
         this.win.minimize();
     }
 }
