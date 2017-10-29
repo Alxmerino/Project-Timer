@@ -12,6 +12,7 @@
     "dev": "ELECTRON_IS_DEV=1 electron ./",
     "dist": "./bin/dist.sh",
     "start": "react-scripts start",
+    "prebuild": "gulp scss",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
