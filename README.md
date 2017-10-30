@@ -4,14 +4,15 @@ A small timer app that can add timers for multiple projects.
 Use it on your browser! [Demo](https://alxmerino.github.io/Project-Timer/)
 
 ## Getting started
-This project uses is made with ReactJS, Redux, Browserify and uses gulp as a build tool.
+This project is made with create-react-app and uses gulp to build styles.
 
-Run the `connect` gulp task to run a local server or the `dev` task to watch for changes and a local server. The app should be running on http://localhost:8080
+Run the `yarn start` gulp task to run a local server or the `gulp dev` task to watch for SCSS changes and a local server. The app should be running on http://localhost:8080 for SCSS and http://localhost:3000 for JS.
 
 ```
-gulp connect // Local server
-gulp dev // watch + local server
-gulp // Builds for production
+yarn start // Local server
+gulp dev // watch SCSS + local server
+yarn run build // Builds for production
+yarn run dist // Builds Electron app
 ```
 
 ## Usage
@@ -44,21 +45,7 @@ When adding planned time (How long?) field, you can add time in any of the follo
 ````
 
 ## MVP Roadmap
-- [x] Save time on local storage
-    - [x] Ability to add/remove multiple timers/projects
-    - [x] Build timer func
-    - [x] Plan hours
-    - [x] Display planned time, running time
-    - [x] Integrate localStorage
-- [ ] Save time on server (Directus?, Firebase?, etc)
-- [ ] Hook up with JIRA
-
-## Todo
-- [x] Add lint
-- [x] Ability to edit/reset timer
-- [x] Able to change title after it's added
-- [ ] Integrate Per-day project hours (calendar?)
-- [x] test!!!
+This project is updated as often as possible. For bug fixes and updates see [Projects Page](https://github.com/Alxmerino/Project-Timer/projects)
 
 ## Known issues
 - Notification sound not working on desktop app
