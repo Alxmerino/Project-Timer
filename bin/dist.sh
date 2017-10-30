@@ -27,5 +27,5 @@ printf '\nFinished copying source files\n\n'
 # printf '\nFinished copying node modules\n\n'
 
 # Build electron app
-electron-packager ./build --platform=darwin  --arch=x64 --overwrite --app-version=1.3.1 --icon=./app-icon.icns --no-prune
+electron-packager ./build --platform=darwin  --arch=x64 --overwrite --app-version=1.3.2 --icon=./app-icon.icns --no-prune
 printf '\nFinished building electron app\n'
