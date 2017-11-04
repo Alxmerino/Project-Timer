@@ -424,6 +424,8 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.plannedTime = moment.duration(timeStr).asMilliseconds();
+                    timer.durationCycle = timer.duration;
+                    timer.startTime = moment.now();
                     delete timer.editingPlannedTime;
 
                     // Update local storage entry
