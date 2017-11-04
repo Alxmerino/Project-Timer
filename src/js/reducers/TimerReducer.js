@@ -425,24 +425,8 @@ module.exports = function reducer(state={
                 if (timer.id === id) {
                     timer.editingDescription = true;
 
-                    // Stop the timer if is running
-                    if (timer.started) {
-                        timer.started = false;
-                        timer.endTime = moment.now();
-
-                        // Save duration in case we want to start again
-                        timer.durationCycle = timer.duration;
-
-                        // Stop time tracker
-                        timer.timeTracker.stop();
-
-                        if (isElectronApp()) {
-                            ipcRenderer.send(TimerEvents.TIMER_STOP, timer);
-                        }
-
-                        // Update local storage
-                        Storage.set(id, timer);
-                    }
+                    // Update local storage
+                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -459,6 +443,9 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     delete timer.editingDescription;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;

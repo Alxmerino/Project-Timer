@@ -181,6 +181,7 @@ const mapDispatchToProps = (dispatch) => {
             }
         },
         onDescEditOn: (id) => {
+            dispatch(stopTimer(id));
             dispatch(toggleDescInputOn(id));
         },
         onDescEditOff: (id, proxyData) => {
