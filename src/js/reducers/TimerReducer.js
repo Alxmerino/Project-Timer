@@ -98,6 +98,7 @@ module.exports = function reducer(state={
                     timer.started = true;
                     timer.startTime = moment.now();
                     delete timer.editingTitle;
+                    delete timer.editingDuration;
 
                     // Start time tracker
                     timer.timeTracker.start();
