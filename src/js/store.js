@@ -2,7 +2,6 @@ const {
     createStore,
     combineReducers,
     applyMiddleware }   = require('redux');
-const _                 = require('underscore');
 
 const Storage           = require('./helpers/Storage');
 const Logger            = require('./components/Logger');
@@ -18,13 +17,11 @@ const preloadedState = {
     TimerReducer: {}
 };
 
-const persistState = (() => {
+(function persistState() {
     let timers = Storage.all();
 
-    preloadedState.TimerReducer.timers = _.toArray(timers);
-});
-
-persistState();
+    preloadedState.TimerReducer.timers = timers;
+})();
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -33,6 +30,13 @@ const rootReducer = combineReducers({
 });
 
 // Apply middleware
-const middleware = applyMiddleware();
+const _middlewares = [];
+
+// Add logger on development only
+if (process.env.NODE_ENV === 'development') {
+    const logger = require('redux-logger');
+    _middlewares.push(logger());
+}
+const middleware = applyMiddleware(..._middlewares);
 
 module.exports = createStore(rootReducer, preloadedState, middleware);
