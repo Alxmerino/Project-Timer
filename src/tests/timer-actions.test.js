@@ -62,18 +62,6 @@ describe('actions', () => {
         expect(actions.stopTimer(id)).toEqual(expectedAction);
     });
 
-    /** TIMER_TOGGLE */
-    it('should create an action to toggle a timer', () => {
-        let id = moment.now();
-
-        const expectedAction = {
-            type: TimerEvents.TIMER_TOGGLE,
-            payload: id
-        };
-
-        expect(actions.toggleTimer(id)).toEqual(expectedAction);
-    });
-
     /** TIMER_UPDATE */
     it('should create an action to update the timer', () => {
         let id = moment.now();

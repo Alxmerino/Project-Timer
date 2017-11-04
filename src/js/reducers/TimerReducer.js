@@ -59,36 +59,6 @@ module.exports = function reducer(state={
             return newState;
         }
 
-        case TimerEvents.TIMER_TOGGLE: {
-            let id = action.payload;
-            let newState = _.assign({}, state);
-
-            // Pause running timer and toggle matching timer by ID
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.started = !timer.started;
-
-                    // Update local storage
-                    Storage.set(id, timer);
-                } else {
-                    timer.started = false;
-                }
-
-                // Start/Stop timer
-                if (timer.started) {
-                    timer.startTime = moment.now();
-                    timer.timeTracker.start();
-                } else {
-                    timer.endTime = moment.now();
-                    timer.timeTracker.stop();
-                }
-
-                return timer;
-            });
-
-            return _.assign({}, state, newState);
-        }
-
         case TimerEvents.TIMER_START: {
             let id = action.payload;
             let newState = _.assign({}, state);

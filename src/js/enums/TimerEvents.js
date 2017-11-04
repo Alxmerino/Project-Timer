@@ -11,7 +11,6 @@ module.exports = {
     TIMER_DESTROY:              '__timer_destroy',
     TIMER_START:                '__timer_start',
     TIMER_STOP:                 '__timer_stop',
-    TIMER_TOGGLE:               '__timer_toggle',
     TIMER_UPDATE:               '__timer_update',
     TIMER_TITLE_CHANGE_ON:      '__timer_title_change_on',
     TIMER_TITLE_CHANGE_OFF:     '__timer_title_change_off',

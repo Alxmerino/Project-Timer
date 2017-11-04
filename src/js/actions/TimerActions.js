@@ -28,13 +28,6 @@ const stopTimer = (id) => {
     };
 };
 
-const toggleTimer = (id) => {
-    return {
-        type: TimerEvents.TIMER_TOGGLE,
-        payload: id
-    };
-};
-
 const updateTimer = (id) => {
     return {
         type: TimerEvents.TIMER_UPDATE,
