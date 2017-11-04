@@ -70,6 +70,7 @@ module.exports = function reducer(state={
                     delete timer.editingTitle;
                     delete timer.editingDuration;
                     delete timer.editingPlannedTime;
+                    delete timer.editingDescription;
 
                     // Start time tracker
                     timer.timeTracker.start();
