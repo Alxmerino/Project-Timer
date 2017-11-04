@@ -141,6 +141,7 @@ const mapDispatchToProps = (dispatch) => {
             }
         },
         onDurationEditOn: (id) => {
+            dispatch(stopTimer(id));
             dispatch(toggleDurationInputOn(id));
         },
         onDurationEditOff: (id, proxyData) => {

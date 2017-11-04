@@ -313,12 +313,6 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.editingDuration = true;
-
-                    // Stop the timer if is running
-                    if (timer.started) {
-                        timer.timeTracker.stop();
-                        timer.started = false;
-                    }
                 }
 
                 return timer;
