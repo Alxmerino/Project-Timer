@@ -5,7 +5,7 @@ import TimeTracker  from '../js/containers/TimeTracker'
 
 
 // Defaults
-const defaultState = {timers: []};
+const defaultState = {timers: {}};
 const id = moment.now();
 const timer = {
     id,
@@ -23,7 +23,7 @@ describe('Timer reducer', () => {
         expect(
             reducer(undefined, {})
         ).toEqual({
-            timers: []
+            timers: {}
         });
     });
 
@@ -37,7 +37,10 @@ describe('Timer reducer', () => {
         expect(
             reducer(defaultState, action)
         ).toEqual({
-            timers: expect.arrayContaining([timer])
+            // timers: expect.arrayContaining([timer])
+            timers: {
+                [id]: timer
+            }
         });
     });
 
@@ -50,10 +53,10 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: []
+            timers: {}
         });
     });
 
@@ -66,14 +69,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     started: true
                 })
-            ]
+            }
         });
     });
 
@@ -89,14 +92,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     started: false
                 })
-            ]
+            }
         });
     });
 
@@ -113,14 +116,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     duration: 0
                 })
-            ]
+            }
         });
     });
 
@@ -133,14 +136,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).not.toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     duration: 0
                 })
-            ]
+            }
         });
     });
 
@@ -153,14 +156,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingTitle: true
                 })
-            ]
+            }
         });
     });
 
@@ -173,14 +176,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).not.toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingTitle: true
                 })
-            ]
+            }
         });
     });
 
@@ -194,27 +197,27 @@ describe('Timer reducer', () => {
         // Expect new title
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     title: 'New timer title'
                 })
-            ]
+            }
         });
 
         // Expect editing prop to be removed
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).not.toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingTitle: true
                 })
-            ]
+            }
         });
     });
 
@@ -227,14 +230,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingDuration: true
                 })
-            ]
+            }
         });
     });
 
@@ -247,14 +250,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).not.toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingDuration: true
                 })
-            ]
+            }
         });
     });
 
@@ -267,14 +270,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     duration: 9453000
                 })
-            ]
+            }
         });
     });
 
@@ -288,14 +291,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingPlannedTime: true
                 })
-            ]
+            }
         });
     });
 
@@ -308,14 +311,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).not.toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     editingDuration: true
                 })
-            ]
+            }
         });
     });
 
@@ -328,14 +331,14 @@ describe('Timer reducer', () => {
 
         expect(
             reducer({
-                timers: [timer]
+                timers: {[id]: timer}
             }, action)
         ).toEqual({
-            timers: [
-                expect.objectContaining({
+            timers: {
+                [id]: expect.objectContaining({
                     plannedTime: 83341000
                 })
-            ]
+            }
         });
     });
 
