@@ -132,7 +132,6 @@ module.exports = {
     destroyTimer,
     startTimer,
     stopTimer,
-    toggleTimer,
     updateTimer,
     toggleTitleChangeOn,
     toggleTitleChangeOff,
