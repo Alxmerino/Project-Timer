@@ -294,7 +294,6 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.title = title;
-                    delete timer.editingTitle;
 
                     // Update local storage entry
                     Storage.set(id, timer);
