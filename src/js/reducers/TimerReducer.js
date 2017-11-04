@@ -231,6 +231,9 @@ module.exports = function reducer(state={
                 // Add editingTitle
                 if (timer.id === id) {
                     timer.editingTitle = true;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -248,6 +251,9 @@ module.exports = function reducer(state={
                 // Delete editingTitle prop
                 if (timer.id === id) {
                     delete timer.editingTitle;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -284,6 +290,9 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.editingDuration = true;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -300,6 +309,9 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     delete timer.editingDuration;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -345,6 +357,9 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     timer.editingPlannedTime = true;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
@@ -361,6 +376,9 @@ module.exports = function reducer(state={
             newState.timers = _.map(newState.timers, (timer) => {
                 if (timer.id === id) {
                     delete timer.editingDuration;
+
+                    // Update local storage entry
+                    Storage.set(id, timer);
                 }
 
                 return timer;
