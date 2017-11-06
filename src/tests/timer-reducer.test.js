@@ -1,7 +1,7 @@
 import moment       from 'moment';
 import TimerEvents  from '../js/enums/TimerEvents';
 import reducer      from '../js/reducers/TimerReducer';
-import TimeTracker  from '../js/containers/TimeTracker'
+import TimeTracker  from '../js/containers/TimeTracker';
 
 
 // Defaults
@@ -133,6 +133,17 @@ describe('Timer reducer', () => {
             type: TimerEvents.TIMER_UPDATE,
             payload: id
         };
+
+        // Mock timer running for 3 seconds
+        let mockCounc = 0;
+        let mock = setInterval(() => {
+            if (mockCounc < 3) {
+                clearInterval(mock);
+            }
+
+            reducer( { timers: {[id]: timer} }, action )
+            mockCounc++;
+        }, 1000);
 
         expect(
             reducer({
