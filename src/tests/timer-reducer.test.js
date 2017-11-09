@@ -347,4 +347,64 @@ describe('Timer reducer', () => {
         });
     });
 
+    /** TIMER_DESCRIPTION_ON */
+    it('should handle TIMER_DESCRIPTION_ON', () => {
+        let action = {
+            type: TimerEvents.TIMER_DESCRIPTION_ON,
+            payload: {id}
+        };
+
+        expect(
+            reducer({
+                timers: {[id]: timer}
+            }, action)
+        ).toEqual({
+            timers: {
+                [id]: expect.objectContaining({
+                    editingDescription: true
+                })
+            }
+        });
+    });
+
+    /** TIMER_DESCRIPTION_OFF */
+    it('should handle TIMER_DESCRIPTION_OFF', () => {
+        let action = {
+            type: TimerEvents.TIMER_DESCRIPTION_OFF,
+            payload: {id}
+        };
+
+        expect(
+            reducer({
+                timers: {[id]: timer}
+            }, action)
+        ).not.toEqual({
+            timers: {
+                [id]: expect.objectContaining({
+                    editingDescription: true
+                })
+            }
+        });
+    });
+
+    /** TIMER_DESCRIPTION_UPDATE */
+    it('should handle TIMER_DESCRIPTION_UPDATE', () => {
+        let action = {
+            type: TimerEvents.TIMER_DESCRIPTION_UPDATE,
+            payload: {id, desc: 'New description'}
+        };
+
+        expect(
+            reducer({
+                timers: {[id]: timer}
+            }, action)
+        ).toEqual({
+            timers: {
+                [id]: expect.objectContaining({
+                    description: 'New description'
+                })
+            }
+        });
+    });
+
 });
