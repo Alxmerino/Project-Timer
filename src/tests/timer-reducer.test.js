@@ -135,15 +135,9 @@ describe('Timer reducer', () => {
         };
 
         // Mock timer running for 3 seconds
-        let mockCounc = 0;
-        let mock = setInterval(() => {
-            if (mockCounc < 3) {
-                clearInterval(mock);
-            }
-
+        for (let i = 0; i <= 3; i++) {
             reducer( { timers: {[id]: timer} }, action )
-            mockCounc++;
-        }, 1000);
+        }
 
         expect(
             reducer({
