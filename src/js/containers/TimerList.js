@@ -27,7 +27,7 @@ const {
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff }) => {
+let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff, onDescEditUpdate }) => {
 
     return (
         <ul className="list-group">
@@ -49,6 +49,7 @@ let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onT
                     onPlannedUpdate={onPlannedUpdate}
                     onDescEditOn={onDescEditOn}
                     onDescEditOff={onDescEditOff}
+                    onDescEditUpdate={onDescEditUpdate}
                     key={timer.id}
                 />
             )}
@@ -79,6 +80,7 @@ TimerList.propTypes = {
     onPlannedUpdate:    PropTypes.func.isRequired,
     onDescEditOn:       PropTypes.func.isRequired,
     onDescEditOff:      PropTypes.func.isRequired,
+    onDescEditUpdate:   PropTypes.func.isRequired,
 };
 
 /**
@@ -99,6 +101,37 @@ const mapStateToProps = (state) => {
         timers
     };
 };
+
+/**
+ * Key map to test key press
+ * @type {Object}
+ */
+let keyMap = {}
+
+/**
+ * Test keys to see if they were pressed
+ * @param  {String} keys
+ * @return {Boolean}
+ */
+const testKeys = (...keys) => {
+    const testSingleKey = (key) => {
+        let alias = {
+            cmd: 91,
+            enter: 13
+        }
+
+        return keyMap[alias[key]];
+    }
+
+    /** Return false if all keys to test are not pressed */
+    for (var i = 0; i < keys.length; i++) {
+        if (!testSingleKey(keys[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 /**
  * @desc Maps the dispatcher onto properties to pass onto the
@@ -189,6 +222,19 @@ const mapDispatchToProps = (dispatch) => {
             let desc = proxyData.currentTarget.previousSibling.value;
             dispatch(updateTimeDescription(id, desc));
             dispatch(toggleDescInputOff(id));
+        },
+        onDescEditUpdate: (id, proxyData) => {
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('cmd', 'enter')) {
+                // get the input value
+                let desc = proxyData.currentTarget.value;
+                dispatch(updateTimeDescription(id, desc));
+                dispatch(toggleDescInputOff(id));
+
+                // Clear keymap
+                keyMap = {};
+            }
         }
     };
 };
