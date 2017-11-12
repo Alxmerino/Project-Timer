@@ -12,9 +12,6 @@ const Debug = new Logger('App');
 /* eslint-enable no-unused-vars */
 new PersistStore();
 
-// Distpatch initial app load
-store.dispatch({type: 'APP_LOADED'});
-
 render(<Provider store={store}>
     <App/>
 </Provider>, document.getElementById('app'));
