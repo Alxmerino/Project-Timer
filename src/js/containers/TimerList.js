@@ -164,13 +164,15 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleTitleChangeOff(id));
         },
         onTitleUpdate: (id, proxyData) => {
-            if (proxyData.type === 'keyup') {
-                // Save title when enter key is presses (13)
-                if (proxyData.keyCode === 13) {
-                    let title = proxyData.target.value;
-                    dispatch(updateTitle(id, title));
-                    dispatch(toggleTitleChangeOff(id));
-                }
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('enter')) {
+                let title = proxyData.target.value;
+                dispatch(updateTitle(id, title));
+                dispatch(toggleTitleChangeOff(id));
+
+                // Clear keymap
+                keyMap = {};
             }
         },
         onDurationEditOn: (id) => {
@@ -184,13 +186,15 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleDurationInputOff(id));
         },
         onDurationUpdate: (id, proxyData) => {
-            if (proxyData.type === 'keyup') {
-                // Save duration when enter key is pressed (13)
-                if (proxyData.keyCode === 13) {
-                    let newDuration = proxyData.target.value;
-                    dispatch(updateTimeDuration(id, newDuration));
-                    dispatch(toggleDurationInputOff(id));
-                }
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('enter')) {
+                let newDuration = proxyData.target.value;
+                dispatch(updateTimeDuration(id, newDuration));
+                dispatch(toggleDurationInputOff(id));
+
+                // Clear keymap
+                keyMap = {};
             }
         },
         onPlannedEditOn: (id) => {
@@ -204,13 +208,15 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(togglePlannedInputOff(id));
         },
         onPlannedUpdate: (id, proxyData) => {
-            if (proxyData.type === 'keyup') {
-                // Save planned time when enter key is pressed (13)
-                if (proxyData.keyCode === 13) {
-                    let newPlannedTime = proxyData.target.value;
-                    dispatch(updateTimePlanned(id, newPlannedTime));
-                    dispatch(togglePlannedInputOff(id));
-                }
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('enter')) {
+                let newPlannedTime = proxyData.target.value;
+                dispatch(updateTimePlanned(id, newPlannedTime));
+                dispatch(togglePlannedInputOff(id));
+
+                // Clear keymap
+                keyMap = {};
             }
         },
         onDescEditOn: (id) => {

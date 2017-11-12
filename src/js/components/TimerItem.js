@@ -40,7 +40,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         if (isEditing) {
             return (
                 <div className="input-group timer__inputGroup">
-                    <input onKeyUp={onUpdate.bind(this, id)} type="text" autoFocus defaultValue={formatTime(timeInSeconds, 'seconds')} className={`timer__${type}Input form-control input-sm`} />
+                    <input onKeyUp={onUpdate.bind(this, id)} onKeyDown={onUpdate.bind(this, id)} type="text" autoFocus defaultValue={formatTime(timeInSeconds, 'seconds')} className={`timer__${type}Input form-control input-sm`} />
                     <span className="input-group-btn">
                         <button onClick={onClickOff.bind(this, id)} className="btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                     </span>
