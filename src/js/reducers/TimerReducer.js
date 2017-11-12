@@ -273,6 +273,7 @@ module.exports = function reducer(state={
              */
             let timer = newState.timers[id];
             timer.duration = moment.duration(timeStr).asMilliseconds();
+            timer.durationCycle = timer.duration;
             delete timer.editingDuration;
 
             // Update local storage entry
