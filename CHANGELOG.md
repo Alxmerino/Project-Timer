@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
     - Add basic keyboard shortcuts
     - Add desktop app context menu
 
-### Changed
+### Fixed
     - Fix time jumping back when toggling inputs. ([#58](https://github.com/Alxmerino/Project-Timer/issues/58))
     - Fix differences in production vs uncompiled code
     - Fix inputs not responding to enter keypress
