@@ -5,7 +5,7 @@ const moment                   = require('moment');
 const _                        = require('underscore');
 
 const Logger                   = require('../utils/Logger');
-const TimeTracker              = require('../containers/TimeTracker');
+const TimeTracker              = require('../utils/TimeTracker');
 const { addTimer, updateTimer} = require('../actions/TimerActions');
 
 /* eslint-disable no-unused-vars */

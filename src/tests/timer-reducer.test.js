@@ -1,7 +1,7 @@
 import moment       from 'moment';
 import TimerEvents  from '../js/enums/TimerEvents';
 import reducer      from '../js/reducers/TimerReducer';
-import TimeTracker  from '../js/containers/TimeTracker';
+import TimeTracker  from '../js/utils/TimeTracker';
 
 
 // Defaults

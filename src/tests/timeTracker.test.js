@@ -1,4 +1,4 @@
-import TimeTracker from '../js/containers/TimeTracker'
+import TimeTracker from '../js/utils/TimeTracker'
 
 describe('Time tracker', () => {
 
