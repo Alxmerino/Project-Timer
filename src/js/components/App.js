@@ -1,6 +1,6 @@
 const React      = require('react');
 const TimerList  = require('../containers/TimerList');
-const Summary    = require('../containers/Summary');
+const Summary    = require('../components/Summary');
 const AddTimer   = require('../components/AddTimer');
 const AppIcon    = require('../components/AppIcon');
 const Options    = require('../components/Options');
