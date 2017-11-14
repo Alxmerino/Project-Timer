@@ -1,4 +1,4 @@
-import Logger from '../js/components/Logger';
+import Logger from '../js/utils/Logger';
 
 describe('Logger component', () => {
     const Debug = new Logger('Debug');

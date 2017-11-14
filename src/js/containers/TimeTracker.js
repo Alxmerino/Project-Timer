@@ -1,6 +1,6 @@
 const _        = require('underscore');
 const moment   = require('moment');
-const Logger   = require('../components/Logger');
+const Logger   = require('../utils/Logger');
 require('moment-timer');
 
 /* eslint-disable no-unused-vars */

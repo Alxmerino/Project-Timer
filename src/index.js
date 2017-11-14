@@ -3,7 +3,7 @@ const { render }       = require('react-dom');
 const { Provider }     = require('react-redux');
 
 const App              = require('./js/components/App');
-const Logger           = require('./js/components/Logger');
+const Logger           = require('./js/utils/Logger');
 const PersistStore     = require('./js/helpers/PersistStore');
 const store            = require('./js/store');
 

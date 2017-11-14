@@ -1,5 +1,5 @@
 const path = require('path');
-const Logger = require('../components/Logger');
+const Logger = require('../utils/Logger');
 const { isElectronApp } = require('../utils/utils');
 const {
     getTimeIn,

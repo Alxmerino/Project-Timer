@@ -6,7 +6,7 @@ const _                    = require('underscore');
 const {
     getTimeIn,
     formatTime }           = require('../helpers');
-const Logger               = require('../components/Logger');
+const Logger               = require('../utils/Logger');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Summary');

@@ -1,7 +1,7 @@
 const _                         = require('underscore');
 const moment                    = require('moment');
 const Storage                   = require('../helpers/Storage');
-const Logger                    = require('../components/Logger');
+const Logger                    = require('../utils/Logger');
 const TimerEvents               = require('../enums/TimerEvents');
 const { getIpcPingInterval }     = require('../helpers');
 const { isElectronApp }         = require('../utils/utils');

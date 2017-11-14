@@ -6,7 +6,7 @@ const { isElectronApp }    = require('../utils/utils');
 const { toggleAppMenu,
     toggleAppFocus }       = require('../actions/AppActions');
 const AppEvents            = require('../enums/AppEvents');
-const Logger               = require('../components/Logger');
+const Logger               = require('../utils/Logger');
 
 // Require ipcRenderer only in electron app
 const { ipcRenderer }   = (isElectronApp()) ? window.require('electron') : {};

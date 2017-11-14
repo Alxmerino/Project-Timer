@@ -5,7 +5,7 @@ const {
     formatTime,
     getTimeIn }            = require('../helpers');
 const TimerTitle           = require('../components/TimerTitle');
-const Logger               = require('../components/Logger');
+const Logger               = require('../utils/Logger');
 const TimerEvents          = require('../enums/TimerEvents');
 
 /* eslint-disable no-unused-vars */

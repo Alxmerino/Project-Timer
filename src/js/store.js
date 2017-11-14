@@ -4,7 +4,7 @@ const {
     applyMiddleware }   = require('redux');
 
 const Storage           = require('./helpers/Storage');
-const Logger            = require('./components/Logger');
+const Logger            = require('./utils/Logger');
 const TimerReducer      = require('./reducers/TimerReducer');
 const AppReducer        = require('./reducers/AppReducer');
 

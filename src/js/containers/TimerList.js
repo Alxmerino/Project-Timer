@@ -4,7 +4,7 @@ const { connect }                  = require('react-redux');
 const _                            = require('underscore');
 
 const TimerItem                    = require('../components/TimerItem');
-const Logger                       = require('../components/Logger');
+const Logger                       = require('../utils/Logger');
 const {
     stopTimer,
     startTimer,
