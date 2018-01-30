@@ -5,10 +5,20 @@ const { ipcRenderer }      = (isElectronApp()) ? window.require('electron') : {}
 
 module.exports = function reducer(state={
     menuOpen: false,
-    focused: false
+    focused: false,
+    loggedIn: false
 }, action) {
 
     switch(action.type) {
+        case AppEvents.APP_READY: {
+            // let { loggedIn } = action.payload;
+            let newState = Object.assign({}, state);
+
+            // newState.loggedIn = loggedIn;
+
+            return newState;
+        }
+
         case AppEvents.MENU_TOGGLE: {
             let { menuOpen } = action.payload;
             let newState = Object.assign({}, state);
