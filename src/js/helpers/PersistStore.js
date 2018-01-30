@@ -2,7 +2,7 @@ const _                = require('underscore');
 
 const TimeTracker      = require('../utils/TimeTracker');
 const { updateTimer}   = require('../actions/TimerActions');
-const store            = require('../store');
+const { store }            = require('../store');
 
 class PersistStore {
     constructor() {

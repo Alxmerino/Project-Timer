@@ -1,12 +1,18 @@
 const {
     createStore,
     combineReducers,
-    applyMiddleware }   = require('redux');
+    applyMiddleware }           = require('redux');
+const { createBrowserHistory }  = require('history');
+const thunk                     = require('redux-thunk').default;
+const {
+    routerReducer,
+    routerMiddleware }  = require('react-router-redux');
 
 const Storage           = require('./helpers/Storage');
 const Logger            = require('./utils/Logger');
 const TimerReducer      = require('./reducers/TimerReducer');
 const AppReducer        = require('./reducers/AppReducer');
+const api               = require('./api/api');
 
 /* eslint-disable no-unused-vars */
 const Debug = new Logger('Store');
@@ -23,14 +29,24 @@ const preloadedState = {
     preloadedState.TimerReducer.timers = timers;
 })();
 
+// Create browser history
+const history = createBrowserHistory();
+
 // Combine reducers
 const rootReducer = combineReducers({
     TimerReducer,
-    AppReducer
+    AppReducer,
+    router: routerReducer
 });
 
 // Apply middleware
 const _middlewares = [];
+
+// Add router middleware
+_middlewares.push(routerMiddleware(history));
+
+// Add thunk middleware
+_middlewares.push(thunk.withExtraArgument(api));
 
 // Add logger on development only
 if (process.env.NODE_ENV === 'development') {
@@ -39,4 +55,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 const middleware = applyMiddleware(..._middlewares);
 
-module.exports = createStore(rootReducer, preloadedState, middleware);
+module.exports = {
+    history,
+    store: createStore(rootReducer, preloadedState, middleware),
+}
