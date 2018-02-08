@@ -3,9 +3,9 @@ const { connect }   = require('react-redux');
 const { push }      = require('react-router-redux');
 const PropTypes     = require('prop-types');
 
-const Toolbar   = require('../components/Toolbar');
-const AppIcon   = require('../components/AppIcon');
-const { Jira }  = require('../components/Vendors');
+const Toolbar   = require('../../components/Toolbar');
+const AppIcon   = require('../../components/AppIcon');
+const { Jira }  = require('../../components/Vendors');
 
 class Landing extends React.Component {
 

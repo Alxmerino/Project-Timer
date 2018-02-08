@@ -5,8 +5,8 @@ const { Provider }        = require('react-redux');
 const { ConnectedRouter } = require('react-router-redux');
 
 const App                 = require('./js/components/App');
-const Landing             = require('./js/components/Landing');
-const LoginJira           = require('./js/components/login/Jira');
+const Landing             = require('./js/components/pages/Landing');
+const LoginJira           = require('./js/components/pages/login/Jira');
 const Logger              = require('./js/utils/Logger');
 const PersistStore        = require('./js/helpers/PersistStore');
 const { history, store }  = require('./js/store');
