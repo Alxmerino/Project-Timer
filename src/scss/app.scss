@@ -314,3 +314,43 @@ $error: #e74c3c;
 .main-wrapper {
     -webkit-app-region: drag;
 }
+
+/**
+ * Vendors
+ */
+.vendor {
+    display: block;
+    width: 150px;
+}
+
+.app-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+
+    &--open {
+        display: block;
+    }
+
+    &__box {
+        background: #fff;
+        width: 350px;
+        margin: 50px auto;
+        padding: 20px 30px;
+    }
+
+    &__header,
+    &__footer {
+        overflow: hidden;
+    }
+
+    &__header {
+        margin-bottom: 15px;
+    }
+}
+
