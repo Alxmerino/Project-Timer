@@ -104,7 +104,7 @@ class LoginJira extends React.Component {
                                         placeholder="Password"
                                     />
                                 </div>
-                                <div className="checkbox">
+                                <div className="checkbox disabled">
                                     <label>
                                         <input
                                             onChange={this.onInputChange}
@@ -112,6 +112,7 @@ class LoginJira extends React.Component {
                                             type="checkbox"
                                             id="createAccount"
                                             name="createAccount"
+                                            disabled
                                         />{' '}
                                         Create Saturn Account
                                     </label>
