@@ -1,20 +1,52 @@
 const AppEvents = require('../enums/AppEvents');
 
-const toggleAppFocus = (focused) => {
+const toggleAppFocus = focused => {
     return {
         type: AppEvents.FOCUSED,
-        payload: {focused}
+        payload: { focused },
     };
 };
 
-const toggleAppMenu = (menuOpen) => {
+const toggleAppMenu = menuOpen => {
     return {
         type: AppEvents.MENU_TOGGLE,
-        payload: {menuOpen}
+        payload: { menuOpen },
     };
 };
+
+
+const loginWithJira = params => {
+    return {
+        type: AppEvents.API,
+        payload: {
+            url: `${params.serverUrl}/rest/auth/1/session`,
+            method: 'POST',
+            onSuccess: jiraSetLoginCookie,
+            onError: jiraLoginError,
+            data: {
+                username: params.username,
+                password: params.password
+            }
+        }
+    };
+};
+
+const jiraSetLoginCookie = payload => {
+    return {
+        type: AppEvents.JIRA_SET_LOGIN_COOKIE,
+        payload
+    }
+}
+
+const jiraLoginError = payload => {
+    return {
+        type: AppEvents.JIRA_LOGIN_ERROR,
+        payload
+    }
+}
 
 module.exports = {
     toggleAppFocus,
-    toggleAppMenu
+    toggleAppMenu,
+    loginWithJira,
 };
