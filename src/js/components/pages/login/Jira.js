@@ -40,7 +40,20 @@ class LoginJira extends React.Component {
 
         const { dispatch } = this.props;
 
-        dispatch(requestAuthJira(this.state));
+        dispatch(loginWithJira(this.state));
+    }
+
+    /**
+     * Render form messages
+     */
+    renderMessages() {
+        const { messages } = this.props.app;
+
+        if (messages.error) {
+            return (<div className="alert alert-danger" role="alert">{ messages.error }</div>);
+        } else {
+            return null;
+        }
     }
 
     render() {
@@ -64,6 +77,8 @@ class LoginJira extends React.Component {
                             <div>
                                 Loging in with: <Jira />
                             </div>
+
+                            { this.renderMessages() }
 
                             <form onSubmit={this.onSubmit}>
                                 <div className="form-group">
