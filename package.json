@@ -8,8 +8,7 @@
   "license": "GPL-3.0",
   "homepage": "./",
   "scripts": {
-    "predev": "yarn run build",
-    "dev": "ELECTRON_IS_DEV=1 electron ./",
+    "dev": "./bin/dev.sh",
     "dist": "./bin/dist.sh",
     "start": "react-scripts start",
     "prebuild": "gulp scss",
