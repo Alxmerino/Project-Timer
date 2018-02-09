@@ -7,20 +7,25 @@
  */
 /* eslint-disable no-undef */
 module.exports = {
-    READY:          'ready',
-    ACTIVATE:       'activate',
-    SHOW:           'show',
-    HIDE:           'hide',
-    WINDOW_CREATED: 'browser-window-created',
-    CONTEXT_MENU:   'context-menu',
-    BLUR:           'blur',
+    READY:                  'ready',
+    ACTIVATE:               'activate',
+    SHOW:                   'show',
+    HIDE:                   'hide',
+    WINDOW_CREATED:         'browser-window-created',
+    CONTEXT_MENU:           'context-menu',
+    BLUR:                   'blur',
 
-    TRAY_CLICKED:   '__app_tray_clicked',
+    TRAY_CLICKED:           '__app_tray_clicked',
 
-    QUIT:           '__app_quit',
-    FOCUSED:        '__app_focused',
-    MENU_TOGGLE:    '__app_menu_open',
+    QUIT:                   '__app_quit',
+    FOCUSED:                '__app_focused',
+    MENU_TOGGLE:            '__app_menu_open',
 
-    CLOSE:          '__app_close',
-    MINIMIZE:       '__app_minimize',
+    CLOSE:                  '__app_close',
+    MINIMIZE:               '__app_minimize',
+
+    API:                    '__app_api',
+
+    JIRA_SET_LOGIN_COOKIE:  '__app_set_jira_cookie',
+    JIRA_LOGIN_ERROR:       '__app_jira_login_error',
 };
