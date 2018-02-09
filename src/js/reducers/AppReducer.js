@@ -6,7 +6,8 @@ const { ipcRenderer }      = (isElectronApp()) ? window.require('electron') : {}
 module.exports = function reducer(state={
     menuOpen: false,
     focused: false,
-    loggedIn: false
+    loggedIn: false,
+    messages: {},
 }, action) {
 
     switch(action.type) {
@@ -37,6 +38,14 @@ module.exports = function reducer(state={
             if (isElectronApp()) {
                 ipcRenderer.send(AppEvents.FOCUSED, newState.focused);
             }
+
+            return newState;
+        }
+
+        case AppEvents.JIRA_LOGIN_ERROR: {
+            const { message } = action.payload;
+            let newState = Object.assign({}, state);
+            newState.messages.error = `Failed to login: ${message}`;
 
             return newState;
         }
