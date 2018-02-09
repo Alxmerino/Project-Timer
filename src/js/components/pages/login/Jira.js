@@ -6,7 +6,7 @@ const PropTypes = require('prop-types');
 const Toolbar = require('../../../components/Toolbar');
 const AppIcon = require('../../../components/AppIcon');
 const { Jira } = require('../../../components/Vendors');
-const { requestAuthJira } = require('../../../actions/AppActions');
+const { loginWithJira } = require('../../../actions/AppActions');
 
 class LoginJira extends React.Component {
     constructor(props) {
