@@ -25,8 +25,10 @@ const loginWithJira = params => {
             onError: jiraLoginError,
             data: {
                 username: params.username,
-                password: params.password,
-                baseUrl: params.serverUrl
+                password: params.password
+            },
+            meta: {
+                apiUrl: params.serverUrl
             }
         }
     };
