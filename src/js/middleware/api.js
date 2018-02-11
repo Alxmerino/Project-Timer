@@ -11,12 +11,6 @@ const api = ({dispatch, getState}) => next => action => {
 
     let { onSuccess, onError } = action.payload;
 
-    // // Set default method if not defined
-    // method = (typeof method !== 'undefined') ? method : 'GET';
-
-    // // Set data if any
-    // data = (typeof data !== 'undefined') ? data : {};
-
     if (isElectronApp()) {
         ipcRenderer.send(AppEvents.API_REQUEST, action.payload);
         return;
