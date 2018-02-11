@@ -10,6 +10,7 @@ const {
 
 const Storage           = require('./helpers/Storage');
 const Logger            = require('./utils/Logger');
+const { isElectronApp } = require('./utils/utils');
 const TimerReducer      = require('./reducers/TimerReducer');
 const AppReducer        = require('./reducers/AppReducer');
 const api               = require('./middleware/api');
@@ -60,7 +61,16 @@ if (process.env.NODE_ENV === 'development') {
 // Apply middlewares
 const middleware = applyMiddleware(..._middlewares);
 
+// Create Store
+const store = createStore(rootReducer, preloadedState, middleware);
+
+// Add IPC listener on electron app
+if (isElectronApp()) {
+    const ipcListener = require('./utils/ipcListener');
+    ipcListener(store.dispatch, store.getState);
+}
+
 module.exports = {
     history,
-    store: createStore(rootReducer, preloadedState, middleware),
+    store,
 }
