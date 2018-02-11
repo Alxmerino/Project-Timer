@@ -24,7 +24,9 @@ module.exports = {
     CLOSE:                  '__app_close',
     MINIMIZE:               '__app_minimize',
 
-    API:                    '__app_api',
+    API_REQUEST:            '__app_api_request',
+    API_RESPONSE:           '__app_api_response',
+    API_ERROR:              '__app_api_error',
 
     JIRA_SET_LOGIN_COOKIE:  '__app_set_jira_cookie',
     JIRA_LOGIN_ERROR:       '__app_jira_login_error',
