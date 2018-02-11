@@ -6,6 +6,7 @@ const {
     ipcMain
     } = require('electron');
 const { isDev } = require('./src/js/utils/utils');
+const apiRequest = require('./src/js/utils/apiRequest');
 const AppEvents = require('./src/js/enums/AppEvents');
 const TimerEvents = require('./src/js/enums/TimerEvents');
 const menuTmpl = require('./src/js/helpers/menuTemplate');
@@ -75,6 +76,9 @@ class App {
 
         /** Context menu */
         app.on(AppEvents.CONTEXT_MENU, this.onContextMenu.bind(this));
+
+        /** API events */
+        ipcMain.on(AppEvents.API_REQUEST, this.onApiEvents.bind(this));
     }
 
     /**
@@ -320,6 +324,32 @@ class App {
         // Minimize window
         app.emit(AppEvents.MINIMIZE);
         this.win.minimize();
+    }
+
+    /**
+     * Handles API requests
+     *
+     * @param {Object} event
+     * @param {Object} data
+     */
+    onApiEvents(event, config) {
+        apiRequest(config)
+            .then(response => {
+                // Combine response with any meta props
+                const data = (config.hasOwnProperty('meta'))
+                    ? Object.assign(response.data, config.meta)
+                    : response.data;
+
+                event.sender.send(AppEvents.API_RESPONSE, data)
+            })
+            .catch(error => {
+                // Combine response with any meta props
+                data = (config.hasOwnProperty('meta'))
+                    ? Object.assign(error, config.meta)
+                    : error;
+
+                event.sender.send(AppEvents.API_ERROR, error)
+            });
     }
 }
 
