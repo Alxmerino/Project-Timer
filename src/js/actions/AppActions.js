@@ -17,7 +17,7 @@ const toggleAppMenu = menuOpen => {
 
 const loginWithJira = params => {
     return {
-        type: AppEvents.API,
+        type: AppEvents.API_REQUEST,
         payload: {
             url: `${params.serverUrl}/rest/auth/1/session`,
             method: 'POST',
@@ -25,7 +25,8 @@ const loginWithJira = params => {
             onError: jiraLoginError,
             data: {
                 username: params.username,
-                password: params.password
+                password: params.password,
+                baseUrl: params.serverUrl
             }
         }
     };
