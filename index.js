@@ -117,13 +117,19 @@ class App {
             frame: false
         });
 
-        // Load the index.html of the app
-        let indexPath = (isDev()) ? 'build/index.html' : 'index.html';
-        this.win.loadURL(url.format({
-            pathname: path.join(__dirname, indexPath),
+        // Load the start url for the app
+        const startUrl = process.env.ELECTRON_START_URL || url.format({
+            pathname: path.join(__dirname, 'index.html'),
             protocol: 'file:',
             slashes: true
-        }));
+        });
+
+        this.win.loadURL(startUrl);
+
+        // Open dev tools if in dev mode
+        if (isDev()) {
+            this.win.webContents.openDevTools();
+        }
 
         // Emmited when the window is closed.
         this.win.on('closed', () => {
