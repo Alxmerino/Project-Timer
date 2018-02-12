@@ -13,11 +13,13 @@ module.exports = function reducer(state={
 }, action) {
 
     switch(action.type) {
-        case AppEvents.APP_READY: {
-            // let { loggedIn } = action.payload;
+        case AppEvents.READY: {
             let newState = Object.assign({}, state);
+            const login_info = Storage.get('login_info');
 
-            // newState.loggedIn = loggedIn;
+            // Get login info
+            newState.login_info = login_info;
+            newState.loggedIn = login_info.loggedIn;
 
             return newState;
         }
