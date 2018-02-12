@@ -45,7 +45,6 @@ module.exports = function reducer(state={
         }
 
         case AppEvents.JIRA_SET_LOGIN_COOKIE: {
-            console.log('API PAYLOAD', action.payload);
             const { payload } = action;
             const { session } = payload;
             let newState = Object.assign({}, state);
@@ -56,12 +55,14 @@ module.exports = function reducer(state={
             const cookie = session.name + '=' + session.value;
 
             newState.login_info = Object.assign({}, {
+                loggedIn: true,
+                type: 'jira',
                 cookie,
                 api_url: payload.api_url,
             });
 
             // Save JIRA info on local storage
-            Storage.set('jira_login', newState.login_info);
+            Storage.set('login_info', newState.login_info);
 
             return newState;
         }
