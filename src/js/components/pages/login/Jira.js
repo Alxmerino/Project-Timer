@@ -17,13 +17,14 @@ class LoginJira extends React.Component {
 
         this.onInputChange = this.onInputChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+
+        // Redirect the user if logged in
+        this.redirect(this.props.app.loggedIn);
     }
 
-    componentWillMount() {
+    componentWillReceiveProps(props) {
         // Redirect the user if logged in
-        if (this.props.app.loggedIn) {
-            this.props.dispatch(push('/app'));
-        }
+        this.redirect(props.app.loggedIn);
     }
 
     onInputChange(e) {
@@ -41,6 +42,17 @@ class LoginJira extends React.Component {
         const { dispatch } = this.props;
 
         dispatch(loginWithJira(this.state));
+    }
+
+    /**
+     * Redirect user if logged
+     *
+     * @param {Object} props
+     */
+    redirect(loggedIn) {
+        if (loggedIn) {
+            this.props.dispatch(push('/app'));
+        }
     }
 
     /**
