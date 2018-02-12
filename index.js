@@ -337,7 +337,9 @@ class App {
             .then(response => {
                 // Combine response with any meta props
                 const data = (config.hasOwnProperty('meta'))
-                    ? Object.assign(response.data, config.meta)
+                    ? Object.assign(
+                        response.data, config.meta, { onSuccess: config.onSuccess }
+                    )
                     : response.data;
 
                 event.sender.send(AppEvents.API_RESPONSE, data)
@@ -345,7 +347,9 @@ class App {
             .catch(error => {
                 // Combine response with any meta props
                 data = (config.hasOwnProperty('meta'))
-                    ? Object.assign(error, config.meta)
+                    ? Object.assign(
+                        error, config.meta, { onError: config.onError }
+                    )
                     : error;
 
                 event.sender.send(AppEvents.API_ERROR, error)
