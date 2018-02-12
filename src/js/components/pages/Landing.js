@@ -3,15 +3,12 @@ const { connect }   = require('react-redux');
 const { push }      = require('react-router-redux');
 const PropTypes     = require('prop-types');
 
-const Toolbar   = require('../../components/Toolbar');
-const AppIcon   = require('../../components/AppIcon');
-const { Jira }  = require('../../components/Vendors');
+const Toolbar       = require('../../components/Toolbar');
+const Header        = require('../../components/Header');
+const Footer        = require('../../components/Footer');
+const { Jira }      = require('../../components/Vendors');
 
 class Landing extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     componentWillMount() {
         // Redirect the user if logged in
@@ -26,13 +23,7 @@ class Landing extends React.Component {
 
                 <Toolbar />
 
-                <div className="container container--app">
-                    <div className="row">
-                        <div className="col-xs-12">
-                            <h1 className="app__title app__title--landing"><AppIcon /> Project Timer</h1>
-                        </div>
-                    </div>
-                </div>
+                <Header />
 
                 <div className="container container--app">
                     <div className="row">
@@ -46,11 +37,7 @@ class Landing extends React.Component {
                     </div>
                 </div>
 
-                <footer className="container footer">
-                    <div className="row">
-                        <p className="col-xs-12">&copy; 2017 <a href="https://www.amayamedia.com" target="_blank" rel="noopener noreferrer">Amaya Media</a></p>
-                    </div>
-                </footer>
+                <Footer />
 
             </div>
         );
