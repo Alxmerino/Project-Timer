@@ -28,7 +28,7 @@ const loginWithJira = params => {
                 password: params.password
             },
             meta: {
-                apiUrl: params.serverUrl
+                api_url: params.serverUrl
             }
         }
     };
