@@ -15,6 +15,10 @@ let Storage = (function() {
         return _store.set(key, value);
     }
 
+    store.get = (key) => {
+        return _store.get(key);
+    }
+
     store.remove = function(keys) {
         return _store.remove(keys);
     }
