@@ -25,7 +25,7 @@ const preloadedState = {
 };
 
 (function persistState() {
-    let timers = Storage.all();
+    let timers = Storage.timers();
 
     preloadedState.TimerReducer.timers = timers;
 })();

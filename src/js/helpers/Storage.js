@@ -19,6 +19,22 @@ let Storage = (function() {
         return _store.remove(keys);
     }
 
+    store.timers = () => {
+        let timers = {};
+        let all = _store.all();
+
+        // Filter out non-timer storage
+        for (let prop in all) {
+            const timer = all[prop];
+
+            if (timer.hasOwnProperty('timeTracker')) {
+                timers[prop] = timer;
+            }
+        }
+
+        return timers;
+    }
+
     store.all = function() {
         return _store.all();
     }
