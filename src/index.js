@@ -9,6 +9,7 @@ const Landing             = require('./js/components/pages/Landing');
 const LoginJira           = require('./js/components/pages/login/Jira');
 const Logger              = require('./js/utils/Logger');
 const PersistStore        = require('./js/helpers/PersistStore');
+const AppEvents           = require('./js/enums/AppEvents');
 const { history, store }  = require('./js/store');
 
 /* eslint-disable no-unused-vars */
@@ -28,4 +29,4 @@ render(<Provider store={store}>
 </Provider>, document.getElementById('app'));
 
 /** Distpatch initial app load */
-store.dispatch({type: 'APP_LOADED'});
+store.dispatch({type: AppEvents.READY});
