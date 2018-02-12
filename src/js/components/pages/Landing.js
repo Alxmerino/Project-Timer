@@ -10,10 +10,10 @@ const { Jira }      = require('../../components/Vendors');
 
 class Landing extends React.Component {
 
-    componentWillMount() {
+    componentWillReceiveProps(props) {
         // Redirect the user if logged in
-        if (this.props.app.loggedIn) {
-            this.props.dispatch(push('/app'));
+        if (props.app.loggedIn) {
+            props.dispatch(push('/app'));
         }
     }
 
