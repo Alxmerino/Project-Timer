@@ -11,8 +11,6 @@ class Landing extends React.Component {
 
     constructor(props) {
         super(props);
-
-        console.log('PROPS', this.props);
     }
 
     componentWillMount() {
