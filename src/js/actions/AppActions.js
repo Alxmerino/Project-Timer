@@ -52,4 +52,6 @@ module.exports = {
     toggleAppFocus,
     toggleAppMenu,
     loginWithJira,
+    jiraSetLoginCookie,
+    jiraLoginError,
 };
