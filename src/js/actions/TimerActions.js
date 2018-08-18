@@ -126,8 +126,34 @@ const resetTimer = (id) => {
     };
 };
 
+const postTimer = (id) => {
+    return {
+        type: TimerEvents.TIMER_POST,
+        payload: {
+            id,
+            url: '/rest/api/2/issue/{issueIdOrKey}/worklog',
+            method: 'POST',
+            onSuccess: 'postTimerSuccess',
+            onError: 'postTimerError',
+        },
+    };
+};
+
+const postTimerSuccess = payload => {
+    return {
+        type: TimerEvents.TIMER_LOGGED,
+        payload
+    }
+}
+
+const postTimerError = payload => {
+    return {
+        type: TimerEvents.TIMER_ERROR,
+        payload
+    }
+}
+
 module.exports = {
-    TimerEvents,
     addTimer,
     destroyTimer,
     startTimer,
@@ -145,5 +171,8 @@ module.exports = {
     toggleDescInputOn,
     toggleDescInputOff,
     updateTimeDescription,
-    resetTimer
+    resetTimer,
+    postTimer,
+    postTimerSuccess,
+    postTimerError,
 };

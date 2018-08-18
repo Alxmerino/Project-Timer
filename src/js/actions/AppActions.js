@@ -19,10 +19,10 @@ const loginWithJira = params => {
     return {
         type: AppEvents.API_REQUEST,
         payload: {
-            url: `${params.serverUrl}/rest/auth/1/session`,
+            url: '/rest/auth/1/session',
             method: 'POST',
-            onSuccess: jiraSetLoginCookie,
-            onError: jiraLoginError,
+            onSuccess: 'jiraSetLoginCookie',
+            onError: 'jiraLoginError',
             data: {
                 username: params.username,
                 password: params.password
@@ -48,10 +48,40 @@ const jiraLoginError = payload => {
     }
 }
 
+const postTimerError401 = payload => {
+    console.log('postTimerError401', payload)
+    return {
+        type: AppEvents.API_ERROR_401,
+        payload
+    }
+}
+
+const verifyLogin = () => {
+    return {
+        type: AppEvents.API_REQUEST,
+        payload: {
+            url: '/rest/auth/1/session',
+            method: 'GET',
+            onSuccess: 'jiraIsLoggedIn',
+            onError: 'jiraIsLoggedIn',
+        }
+    }
+}
+
+const jiraIsLoggedIn = payload => {
+    return {
+        type: AppEvents.JIRA_IS_LOGGED_IN,
+        payload
+    }
+}
+
 module.exports = {
     toggleAppFocus,
     toggleAppMenu,
     loginWithJira,
     jiraSetLoginCookie,
     jiraLoginError,
+    verifyLogin,
+    jiraIsLoggedIn,
+    postTimerError401,
 };

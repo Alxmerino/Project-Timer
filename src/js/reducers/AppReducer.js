@@ -18,8 +18,10 @@ module.exports = function reducer(state={
             const login_info = Storage.get('login_info');
 
             // Get login info
-            newState.login_info = login_info;
-            newState.loggedIn = login_info.loggedIn;
+            if (login_info) {
+                newState.login_info = login_info;
+                newState.loggedIn = login_info.loggedIn;
+            }
 
             return newState;
         }
@@ -75,6 +77,22 @@ module.exports = function reducer(state={
             newState.messages.error = `Failed to login: ${message}`;
 
             return newState;
+        }
+
+        case AppEvents.API_ERROR_401: {
+            const { message } = action.payload;
+            const { status } = action.payload.response;
+
+            let newState = Object.assign({}, state);
+            newState.messages.error = message;
+            newState.messages.status = status;
+
+            return newState;
+        }
+
+        case AppEvents.JIRA_IS_LOGGED_IN: {
+            console.log('ACTION', action);
+            console.log('STATE', state);
         }
 
         default:

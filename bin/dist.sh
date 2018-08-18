@@ -18,13 +18,14 @@ cp -r ./src/js/enums ./build/src/js
 cp -r ./src/js/utils ./build/src/js
 cp -r ./src/js/helpers ./build/src/js
 cp -r ./src/img/* ./build/src/img
-printf '\nFinished copying source files\n\n'
+printf '\nFinished copying source files\n'
 
 # Copy node_modules directory
-# printf '\nStart copying node modules...\n'
-# mkdir -p ./build/node_modules
+printf '\nStart copying node modules...\n'
+mkdir -p ./build/node_modules
 # cp -r ./node_modules/{menubar,electron-positioner,extend} ./build/node_modules
-# printf '\nFinished copying node modules\n\n'
+cp -r ./node_modules/{axios,is-buffer,follow-redirects,ms,serve-static,escape-html,setprototypeof,inherits,destroy,on-finished,ee-first,range-parser,finalhandler,unpipe} ./build/node_modules
+printf '\nFinished copying node modules\n\n'
 
 # Build electron app
 electron-packager ./build --platform=darwin  --arch=x64 --overwrite --app-version=1.3.2 --icon=./app-icon.icns --no-prune

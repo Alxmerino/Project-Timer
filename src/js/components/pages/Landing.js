@@ -23,7 +23,7 @@ class Landing extends React.Component {
 
                 <Toolbar />
 
-                <Header />
+                <Header showAddTimer={false} />
 
                 <div className="container container--app">
                     <div className="row">
@@ -83,6 +83,6 @@ const mapDispatchToProps = (dispatch) => {
 Landing = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Landing)
+)(Landing);
 
 module.exports = Landing;

@@ -9,6 +9,7 @@ const {
     stopTimer,
     startTimer,
     resetTimer,
+    postTimer,
     destroyTimer,
     toggleDurationInputOn,
     toggleDurationInputOff,
@@ -21,14 +22,14 @@ const {
     updateTitle,
     toggleDescInputOn,
     toggleDescInputOff,
-    updateTimeDescription }         = require('../actions/TimerActions');
+    updateTimeDescription }        = require('../actions/TimerActions');
+const { verifyLogin }              = require('../actions/AppActions');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff, onDescEditUpdate }) => {
-
+let TimerList = ({ app, timers, onClose, onStart, onStop, onReset, onPostTime, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff, onDescEditUpdate }) => {
     return (
         <ul className="list-group">
             {_.map(timers, timer =>
@@ -38,6 +39,7 @@ let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onT
                     onStart={() => onStart(timer.id)}
                     onStop={() => onStop(timer.id)}
                     onReset={() => onReset(timer.id)}
+                    onPostTime={() => onPostTime(timer.id)}
                     onTitleEditOn={onTitleEditOn}
                     onTitleEditOff={onTitleEditOff}
                     onTitleUpdate={onTitleUpdate}
@@ -69,6 +71,7 @@ TimerList.propTypes = {
     onStart:            PropTypes.func.isRequired,
     onStop:             PropTypes.func.isRequired,
     onReset:            PropTypes.func.isRequired,
+    onPostTime:         PropTypes.func,
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
@@ -93,12 +96,12 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state.TimerReducer.timers, (timer) => {
-        return timer;
-    });
+    let timers = _.toArray(state.TimerReducer.timers);
+    let app = state.AppReducer;
 
     return {
-        timers
+        timers,
+        app
     };
 };
 
@@ -152,6 +155,11 @@ const mapDispatchToProps = (dispatch) => {
         },
         onReset: (id) => {
             dispatch(resetTimer(id));
+        },
+        onPostTime: (id) => {
+            dispatch(stopTimer(id));
+            // dispatch(verifyLogin);
+            dispatch(postTimer(id));
         },
         onTitleEditOn: (id) => {
             dispatch(stopTimer(id));

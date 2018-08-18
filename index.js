@@ -4,7 +4,7 @@ const {
     Tray,
     Menu,
     ipcMain
-    } = require('electron');
+} = require('electron');
 const { isDev } = require('./src/js/utils/utils');
 const apiRequest = require('./src/js/utils/apiRequest');
 const AppEvents = require('./src/js/enums/AppEvents');
@@ -12,10 +12,18 @@ const TimerEvents = require('./src/js/enums/TimerEvents');
 const menuTmpl = require('./src/js/helpers/menuTemplate');
 const path = require('path');
 const url = require('url');
+const http = require('http');
+const serveStatic = require('serve-static');
+const finalhandler = require('finalhandler');
 
 class App {
 
     constructor() {
+        this.serverPort = isDev()
+            ? 3000 // Common local port
+            : 47700; // Relatively "safe" port to use for prod
+        this.assignedPort = null;
+        this.server = null;
         this.win = null;
         this.cachedBounds = null;
         this.menu = {
@@ -121,32 +129,60 @@ class App {
             frame: false
         });
 
-        // Load the start url for the app
-        const startUrl = process.env.ELECTRON_START_URL || url.format({
-            pathname: path.join(__dirname, 'index.html'),
-            protocol: 'file:',
-            slashes: true
+        this.createStaticServer((port) => {
+            console.log(`http://localhost:${port}`);
+            this.win.loadURL(`http://localhost:${port}`);
+
+            // Open dev tools if in dev mode
+            // if (isDev()) {
+                this.win.webContents.openDevTools();
+            // }
+
+            // Emmited when the window is closed.
+            this.win.on('closed', () => {
+                this.win = null;
+            });
+
+            /** Emmited when window focus is lost */
+            this.win.on(AppEvents.BLUR, () => {
+                if (this.opts.state.alwaysOnTop) {
+                    return;
+                }
+
+                this.hideWindow();
+            });
         });
+    }
 
-        this.win.loadURL(startUrl);
+    /**
+     * Create a static server to serve React App
+     * @param {Function} callback
+     * @return {void}
+     */
+    createStaticServer(callback) {
+        // Return port 3000 if in dev mode
+        // if (isDev()) {
+        //     console.log('Dev', this.serverPort)
+        //     return callback(this.serverPort);
+        // }
 
-        // Open dev tools if in dev mode
-        if (isDev()) {
-            this.win.webContents.openDevTools();
+        // Server has been created, lets return with the callback
+        if (this.server !== null) {
+            return callback(this.server.address().port);
         }
 
-        // Emmited when the window is closed.
-        this.win.on('closed', () => {
-            this.win = null;
-        });
+        // Load the start url for the app
+        const staticUrl = isDev()
+            ? path.join(__dirname, '/build')
+            : path.join(__dirname);
 
-        /** Emmited when window focus is lost */
-        this.win.on(AppEvents.BLUR, () => {
-            if (this.opts.state.alwaysOnTop) {
-                return;
-            }
+        // Create static server
+        const serve = serveStatic(staticUrl);
 
-            this.hideWindow();
+        this.server = http.createServer((req, res) => {
+            serve(req, res, finalhandler(req, res));
+        }).listen(this.serverPort, () => {
+            callback(this.server.address().port);
         });
     }
 
@@ -335,24 +371,33 @@ class App {
     onApiEvents(event, config) {
         apiRequest(config)
             .then(response => {
+                // Use Logger on dev
+                // Combine response with any meta props
+                const data = (config.hasOwnProperty('meta'))
+                    ? Object.assign(response.data, config.meta, config)
+                    : response.data;
+
+                event.sender.send(AppEvents.API_RESPONSE, data);
+            })
+            .catch(error => {
+                // Use Logger on dev
                 // Combine response with any meta props
                 const data = (config.hasOwnProperty('meta'))
                     ? Object.assign(
-                        response.data, config.meta, { onSuccess: config.onSuccess }
+                        {
+                            message: error.toString(),
+                            response: error.response
+                        },
+                        config.meta, config
                     )
-                    : response.data;
+                    : {
+                        message: error.toString(),
+                        response: error.response
+                    };
 
-                event.sender.send(AppEvents.API_RESPONSE, data)
-            })
-            .catch(error => {
-                // Combine response with any meta props
-                data = (config.hasOwnProperty('meta'))
-                    ? Object.assign(
-                        error, config.meta, { onError: config.onError }
-                    )
-                    : error;
-
-                event.sender.send(AppEvents.API_ERROR, error)
+                console.log('ERROR', error)
+                console.log('ERROR DATA', data)
+                event.sender.send(AppEvents.API_ERROR, data);
             });
     }
 }

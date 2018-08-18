@@ -14,19 +14,20 @@ const api = ({dispatch, getState}) => next => action => {
     if (isElectronApp()) {
         // Pass in success/error action names to IPC
         action.payload = Object.assign(action.payload, {
-            onSuccess: onSuccess.name || '',
-            onError: onError.name || '',
+            onSuccess: onSuccess || '',
+            onError: onError || '',
         });
 
         // Sent payload to main IPC
         ipcRenderer.send(AppEvents.API_REQUEST, action.payload);
-        return;
+        return next(action);
     }
 
     // Make HTTP request
-    apiRequest(action.payload)
-        .then(data => dispatch(onSuccess(data)))
-        .catch(error => dispatch(onError(error)));
+    // @TODO: Make it work on the web, see ipcListener
+    // apiRequest(action.payload)
+    //     .then(data => dispatch(onSuccess(data)))
+    //     .catch(error => dispatch(onError(error)));
 }
 
 module.exports = api;

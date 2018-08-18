@@ -27,7 +27,9 @@ module.exports = {
     API_REQUEST:            '__app_api_request',
     API_RESPONSE:           '__app_api_response',
     API_ERROR:              '__app_api_error',
+    API_ERROR_401:          '__app_api_error_401',
 
     JIRA_SET_LOGIN_COOKIE:  '__app_set_jira_cookie',
     JIRA_LOGIN_ERROR:       '__app_jira_login_error',
+    JIRA_IS_LOGGED_IN:      '__app_jira_is_logged_in',
 };

@@ -3,7 +3,6 @@ const {
     combineReducers,
     applyMiddleware }           = require('redux');
 const { createBrowserHistory }  = require('history');
-// const thunk                     = require('redux-thunk').default;
 const {
     routerReducer,
     routerMiddleware }  = require('react-router-redux');
@@ -13,6 +12,7 @@ const Logger            = require('./utils/Logger');
 const { isElectronApp } = require('./utils/utils');
 const TimerReducer      = require('./reducers/TimerReducer');
 const AppReducer        = require('./reducers/AppReducer');
+const timerApi          = require('./middleware/timerApi');
 const api               = require('./middleware/api');
 
 /* eslint-disable no-unused-vars */
@@ -45,12 +45,13 @@ const _middlewares = [];
 
 // Add router middleware
 _middlewares.push(routerMiddleware(history));
+// _middlewares.push(routerMiddleware(createRouterHistory));
+
+// Add timer api middleware
+_middlewares.push(timerApi);
 
 // Add API middleware
 _middlewares.push(api);
-
-// Add thunk middleware
-// _middlewares.push(thunk.withExtraArgument(api));
 
 // Add logger on development only
 if (process.env.NODE_ENV === 'development') {

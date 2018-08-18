@@ -28,5 +28,5 @@ render(<Provider store={store}>
     {/* <App/> */}
 </Provider>, document.getElementById('app'));
 
-/** Distpatch initial app load */
+/** Dispatch initial app load */
 store.dispatch({type: AppEvents.READY});

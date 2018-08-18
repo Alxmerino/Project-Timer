@@ -1,15 +1,15 @@
-const _                         = require('underscore');
-const moment                    = require('moment');
-const Storage                   = require('../helpers/Storage');
-const Logger                    = require('../utils/Logger');
-const TimerEvents               = require('../enums/TimerEvents');
-const { getIpcPingInterval }     = require('../helpers');
-const { isElectronApp }         = require('../utils/utils');
+const _                             = require('underscore');
+const moment                        = require('moment');
+const Storage                       = require('../helpers/Storage');
+const Logger                        = require('../utils/Logger');
+const TimerEvents                   = require('../enums/TimerEvents');
+const { getIpcPingInterval }        = require('../helpers');
+const { isElectronApp }             = require('../utils/utils');
 const { TimerNotify,
     requestNotificationPermission } = require('../utils/Notification');
 
 // Require ipcRenderer only in electron app
-const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
+const { ipcRenderer }               = (isElectronApp()) ? window.require('electron') : {};
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
@@ -117,6 +117,52 @@ module.exports = function reducer(state={
             Storage.set(id, timer);
 
             return _.assign({}, state, newState);
+        }
+
+        case TimerEvents.TIMER_POST: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            let timer = newState.timers[id];
+            // Use current time in this format as is what JIRA accepts
+            timer.postedTime = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+            // This should change to true if posted successful
+            timer.logged = false;
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_LOGGED: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            let timer = newState.timers[id];
+            timer.status = TimerEvents.TIMER_LOGGED;
+            timer.logged = true;
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_ERROR: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            let timer = newState.timers[id];
+            timer.status = TimerEvents.TIMER_ERROR;
+            timer.logged = false;
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_ERROR_401: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            // let timer = newState.timers[id];
+            // timer.status = TimerEvents.TIMER_ERROR;
+            // timer.logged = false;
+
+            return newState;
         }
 
         case TimerEvents.TIMER_UPDATE: {
