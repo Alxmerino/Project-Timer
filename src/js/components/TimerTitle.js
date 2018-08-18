@@ -1,5 +1,5 @@
 const React                = require('react');
-const PropTypes            = React.PropTypes;
+const PropTypes            = require('prop-types');
 
 const TimerTitle = (props) => {
     let descExcerpt = (props.description && props.description.length) ?
@@ -9,7 +9,7 @@ const TimerTitle = (props) => {
     if (props.editingTitle) {
         return (
             <div className="input-group">
-                <input onKeyUp={props.onTitleUpdate.bind(this, props.id)} type="text" autoFocus defaultValue={props.title} className="timer__titleInput form-control input-sm" />
+                <input onKeyUp={props.onTitleUpdate.bind(this, props.id)} onKeyDown={props.onTitleUpdate.bind(this, props.id)} type="text" autoFocus defaultValue={props.title} className="timer__titleInput form-control input-sm" />
                 <span className="input-group-btn">
                     <button className="btn btn-sm btn-success" onClick={props.onTitleEditOff.bind(this, props.id)} >
                         <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>

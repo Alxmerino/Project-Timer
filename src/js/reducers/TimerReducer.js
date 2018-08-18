@@ -1,22 +1,22 @@
-const _                         = require('underscore');
-const moment                    = require('moment');
-const Storage                   = require('../helpers/Storage');
-const Logger                    = require('../components/Logger');
-const TimerEvents               = require('../enums/TimerEvents');
-const {getIpcPingInterval }     = require('../helpers');
-const { isElectronApp }         = require('../utils/utils');
+const _                             = require('underscore');
+const moment                        = require('moment');
+const Storage                       = require('../helpers/Storage');
+const Logger                        = require('../utils/Logger');
+const TimerEvents                   = require('../enums/TimerEvents');
+const { getIpcPingInterval }        = require('../helpers');
+const { isElectronApp }             = require('../utils/utils');
 const { TimerNotify,
     requestNotificationPermission } = require('../utils/Notification');
 
 // Require ipcRenderer only in electron app
-const { ipcRenderer }       = (isElectronApp()) ? window.require('electron') : {};
+const { ipcRenderer }               = (isElectronApp()) ? window.require('electron') : {};
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('Reducer');
 /* eslint-enable no-unused-vars */
 
 module.exports = function reducer(state={
-    timers: []
+    timers: {}
 }, action) {
 
     switch(action.type) {
@@ -25,13 +25,15 @@ module.exports = function reducer(state={
             let id = newTimer.id;
             let newState = _.assign({}, state);
 
+            Debug.log('Inital state', newState)
+
             // Request Notification permissions
             requestNotificationPermission();
 
+            newState.timers[id] = newTimer;
+
             // Add local storage entry
             Storage.set(id, newTimer);
-
-            newState.timers.push(newTimer);
 
             return newState;
         }
@@ -40,18 +42,8 @@ module.exports = function reducer(state={
             let id = action.payload;
             let newState = _.assign({}, state);
 
-            // Remove timer from timers array
-            newState.timers = _.reject(newState.timers, (timer) => {
-                if (timer.id === id) {
-
-                    // Stop if running
-                    if (timer.started) {
-                        timer.timeTracker.stop();
-                    }
-
-                    return timer;
-                }
-            });
+            // Remove timer from timers object
+            delete newState.timers[id];
 
             // Remove from localStorage
             Storage.remove(id);
@@ -59,61 +51,27 @@ module.exports = function reducer(state={
             return newState;
         }
 
-        case TimerEvents.TIMER_TOGGLE: {
-            let id = action.payload;
-            let newState = _.assign({}, state);
-
-            // Pause running timer and toggle matching timer by ID
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.started = !timer.started;
-
-                    // Update local storage
-                    Storage.set(id, timer);
-                } else {
-                    timer.started = false;
-                }
-
-                // Start/Stop timer
-                if (timer.started) {
-                    timer.startTime = moment.now();
-                    timer.timeTracker.start();
-                } else {
-                    timer.endTime = moment.now();
-                    timer.timeTracker.stop();
-                }
-
-                return timer;
-            });
-
-            return _.assign({}, state, newState);
-        }
-
         case TimerEvents.TIMER_START: {
             let id = action.payload;
             let newState = _.assign({}, state);
 
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.started = true;
-                    timer.startTime = moment.now();
-                    delete timer.editingTitle;
+            let timer = newState.timers[id];
+            timer.started = true;
+            timer.startTime = moment.now();
+            delete timer.editingTitle;
+            delete timer.editingDuration;
+            delete timer.editingPlannedTime;
+            delete timer.editingDescription;
 
-                    // Start time tracker
-                    timer.timeTracker.start();
+            // Start time tracker
+            timer.timeTracker.start();
 
-                    if (isElectronApp()) {
-                        ipcRenderer.send('async-message', {
-                            event: TimerEvents.TIMER_START
-                        });
-                    }
+            if (isElectronApp()) {
+                ipcRenderer.send(TimerEvents.TIMER_START, timer);
+            }
 
-                    // Update local storage
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage
+            Storage.set(id, timer);
 
             return _.assign({}, state, newState);
         }
@@ -122,29 +80,21 @@ module.exports = function reducer(state={
             let id = action.payload;
             let newState = _.assign({}, state);
 
-            newState.timers = _.map(newState.timers, (timer) => {
+            let timer = newState.timers[id];
+            timer.started = false;
+            timer.endTime = moment.now();
+            // Save duration in case we want to start timer again
+            timer.durationCycle = timer.duration;
 
-                if (timer.id === id) {
-                    timer.started = false;
-                    timer.endTime = moment.now();
-                    // Save duration in case we want to start timer again
-                    timer.durationCycle = timer.duration;
+            // Stop time tracker
+            timer.timeTracker.stop();
 
-                    // Stop time tracker
-                    timer.timeTracker.stop();
+            if (isElectronApp()) {
+                ipcRenderer.send(TimerEvents.TIMER_STOP, timer);
+            }
 
-                    if (isElectronApp()) {
-                        ipcRenderer.send('async-message', {
-                            event: TimerEvents.TIMER_STOP
-                        });
-                    }
-
-                    // Update local storage
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage
+            Storage.set(id, timer);
 
             return _.assign({}, state, newState);
         }
@@ -153,25 +103,66 @@ module.exports = function reducer(state={
             let id = action.payload;
             let newState = _.assign({}, state);
 
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.duration = 0;
-                    delete timer.durationCycle;
-                    delete timer.status;
-                    delete timer.pingedIpc;
-                    delete timer.timeout;
+            let timer = newState.timers[id];
+            timer.duration = 0;
+            delete timer.durationCycle;
+            delete timer.status;
+            delete timer.pingedIpc;
+            delete timer.timeout;
 
-                    // Reset the start date so we can start again from 0
-                    timer.startTime = moment.now();
+            // Reset the start date so we can start again from 0
+            timer.startTime = moment.now();
 
-                    // Update local storage entry
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return _.assign({}, state, newState);
+        }
+
+        case TimerEvents.TIMER_POST: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            let timer = newState.timers[id];
+            // Use current time in this format as is what JIRA accepts
+            timer.postedTime = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+            // This should change to true if posted successful
+            timer.logged = false;
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_LOGGED: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            let timer = newState.timers[id];
+            timer.status = TimerEvents.TIMER_LOGGED;
+            timer.logged = true;
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_ERROR: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            let timer = newState.timers[id];
+            timer.status = TimerEvents.TIMER_ERROR;
+            timer.logged = false;
+
+            return newState;
+        }
+
+        case TimerEvents.TIMER_ERROR_401: {
+            let { id } = action.payload;
+            let newState = _.assign({}, state);
+
+            // let timer = newState.timers[id];
+            // timer.status = TimerEvents.TIMER_ERROR;
+            // timer.logged = false;
+
+            return newState;
         }
 
         case TimerEvents.TIMER_UPDATE: {
@@ -179,83 +170,73 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Update the total duration of the running timer
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    // Set duration as milliseconds count from the startTime
-                    let currentTime = moment();
-                    let timeDiff = currentTime.diff(timer.startTime);
-                    timeDiff = moment.duration(timeDiff).asMilliseconds();
+            let timer = newState.timers[id];
 
-                    // Check to see if we have run this previously and combine the total duration
-                    timer.duration = (timer.durationCycle) ?
-                        (timeDiff + timer.durationCycle) :
-                        timeDiff;
+            // Set duration as milliseconds count from the startTime
+            let currentTime = moment();
+            let timeDiff = currentTime.diff(timer.startTime);
+            timeDiff = moment.duration(timeDiff).asMilliseconds();
 
-                    // Check if duration has reached planned time
-                    if (timer.plannedTime > 0) {
-                        let actualDuration = moment.duration(timer.duration);
-                        let plannedDuration = moment.duration(timer.plannedTime);
-                        let actualAsSecs = Math.round(actualDuration.asSeconds());
-                        let plannedAsSecs = plannedDuration.asSeconds();
+            // Check to see if we have run this previously and combine the total duration
+            timer.duration = (timer.durationCycle) ?
+                (timeDiff + timer.durationCycle) :
+                timeDiff;
 
-                        // The timer has reached its planned time
-                        // @TODO Should the timer be paused here?
-                        if (actualAsSecs === plannedAsSecs) {
-                            timer.status = TimerEvents.TIMER_DONE;
+            // Check if duration has reached planned time
+            if (timer.plannedTime > 0) {
+                let actualDuration = moment.duration(timer.duration);
+                let plannedDuration = moment.duration(timer.plannedTime);
+                let actualAsSecs = Math.round(actualDuration.asSeconds());
+                let plannedAsSecs = plannedDuration.asSeconds();
 
-                            // Fire notification
-                            TimerNotify({timer});
+                // The timer has reached its planned time
+                // @TODO Should the timer be paused here?
+                if (actualAsSecs === plannedAsSecs) {
+                    timer.status = TimerEvents.TIMER_DONE;
 
-                            // Electron alert
-                            if (isElectronApp()) {
-                                ipcRenderer.send('async-message', {
-                                    event: TimerEvents.TIMER_DONE,
-                                    payload: { timer }
-                                });
-                            }
-                        }
+                    // Fire notification
+                    TimerNotify({timer});
 
-                        // The timer is in overtime!
-                        if (actualAsSecs > plannedAsSecs) {
-                            timer.status = TimerEvents.TIMER_OVERTIME;
-                            timer.pingedIpc = timer.pingedIpc || getIpcPingInterval(null);
-
-                            // Reached ping timeout
-                            if (actualAsSecs === timer.timeout) {
-                                // Get new interval
-                                timer.pingedIpc = getIpcPingInterval(timer.pingedIpc);
-
-                                // Fire notification
-                                TimerNotify({timer});
-
-                                // Electron alert
-                                if (isElectronApp()) {
-                                    ipcRenderer.send('async-message', {
-                                        event: TimerEvents.TIMER_OVERTIME,
-                                        payload: { timer }
-                                    });
-                                }
-
-                                // Clear timeout prop
-                                delete timer.timeout;
-                            }
-
-                            // Set timeout to ping the IPC
-                            if (typeof(timer.timeout) === 'undefined') {
-                                let pingIn = moment.duration(timer.pingedIpc, 's');
-
-                                // Timeout as seconds because duration is in seconds
-                                timer.timeout = Math.round(actualDuration.add(pingIn).asSeconds());
-                            }
-                        }
+                    // Electron alert
+                    if (isElectronApp()) {
+                        ipcRenderer.send(TimerEvents.TIMER_DONE, timer);
                     }
-
-                    // Update local storage entry
-                    Storage.set(id, timer);
                 }
 
-                return timer;
-            });
+                // The timer is in overtime!
+                if (actualAsSecs > plannedAsSecs) {
+                    timer.status = TimerEvents.TIMER_OVERTIME;
+                    timer.pingedIpc = timer.pingedIpc || getIpcPingInterval(null);
+
+                    // Reached ping timeout
+                    if (actualAsSecs === timer.timeout) {
+                        // Get new interval
+                        timer.pingedIpc = getIpcPingInterval(timer.pingedIpc);
+
+                        // Fire notification
+                        TimerNotify({timer});
+
+                        // Electron alert
+                        if (isElectronApp()) {
+                            ipcRenderer.send(TimerEvents.TIMER_OVERTIME, timer);
+                        }
+
+                        // Clear timeout prop
+                        delete timer.timeout;
+                    }
+
+                    // Set timeout to ping the IPC
+                    if (typeof(timer.timeout) === 'undefined') {
+                        let pingIn = moment.duration(timer.pingedIpc, 's');
+
+                        // Timeout as seconds because duration is in seconds
+                        timer.timeout = Math.round(actualDuration.add(pingIn).asSeconds());
+                    }
+                }
+            }
+
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -265,14 +246,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Set editingTitle prop as true
-            newState.timers = _.map(newState.timers, (timer) => {
-                // Add editingTitle
-                if (timer.id === id) {
-                    timer.editingTitle = true;
-                }
+            let timer = newState.timers[id];
+            timer.editingTitle = true;
 
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -282,35 +260,24 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Delete editingTitle
-            newState.timers = _.map(newState.timers, (timer) => {
-                // Delete editingTitle prop
-                if (timer.id === id) {
-                    delete timer.editingTitle;
-                }
+            let timer = newState.timers[id];
+            delete timer.editingTitle;
 
-                return timer;
-            });
+            Storage.set(id, timer);
 
             return newState;
         }
 
         case TimerEvents.TIMER_TITLE_UPDATE: {
-            let id = action.payload.id;
-            let title = action.payload.title;
+            let { id, title } = action.payload;
             let newState = _.assign({}, state);
 
             // Update title
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.title = title;
-                    delete timer.editingTitle;
+            let timer = newState.timers[id];
+            timer.title = title;
 
-                    // Update local storage entry
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -320,19 +287,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Set `editingDuration` as true
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.editingDuration = true;
+            let timer = newState.timers[id];
+            timer.editingDuration = true;
 
-                    // Stop the timer if is running
-                    if (timer.started) {
-                        timer.timeTracker.stop();
-                        timer.started = false;
-                    }
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -342,13 +301,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Delete `editingDuration` prop
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    delete timer.editingDuration;
-                }
+            let timer = newState.timers[id];
+            delete timer.editingDuration;
 
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -358,26 +315,15 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             /**
-             * To update the timer's duration we have to parse the duration string
-             * from the payload, and set both duration and durationCycle to that
-             * duration, then we reset the startTime prop to allow the timer
-             * to resume and save to localStorage
-             *
              * @TODO: Look into a way to parse `timeStr` with ISO 8601
              */
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.duration = moment.duration(timeStr).asMilliseconds();
-                    timer.durationCycle = timer.duration;
-                    timer.startTime = moment.now();
-                    delete timer.editingDuration;
+            let timer = newState.timers[id];
+            timer.duration = moment.duration(timeStr).asMilliseconds();
+            timer.durationCycle = timer.duration;
+            delete timer.editingDuration;
 
-                    // Update local storage entry
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -387,19 +333,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Set `editingPlannedTime` as true
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.editingPlannedTime = true;
+            let timer = newState.timers[id];
+            timer.editingPlannedTime = true;
 
-                    // Stop the timer if is running
-                    if (timer.started) {
-                        timer.timeTracker.stop();
-                        timer.started = false;
-                    }
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -409,13 +347,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Delete `editingDuration` prop
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    delete timer.editingDuration;
-                }
+            let timer = newState.timers[id];
+            delete timer.editingDuration;
 
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -425,23 +361,14 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             /**
-             * To update the timer's planned time we have to parse the duration string
-             * from the payload, and set both duration and durationCycle to that
-             * duration, then we reset the startTime prop to allow the timer
-             * to resume and save to localStorage
              * @TODO: Look into a way to parse `timeStr` with ISO 8601
              */
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.plannedTime = moment.duration(timeStr).asMilliseconds();
-                    delete timer.editingPlannedTime;
+            let timer = newState.timers[id];
+            timer.plannedTime = moment.duration(timeStr).asMilliseconds();
+            delete timer.editingPlannedTime;
 
-                    // Update local storage entry
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -451,19 +378,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Set `editingDescription` as true
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.editingDescription = true;
+            let timer = newState.timers[id];
+            timer.editingDescription = true;
 
-                    // Stop the timer if is running
-                    if (timer.started) {
-                        timer.timeTracker.stop();
-                        timer.started = false;
-                    }
-                }
-
-                return timer;
-            });
+            // Update local storage
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -473,13 +392,11 @@ module.exports = function reducer(state={
             let newState = _.assign({}, state);
 
             // Delete `editingDescription` prop
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    delete timer.editingDescription;
-                }
+            let timer = newState.timers[id];
+            delete timer.editingDescription;
 
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
@@ -488,20 +405,16 @@ module.exports = function reducer(state={
             let { id, desc } = action.payload;
             let newState = _.assign({}, state);
 
-            newState.timers = _.map(newState.timers, (timer) => {
-                if (timer.id === id) {
-                    timer.description = desc;
-                    delete timer.editingDescription;
+            let timer = newState.timers[id];
+            timer.description = desc;
 
-                    // Update local storage entry
-                    Storage.set(id, timer);
-                }
-
-                return timer;
-            });
+            // Update local storage entry
+            Storage.set(id, timer);
 
             return newState;
         }
+
+        default:
 
     }
 

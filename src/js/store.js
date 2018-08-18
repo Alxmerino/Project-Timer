@@ -1,16 +1,19 @@
-'use strict';
-
 const {
     createStore,
     combineReducers,
-    applyMiddleware }   = require('redux');
-const logger            = require('redux-logger');
-const _                 = require('underscore');
+    applyMiddleware }           = require('redux');
+const { createBrowserHistory }  = require('history');
+const {
+    routerReducer,
+    routerMiddleware }  = require('react-router-redux');
 
 const Storage           = require('./helpers/Storage');
-const Logger            = require('./components/Logger');
+const Logger            = require('./utils/Logger');
+const { isElectronApp } = require('./utils/utils');
 const TimerReducer      = require('./reducers/TimerReducer');
 const AppReducer        = require('./reducers/AppReducer');
+const timerApi          = require('./middleware/timerApi');
+const api               = require('./middleware/api');
 
 /* eslint-disable no-unused-vars */
 const Debug = new Logger('Store');
@@ -21,21 +24,54 @@ const preloadedState = {
     TimerReducer: {}
 };
 
-const persistState = (() => {
-    let timers = Storage.all();
+(function persistState() {
+    let timers = Storage.timers();
 
-    preloadedState.TimerReducer.timers = _.toArray(timers);
-});
+    preloadedState.TimerReducer.timers = timers;
+})();
 
-persistState();
+// Create browser history
+const history = createBrowserHistory();
 
 // Combine reducers
 const rootReducer = combineReducers({
     TimerReducer,
-    AppReducer
+    AppReducer,
+    router: routerReducer
 });
 
-// Apply middleware
-const middleware = applyMiddleware();
+// Middlewares will be saved here
+const _middlewares = [];
 
-module.exports = createStore(rootReducer, preloadedState, middleware);
+// Add router middleware
+_middlewares.push(routerMiddleware(history));
+// _middlewares.push(routerMiddleware(createRouterHistory));
+
+// Add timer api middleware
+_middlewares.push(timerApi);
+
+// Add API middleware
+_middlewares.push(api);
+
+// Add logger on development only
+if (process.env.NODE_ENV === 'development') {
+    const logger = require('redux-logger');
+    _middlewares.push(logger());
+}
+
+// Apply middlewares
+const middleware = applyMiddleware(..._middlewares);
+
+// Create Store
+const store = createStore(rootReducer, preloadedState, middleware);
+
+// Add IPC listener on electron app
+if (isElectronApp()) {
+    const ipcListener = require('./utils/ipcListener');
+    ipcListener(store.dispatch, store.getState);
+}
+
+module.exports = {
+    history,
+    store,
+}

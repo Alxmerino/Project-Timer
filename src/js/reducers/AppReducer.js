@@ -1,14 +1,31 @@
 const AppEvents            = require('../enums/AppEvents');
 const { isElectronApp }    = require('../utils/utils');
+const Storage              = require('../helpers/Storage');
 // Require ipcRenderer only in electron app
 const { ipcRenderer }      = (isElectronApp()) ? window.require('electron') : {};
 
 module.exports = function reducer(state={
     menuOpen: false,
-    focused: false
+    focused: false,
+    loggedIn: false,
+    messages: {},
+    login_info: {},
 }, action) {
 
     switch(action.type) {
+        case AppEvents.READY: {
+            let newState = Object.assign({}, state);
+            const login_info = Storage.get('login_info');
+
+            // Get login info
+            if (login_info) {
+                newState.login_info = login_info;
+                newState.loggedIn = login_info.loggedIn;
+            }
+
+            return newState;
+        }
+
         case AppEvents.MENU_TOGGLE: {
             let { menuOpen } = action.payload;
             let newState = Object.assign({}, state);
@@ -25,14 +42,60 @@ module.exports = function reducer(state={
             newState.focused = focused;
 
             if (isElectronApp()) {
-                ipcRenderer.send('async-message', {
-                    event: AppEvents.FOCUSED,
-                    payload: {focused: newState.focused}
-                });
+                ipcRenderer.send(AppEvents.FOCUSED, newState.focused);
             }
 
             return newState;
         }
+
+        case AppEvents.JIRA_SET_LOGIN_COOKIE: {
+            const { payload } = action;
+            const { session } = payload;
+            let newState = Object.assign({}, state);
+
+            newState.loggedIn = true;
+
+            // Set JIRA cookie
+            const cookie = session.name + '=' + session.value;
+
+            newState.login_info = Object.assign({}, {
+                loggedIn: true,
+                type: 'jira',
+                cookie,
+                api_url: payload.api_url,
+            });
+
+            // Save JIRA info on local storage
+            Storage.set('login_info', newState.login_info);
+
+            return newState;
+        }
+
+        case AppEvents.JIRA_LOGIN_ERROR: {
+            const { message } = action.payload;
+            let newState = Object.assign({}, state);
+            newState.messages.error = `Failed to login: ${message}`;
+
+            return newState;
+        }
+
+        case AppEvents.API_ERROR_401: {
+            const { message } = action.payload;
+            const { status } = action.payload.response;
+
+            let newState = Object.assign({}, state);
+            newState.messages.error = message;
+            newState.messages.status = status;
+
+            return newState;
+        }
+
+        case AppEvents.JIRA_IS_LOGGED_IN: {
+            console.log('ACTION', action);
+            console.log('STATE', state);
+        }
+
+        default:
     }
 
     return state;

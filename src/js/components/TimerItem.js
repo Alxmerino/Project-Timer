@@ -1,18 +1,18 @@
 const React                = require('react');
-const PropTypes            = React.PropTypes;
+const PropTypes            = require('prop-types');
 
 const {
     formatTime,
     getTimeIn }            = require('../helpers');
 const TimerTitle           = require('../components/TimerTitle');
-const Logger               = require('../components/Logger');
+const Logger               = require('../utils/Logger');
 const TimerEvents          = require('../enums/TimerEvents');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerItem');
 /* eslint-enable no-unused-vars */
 
-const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, editingDescription, description, status, id}) => {
+const TimerItem = ({onClose, onStart, onStop, onReset, onPostTime, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, started, title, duration, plannedTime, editingTitle, editingDuration, editingPlannedTime, onDescEditOn, onDescEditOff, onDescEditUpdate, editingDescription, description, status, id}) => {
     let active = (started) ? 'active' : 'inactive';
     let playingStatus = (started) ? 'pause' : 'play';
     let clickAction = (started) ? onStop : onStart;
@@ -31,6 +31,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         case TimerEvents.TIMER_LOGGED:
             statusClass = 'timer--logged';
             break;
+        default:
     }
 
     let renderDurationInput = (value, isEditing, type, onClickOn, onClickOff, onUpdate) => {
@@ -39,7 +40,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
         if (isEditing) {
             return (
                 <div className="input-group timer__inputGroup">
-                    <input onKeyUp={onUpdate.bind(this, id)} type="text" autoFocus defaultValue={formatTime(timeInSeconds, 'seconds')} className={`timer__${type}Input form-control input-sm`} />
+                    <input onKeyUp={onUpdate.bind(this, id)} onKeyDown={onUpdate.bind(this, id)} type="text" autoFocus defaultValue={formatTime(timeInSeconds, 'seconds')} className={`timer__${type}Input form-control input-sm`} />
                     <span className="input-group-btn">
                         <button onClick={onClickOff.bind(this, id)} className="btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                     </span>
@@ -61,7 +62,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
 
         return (
             <div className="timer__descContainer">
-                <textarea className="form-control timer__description" defaultValue={description} maxLength="500"></textarea>
+                <textarea onKeyDown={onDescEditUpdate.bind(this, id)} onKeyUp={onDescEditUpdate.bind(this, id)} className="form-control timer__description" defaultValue={description} maxLength="500"></textarea>
                 <button onClick={onDescEditOff.bind(this, id)} className="timer__descConfirm btn btn-sm btn-success"><span className="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
             </div>
         );
@@ -70,7 +71,7 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
     return (
         <li className={`timer list-group-item ${active} ${statusClass}`}>
             <a
-                href="#"
+                href="#timer__close"
                 className="timer__close"
                 onClick={onClose}
             >
@@ -123,6 +124,16 @@ const TimerItem = ({onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEdi
                     >
                         <span className="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     </button>
+                    {
+                        // @TODO: Only show if user is logged in
+                    }
+                    <button
+                        type="button"
+                        onClick={onPostTime}
+                        className="timer__log btn btn-default btn-sm"
+                    >
+                        <span className="glyphicon glyphicon-floppy-open" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
             {renderDescription()}
@@ -141,6 +152,7 @@ TimerItem.propTypes = {
     onStart:            PropTypes.func.isRequired,
     onStop:             PropTypes.func.isRequired,
     onReset:            PropTypes.func.isRequired,
+    onPostTime:          PropTypes.func,
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
@@ -152,6 +164,7 @@ TimerItem.propTypes = {
     onPlannedUpdate:    PropTypes.func.isRequired,
     onDescEditOn:       PropTypes.func.isRequired,
     onDescEditOff:      PropTypes.func.isRequired,
+    onDescEditUpdate:   PropTypes.func.isRequired,
     id:                 PropTypes.number.isRequired,
     title:              PropTypes.string.isRequired,
     duration:           PropTypes.number.isRequired,

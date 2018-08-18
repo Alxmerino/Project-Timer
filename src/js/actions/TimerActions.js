@@ -28,13 +28,6 @@ const stopTimer = (id) => {
     };
 };
 
-const toggleTimer = (id) => {
-    return {
-        type: TimerEvents.TIMER_TOGGLE,
-        payload: id
-    };
-};
-
 const updateTimer = (id) => {
     return {
         type: TimerEvents.TIMER_UPDATE,
@@ -133,13 +126,38 @@ const resetTimer = (id) => {
     };
 };
 
+const postTimer = (id) => {
+    return {
+        type: TimerEvents.TIMER_POST,
+        payload: {
+            id,
+            url: '/rest/api/2/issue/{issueIdOrKey}/worklog',
+            method: 'POST',
+            onSuccess: 'postTimerSuccess',
+            onError: 'postTimerError',
+        },
+    };
+};
+
+const postTimerSuccess = payload => {
+    return {
+        type: TimerEvents.TIMER_LOGGED,
+        payload
+    }
+}
+
+const postTimerError = payload => {
+    return {
+        type: TimerEvents.TIMER_ERROR,
+        payload
+    }
+}
+
 module.exports = {
-    TimerEvents,
     addTimer,
     destroyTimer,
     startTimer,
     stopTimer,
-    toggleTimer,
     updateTimer,
     toggleTitleChangeOn,
     toggleTitleChangeOff,
@@ -153,5 +171,8 @@ module.exports = {
     toggleDescInputOn,
     toggleDescInputOff,
     updateTimeDescription,
-    resetTimer
+    resetTimer,
+    postTimer,
+    postTimerSuccess,
+    postTimerError,
 };

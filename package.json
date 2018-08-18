@@ -1,23 +1,19 @@
 {
   "name": "project-timer",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "productName": "Project Timer",
   "description": "A small timer app that can add timers for multiple projects.",
   "main": "index.js",
   "author": "Rene Merino <rmerino@amayamedia.com>",
   "license": "GPL-3.0",
-  "homepage": "https://github.com/Alxmerino/Project-Timer#readme",
+  "homepage": "./",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ./src",
-    "precommit": "npm run lint",
-    "prepush": "npm test",
-    "dev": "./node_modules/.bin/electron .",
+    "dev": "./bin/dev.sh",
     "dist": "./bin/dist.sh",
-    "test": "./node_modules/.bin/jest --verbose --notify",
-    "test:watch": "npm test -- --watch"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "./tests/helpers/localStorage"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -27,6 +23,9 @@
     "url": "https://github.com/Alxmerino/Project-Timer/issues"
   },
   "dependencies": {
+    "axios": "^0.17.1",
+    "finalhandler": "^1.1.1",
+    "history": "^4.7.2",
     "menubar": "^5.2.3",
     "moment": "^2.17.1",
     "moment-duration-format": "^1.3.0",
@@ -34,26 +33,19 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
+    "react-router": "^4.2.0",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "react-scripts": "1.0.10",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.2",
-    "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
+    "serve-static": "^1.13.2",
     "underscore": "^1.8.3",
     "xStore": "^2.0.3"
   },
   "devDependencies": {
-    "babel-jest": "^19.0.0",
-    "electron": "^1.6.2",
-    "electron-packager": "^8.6.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-react": "^6.23.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.1.0",
-    "eslint": "^3.17.1",
-    "eslint-config-standard": "^7.0.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-react": "^6.10.0",
-    "eslint-plugin-standard": "^2.1.1",
+    "electron": "^1.7.5",
+    "electron-packager": "^9.0.0",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
     "gulp-generic-build": "https://git@github.com/Alxmerino/Gulp-Generic-Build.git",
@@ -61,10 +53,7 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1",
     "gulp-util": "^3.0.8",
-    "husky": "^0.13.2",
-    "jest": "^19.0.2",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
+    "prop-types": "^15.5.10",
     "watchify": "^3.9.0"
   }
 }

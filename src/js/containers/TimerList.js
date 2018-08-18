@@ -1,14 +1,15 @@
 const React                        = require('react');
-const PropTypes                    = React.PropTypes;
+const PropTypes                    = require('prop-types');
 const { connect }                  = require('react-redux');
 const _                            = require('underscore');
 
 const TimerItem                    = require('../components/TimerItem');
-const Logger                       = require('../components/Logger');
+const Logger                       = require('../utils/Logger');
 const {
     stopTimer,
     startTimer,
     resetTimer,
+    postTimer,
     destroyTimer,
     toggleDurationInputOn,
     toggleDurationInputOff,
@@ -21,14 +22,14 @@ const {
     updateTitle,
     toggleDescInputOn,
     toggleDescInputOff,
-    updateTimeDescription }         = require('../actions/TimerActions');
+    updateTimeDescription }        = require('../actions/TimerActions');
+const { verifyLogin }              = require('../actions/AppActions');
 
 /* eslint-disable no-unused-vars */
 let Debug = new Logger('TimerList');
 /* eslint-enable no-unused-vars */
 
-let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff }) => {
-
+let TimerList = ({ app, timers, onClose, onStart, onStop, onReset, onPostTime, onTitleEditOn, onTitleEditOff, onTitleUpdate, onDurationEditOn, onDurationEditOff, onDurationUpdate, onPlannedEditOn, onPlannedEditOff, onPlannedUpdate, onDescEditOn, onDescEditOff, onDescEditUpdate }) => {
     return (
         <ul className="list-group">
             {_.map(timers, timer =>
@@ -38,6 +39,7 @@ let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onT
                     onStart={() => onStart(timer.id)}
                     onStop={() => onStop(timer.id)}
                     onReset={() => onReset(timer.id)}
+                    onPostTime={() => onPostTime(timer.id)}
                     onTitleEditOn={onTitleEditOn}
                     onTitleEditOff={onTitleEditOff}
                     onTitleUpdate={onTitleUpdate}
@@ -49,6 +51,7 @@ let TimerList = ({ timers, onClose, onStart, onStop, onReset, onTitleEditOn, onT
                     onPlannedUpdate={onPlannedUpdate}
                     onDescEditOn={onDescEditOn}
                     onDescEditOff={onDescEditOff}
+                    onDescEditUpdate={onDescEditUpdate}
                     key={timer.id}
                 />
             )}
@@ -68,6 +71,7 @@ TimerList.propTypes = {
     onStart:            PropTypes.func.isRequired,
     onStop:             PropTypes.func.isRequired,
     onReset:            PropTypes.func.isRequired,
+    onPostTime:         PropTypes.func,
     onTitleEditOn:      PropTypes.func.isRequired,
     onTitleEditOff:     PropTypes.func.isRequired,
     onTitleUpdate:      PropTypes.func.isRequired,
@@ -79,6 +83,7 @@ TimerList.propTypes = {
     onPlannedUpdate:    PropTypes.func.isRequired,
     onDescEditOn:       PropTypes.func.isRequired,
     onDescEditOff:      PropTypes.func.isRequired,
+    onDescEditUpdate:   PropTypes.func.isRequired,
 };
 
 /**
@@ -91,14 +96,45 @@ TimerList.propTypes = {
  *
  */
 const mapStateToProps = (state) => {
-    let timers = _.map(state.TimerReducer.timers, (timer) => {
-        return timer;
-    });
+    let timers = _.toArray(state.TimerReducer.timers);
+    let app = state.AppReducer;
 
     return {
-        timers
+        timers,
+        app
     };
 };
+
+/**
+ * Key map to test key press
+ * @type {Object}
+ */
+let keyMap = {}
+
+/**
+ * Test keys to see if they were pressed
+ * @param  {String} keys
+ * @return {Boolean}
+ */
+const testKeys = (...keys) => {
+    const testSingleKey = (key) => {
+        let alias = {
+            cmd: 91,
+            enter: 13
+        }
+
+        return keyMap[alias[key]];
+    }
+
+    /** Return false if all keys to test are not pressed */
+    for (var i = 0; i < keys.length; i++) {
+        if (!testSingleKey(keys[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 /**
  * @desc Maps the dispatcher onto properties to pass onto the
@@ -120,6 +156,11 @@ const mapDispatchToProps = (dispatch) => {
         onReset: (id) => {
             dispatch(resetTimer(id));
         },
+        onPostTime: (id) => {
+            dispatch(stopTimer(id));
+            // dispatch(verifyLogin);
+            dispatch(postTimer(id));
+        },
         onTitleEditOn: (id) => {
             dispatch(stopTimer(id));
             dispatch(toggleTitleChangeOn(id));
@@ -130,17 +171,20 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateTitle(id, title));
             dispatch(toggleTitleChangeOff(id));
         },
-        onTitleUpdate: (id, proxyData, event) => {
-            if (event.type === 'react-keyup') {
-                // Save title when enter key is presses (13)
-                if (proxyData.keyCode === 13) {
-                    let title = proxyData.target.value;
-                    dispatch(updateTitle(id, title));
-                    dispatch(toggleTitleChangeOff(id));
-                }
+        onTitleUpdate: (id, proxyData) => {
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('enter')) {
+                let title = proxyData.target.value;
+                dispatch(updateTitle(id, title));
+                dispatch(toggleTitleChangeOff(id));
+
+                // Clear keymap
+                keyMap = {};
             }
         },
         onDurationEditOn: (id) => {
+            dispatch(stopTimer(id));
             dispatch(toggleDurationInputOn(id));
         },
         onDurationEditOff: (id, proxyData) => {
@@ -150,16 +194,19 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleDurationInputOff(id));
         },
         onDurationUpdate: (id, proxyData) => {
-            if (event.type === 'react-keyup') {
-                // Save duration when enter key is pressed (13)
-                if (proxyData.keyCode === 13) {
-                    let newDuration = proxyData.target.value;
-                    dispatch(updateTimeDuration(id, newDuration));
-                    dispatch(toggleDurationInputOff(id));
-                }
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('enter')) {
+                let newDuration = proxyData.target.value;
+                dispatch(updateTimeDuration(id, newDuration));
+                dispatch(toggleDurationInputOff(id));
+
+                // Clear keymap
+                keyMap = {};
             }
         },
         onPlannedEditOn: (id) => {
+            dispatch(stopTimer(id));
             dispatch(togglePlannedInputOn(id));
         },
         onPlannedEditOff: (id, proxyData) => {
@@ -169,16 +216,19 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(togglePlannedInputOff(id));
         },
         onPlannedUpdate: (id, proxyData) => {
-            if (event.type === 'react-keyup') {
-                // Save planned time when enter key is pressed (13)
-                if (proxyData.keyCode === 13) {
-                    let newPlannedTime = proxyData.target.value;
-                    dispatch(updateTimePlanned(id, newPlannedTime));
-                    dispatch(togglePlannedInputOff(id));
-                }
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('enter')) {
+                let newPlannedTime = proxyData.target.value;
+                dispatch(updateTimePlanned(id, newPlannedTime));
+                dispatch(togglePlannedInputOff(id));
+
+                // Clear keymap
+                keyMap = {};
             }
         },
         onDescEditOn: (id) => {
+            dispatch(stopTimer(id));
             dispatch(toggleDescInputOn(id));
         },
         onDescEditOff: (id, proxyData) => {
@@ -186,6 +236,19 @@ const mapDispatchToProps = (dispatch) => {
             let desc = proxyData.currentTarget.previousSibling.value;
             dispatch(updateTimeDescription(id, desc));
             dispatch(toggleDescInputOff(id));
+        },
+        onDescEditUpdate: (id, proxyData) => {
+            keyMap[proxyData.keyCode] = proxyData.type === 'keydown';
+
+            if (testKeys('cmd', 'enter')) {
+                // get the input value
+                let desc = proxyData.currentTarget.value;
+                dispatch(updateTimeDescription(id, desc));
+                dispatch(toggleDescInputOff(id));
+
+                // Clear keymap
+                keyMap = {};
+            }
         }
     };
 };

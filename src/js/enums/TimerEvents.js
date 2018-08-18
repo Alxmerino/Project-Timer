@@ -11,7 +11,6 @@ module.exports = {
     TIMER_DESTROY:              '__timer_destroy',
     TIMER_START:                '__timer_start',
     TIMER_STOP:                 '__timer_stop',
-    TIMER_TOGGLE:               '__timer_toggle',
     TIMER_UPDATE:               '__timer_update',
     TIMER_TITLE_CHANGE_ON:      '__timer_title_change_on',
     TIMER_TITLE_CHANGE_OFF:     '__timer_title_change_off',
@@ -26,8 +25,10 @@ module.exports = {
     TIMER_DESCRIPTION_OFF:      '__timer_description_off',
     TIMER_DESCRIPTION_UPDATE:   '__timer_description_update',
     TIMER_RESET:                '__timer_reset',
+    TIMER_POST:                 '__timer_post',
     TIMER_DONE:                 '__timer_done',
     TIMER_LOGGED:               '__timer_logged',
     TIMER_ERROR:                '__timer_error',
+    TIMER_ERROR_401:            '__timer_error_401',
     TIMER_OVERTIME:             '__timer_overtime'
 };

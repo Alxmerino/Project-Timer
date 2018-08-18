@@ -74,8 +74,22 @@ const getIpcPingInterval = (ping) => {
     return pingIntervalArray[pingIndex+1] || lastPingInterval;
 };
 
+/**
+ * @desc Get a single timer from the state by a given ID
+ * @param {Object} state
+ * @param {Number} id
+ */
+const getTimerById = (state, id) => {
+    if (typeof state === 'undefined' || typeof id === 'undefined') {
+        return null;
+    }
+
+    return state.TimerReducer.timers[id] || null;
+}
+
 module.exports = {
     getTimeIn,
     formatTime,
-    getIpcPingInterval
+    getIpcPingInterval,
+    getTimerById,
 };
