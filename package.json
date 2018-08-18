@@ -1,0 +1,31 @@
+{
+  "name": "project-timer",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A small timer app that can add timers for multiple projects.",
+  "main": "index.js",
+  "repository": "git@github.com:Alxmerino/Project-Timer.git",
+  "author": "Rene Merino <rene@amayamedia.com>",
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "devDependencies": {
+    "create-react-app": "^1.5.2"
+  },
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-scripts-ts": "2.17.0"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.7.1",
+    "@types/react": "^16.4.11",
+    "@types/react-dom": "^16.0.7",
+    "typescript": "^3.0.1"
+  }
+}
