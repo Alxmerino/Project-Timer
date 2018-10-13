@@ -1,11 +1,23 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import Header from './components/Header';
+
+function App() {
+    return (
+        <React.Fragment>
+            <CssBaseline />
+            <Header />
+        </React.Fragment>
+    );
+}
+
 ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
+    <App />,
+    document.getElementById('root') as HTMLElement
 );
+
 registerServiceWorker();
