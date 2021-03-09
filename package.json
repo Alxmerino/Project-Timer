@@ -39,7 +39,7 @@
     "xStore": "^2.0.3"
   },
   "devDependencies": {
-    "electron": "^1.7.5",
+    "electron": "^9.4.0",
     "electron-packager": "^9.0.0",
     "gulp": "^3.9.1",
     "gulp-connect": "^5.0.0",
